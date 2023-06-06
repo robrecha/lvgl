@@ -165,7 +165,17 @@ static void draw_bg(lv_draw_unit_t * draw_unit, const lv_draw_rect_dsc_t * dsc, 
     lv_opa_t * grad_opa_map = NULL;
     if(grad && grad_dir == LV_GRAD_DIR_HOR) {
         blend_dsc.src_buf = grad->color_map + clipped_coords.x1 - bg_coords.x1;
-        grad_opa_map = grad->opa_map + clipped_coords.x1 - bg_coords.x1;
+        bool transp = false;
+        uint32_t s;
+        for(s = 0; s < dsc->bg_grad.stops_count; s++) {
+            if(dsc->bg_grad.stops[s].opa != LV_OPA_COVER) {
+                transp = true;
+                break;
+            }
+        }
+
+        if(transp) grad_opa_map = grad->opa_map + clipped_coords.x1 - bg_coords.x1;
+
         blend_dsc.src_color_format = LV_COLOR_FORMAT_RGB888;
     }
 
@@ -237,12 +247,13 @@ static void draw_bg(lv_draw_unit_t * draw_unit, const lv_draw_rect_dsc_t * dsc, 
                 blend_dsc.opa = grad->opa_map[top_y - bg_coords.y1];
             }
             else if(grad_dir == LV_GRAD_DIR_HOR) {
-                lv_coord_t i;
-                for(i = 0; i < clipped_w; i++) {
-                    if(grad_opa_map[i] < LV_OPA_MAX) mask_buf[i] = (mask_buf[i] * grad_opa_map[i]) >> 8;
+                if(grad_opa_map) {
+                    lv_coord_t i;
+                    for(i = 0; i < clipped_w; i++) {
+                        if(grad_opa_map[i] < LV_OPA_MAX) mask_buf[i] = (mask_buf[i] * grad_opa_map[i]) >> 8;
+                    }
+                    blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
                 }
-
-                blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
             }
             lv_draw_sw_blend(draw_unit, &blend_dsc);
         }
@@ -496,6 +507,13 @@ LV_ATTRIBUTE_FAST_MEM static void draw_shadow(lv_draw_unit_t * draw_unit, const 
     /*Skip a lot of masking if the background will cover the shadow that would be masked out*/
     bool simple = true;
     if(dsc->bg_opa < LV_OPA_COVER) simple = false;
+    uint32_t s;
+    for(s = 0; s < dsc->bg_grad.stops_count; s++) {
+        if(dsc->bg_grad.stops[s].opa != LV_OPA_COVER) {
+            simple = false;
+            break;
+        }
+    }
 
     /*Create a radius mask to clip remove shadow on the bg area*/
 

@@ -47,7 +47,6 @@ void lv_draw_sw_blend(lv_draw_unit_t * draw_unit, const lv_draw_sw_blend_dsc_t *
 
     lv_layer_t * layer = draw_unit->target_layer;
 
-
     if(blend_dsc->src_buf == NULL) {
         _lv_draw_sw_blend_fill_dsc_t fill_dsc;
         fill_dsc.dest_w = lv_area_get_width(&blend_area);

@@ -109,16 +109,16 @@ void lv_canvas_set_px(lv_obj_t * obj, lv_coord_t x, lv_coord_t y, lv_color_t col
     else if(canvas->dsc.header.cf == LV_COLOR_FORMAT_RGB888) {
         uint8_t * buf = (uint8_t *)canvas->dsc.data;
         buf += canvas->dsc.header.w * y * 3 + x * 3;
-        buf[0] = color.red;
+        buf[2] = color.red;
         buf[1] = color.green;
-        buf[2] = color.blue;
+        buf[0] = color.blue;
     }
     else if(canvas->dsc.header.cf == LV_COLOR_FORMAT_XRGB8888) {
         uint8_t * buf = (uint8_t *)canvas->dsc.data;
         buf += canvas->dsc.header.w * y * 4 + x * 4;
-        buf[0] = color.red;
+        buf[2] = color.red;
         buf[1] = color.green;
-        buf[2] = color.blue;
+        buf[0] = color.blue;
         buf[3] = 0xFF;
     }
     else if(canvas->dsc.header.cf == LV_COLOR_FORMAT_ARGB8888) {

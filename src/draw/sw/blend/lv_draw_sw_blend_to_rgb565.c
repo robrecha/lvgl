@@ -341,9 +341,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb888_image_blend(_lv_draw_sw_blend_image_dsc
         if(mask_buf == NULL && opa >= LV_OPA_MAX) {
             for(y = 0; y < h; y++) {
                 for(dest_x = 0, src_x = 0; dest_x < w; dest_x++, src_x += src_px_size) {
-                    dest_buf_u16[dest_x]  = ((src_buf_u8[src_x + 0] & 0xF8) << 8) +
+                    dest_buf_u16[dest_x]  = ((src_buf_u8[src_x + 2] & 0xF8) << 8) +
                                             ((src_buf_u8[src_x + 1] & 0xFC) << 3) +
-                                            ((src_buf_u8[src_x + 2] & 0xF8) >> 3);
+                                            ((src_buf_u8[src_x + 0] & 0xF8) >> 3);
                 }
                 dest_buf_u16 += dest_stride;
                 src_buf_u8 += src_stride;

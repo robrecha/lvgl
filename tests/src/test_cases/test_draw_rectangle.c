@@ -213,4 +213,36 @@ void test_border_part(void)
     }
 }
 
+void test_rect_shadow(void)
+{
+    static lv_style_t style;
+    lv_style_init(&style);
+    lv_style_set_bg_color(&style, lv_palette_main(LV_PALETTE_LIME));
+    lv_style_set_shadow_color(&style, lv_palette_main(LV_PALETTE_BLUE));
+
+    lv_style_set_shadow_width(&style, 32);
+    uint32_t i;
+    for(i = 0; i < sizeof(opas) / sizeof(opas[0]); i++) {
+        lv_style_set_bg_opa(&style, opas[i]);
+        lv_style_set_shadow_opa(&style, opas[i]);
+        create_rects(&style, "shadow_simple", opas[i]);
+    }
+
+    lv_style_set_shadow_spread(&style, 16);
+    for(i = 0; i < sizeof(opas) / sizeof(opas[0]); i++) {
+        lv_style_set_bg_opa(&style, opas[i]);
+        lv_style_set_shadow_opa(&style, opas[i]);
+        create_rects(&style, "shadow_spread", opas[i]);
+    }
+
+    lv_style_set_shadow_ofs_x(&style, 8);
+    lv_style_set_shadow_ofs_y(&style, 16);
+    for(i = 0; i < sizeof(opas) / sizeof(opas[0]); i++) {
+        lv_style_set_bg_opa(&style, opas[i]);
+        lv_style_set_shadow_opa(&style, opas[i]);
+        create_rects(&style, "shadow_ofs", opas[i]);
+    }
+
+}
+
 #endif
