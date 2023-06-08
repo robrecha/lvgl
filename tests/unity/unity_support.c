@@ -120,44 +120,14 @@ bool lv_test_assert_img_eq(const char * fn_ref)
     }
 
     if(err) {
-        uint32_t ref_px = 0;
-        uint32_t act_px = 0;
-        memcpy(&ref_px, ptr_ref, 3);
-        memcpy(&act_px, ptr_act, 3);
+        char fn_ref_no_ext[64];
+        strcpy(fn_ref_no_ext, fn_ref);
+        fn_ref_no_ext[strlen(fn_ref_no_ext) - 4] = '\0';
 
-        FILE * f = fopen("../test_screenshot_error.h", "w");
+        char fn_err_full[512];
+        sprintf(fn_err_full, "%s%s_err.png", REF_IMGS_PATH, fn_ref_no_ext);
 
-        fprintf(f, "//Diff in %s at (%d;%d), %x instead of %x)\n\n", fn_ref, x, y, act_px, ref_px);
-        fprintf(f, "static const uint32_t test_screenshot_error_data[] = {\n");
-
-        i_buf = 0;
-        for(y = 0; y < 480; y++) {
-            fprintf(f, "\n");
-            for(x = 0; x < 800; x++) {
-                ptr_act = &(screen_buf[i_buf * 4]);
-                act_px = 0;
-                memcpy(&act_px, ptr_act, 3);
-                fprintf(f, "0xFF%06X, ", act_px);
-                i_buf++;
-            }
-        }
-        fprintf(f, "};\n\n");
-
-        fprintf(f, "static lv_img_dsc_t test_screenshot_error_dsc = { \n"
-                "  .header.w = 800,\n"
-                "  .header.h = 480,\n"
-                "  .header.always_zero = 0,\n"
-                "  .header.cf = LV_COLOR_FORMAT_NATIVE,\n"
-                "  .data_size = 800 * 480 * 4,\n"
-                "  .data = (const uint8_t *) test_screenshot_error_data};\n\n"
-                "static inline void test_screenshot_error_show(void)\n"
-                "{\n"
-                "  lv_obj_t * img = lv_img_create(lv_scr_act());\n"
-                "  lv_img_set_src(img, &test_screenshot_error_dsc);\n"
-                "}\n");
-
-        fclose(f);
-
+        write_png_file(screen_buf, 800, 480, fn_err_full);
     }
 
 

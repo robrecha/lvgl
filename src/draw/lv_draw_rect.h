@@ -52,6 +52,7 @@ typedef struct {
     lv_coord_t border_width;
     lv_opa_t border_opa;
     lv_border_side_t border_side : 5;
+    uint8_t border_post : 1; /*The border will be drawn later*/
 
     /*Outline*/
     lv_color_t outline_color;

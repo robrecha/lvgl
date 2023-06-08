@@ -73,6 +73,7 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
             cir_dsc.color = dsc->color;
             cir_dsc.width = dsc->width;
             cir_dsc.radius = LV_RADIUS_CIRCLE;
+            cir_dsc.side = LV_BORDER_SIDE_FULL;
             lv_draw_sw_border(draw_unit, &cir_dsc, &area_out);
         }
 
@@ -151,7 +152,7 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
         end_circle_dsc.color = dsc->color;
         end_circle_dsc.radius = LV_RADIUS_CIRCLE;
         end_circle_dsc.opa = dsc->opa;
-        end_circle_dsc.grad.stops_count = 0;
+        end_circle_dsc.grad.dir = LV_GRAD_DIR_NONE;
 
         lv_area_t round_area;
         get_rounded_area(start_angle, dsc->radius, width, &round_area);
