@@ -70,11 +70,11 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_line(lv_draw_unit_t * draw_unit, const lv_
     else draw_line_skew(draw_unit, dsc);
 
     if(dsc->round_end || dsc->round_start) {
-        lv_draw_rect_dsc_t cir_dsc;
-        lv_draw_rect_dsc_init(&cir_dsc);
-        cir_dsc.bg_color = dsc->color;
+        lv_draw_fill_dsc_t cir_dsc;
+        cir_dsc.color = dsc->color;
         cir_dsc.radius = LV_RADIUS_CIRCLE;
-        cir_dsc.bg_opa = dsc->opa;
+        cir_dsc.opa = dsc->opa;
+        cir_dsc.grad.stops_count = 0;
 
         int32_t r = (dsc->width >> 1);
         int32_t r_corr = (dsc->width & 1) ? 0 : 1;
@@ -85,7 +85,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_line(lv_draw_unit_t * draw_unit, const lv_
             cir_area.y1 = dsc->p1.y - r;
             cir_area.x2 = dsc->p1.x + r - r_corr;
             cir_area.y2 = dsc->p1.y + r - r_corr ;
-            lv_draw_sw_rect(draw_unit, &cir_dsc, &cir_area);
+            lv_draw_sw_fill(draw_unit, &cir_dsc, &cir_area);
         }
 
         if(dsc->round_end) {
@@ -93,7 +93,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_line(lv_draw_unit_t * draw_unit, const lv_
             cir_area.y1 = dsc->p2.y - r;
             cir_area.x2 = dsc->p2.x + r - r_corr;
             cir_area.y2 = dsc->p2.y + r - r_corr ;
-            lv_draw_sw_rect(draw_unit, &cir_dsc, &cir_area);
+            lv_draw_sw_fill(draw_unit, &cir_dsc, &cir_area);
         }
     }
 }

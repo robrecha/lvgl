@@ -33,7 +33,10 @@ struct _lv_draw_img_dsc_t;
 struct _lv_disp_t;
 
 typedef enum {
-    LV_DRAW_TASK_TYPE_RECTANGLE,
+    LV_DRAW_TASK_TYPE_FILL,
+    LV_DRAW_TASK_TYPE_BORDER,
+    LV_DRAW_TASK_TYPE_BOX_SHADOW,
+    LV_DRAW_TASK_TYPE_BG_IMG,
     LV_DRAW_TASK_TYPE_LABEL,
     LV_DRAW_TASK_TYPE_IMAGE,
     LV_DRAW_TASK_TYPE_LAYER,

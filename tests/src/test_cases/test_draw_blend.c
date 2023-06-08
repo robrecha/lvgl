@@ -16,84 +16,54 @@ void tearDown(void)
     /* Function run after every test */
 }
 
-
-void canvas_blend_test(lv_obj_t  * canvas2, lv_draw_img_dsc_t * img_dsc, const char * name_main, const char * name_sub,
-                       lv_color_format_t render_cf, lv_opa_t opa)
+static void canvas_basic_render(uint8_t * canvas_buf, lv_color_format_t render_cf, const char * name_main,
+                                const char * name_sub)
 {
-    lv_area_t area;
-    area.x1 = 25;
-    area.x2 = 699 + 25;
-    area.y1 = 25;
-    area.y2 = 399 + 25;
-
-    lv_layer_t layer2;
-    static uint8_t canvas2_buf[750 * 450 * 4];
-    char fn_buf[64];
-
-    img_dsc->opa = LV_OPA_COVER;
-    lv_canvas_set_buffer(canvas2, canvas2_buf, 750, 450, render_cf);
-    lv_canvas_fill_bg(canvas2, lv_palette_lighten(LV_PALETTE_BLUE_GREY, 2), opa);
-    lv_canvas_init_layer(canvas2, &layer2);
-    lv_draw_img(&layer2, img_dsc, &area);
-    lv_canvas_finish_layer(canvas2, &layer2);
-
-    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_belnd_%s_%s.png", name_main, name_sub);
-    TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
-
-    img_dsc->opa = LV_OPA_50;
-    lv_canvas_set_buffer(canvas2, canvas2_buf, 750, 450, render_cf);
-    lv_canvas_fill_bg(canvas2, lv_palette_lighten(LV_PALETTE_BLUE_GREY, 2), opa);
-    lv_canvas_init_layer(canvas2, &layer2);
-    lv_draw_img(&layer2, img_dsc, &area);
-    lv_canvas_finish_layer(canvas2, &layer2);
-
-    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_belnd_%s_%s_opa.png", name_main, name_sub);
-    TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
-}
-
-
-
-static void canvas_draw(const char * name, lv_color_format_t render_cf, lv_opa_t opa)
-{
-    lv_obj_clean(lv_scr_act());
-
-    static uint8_t canvas_buf[700 * 400 * 4];
-
     lv_obj_t * canvas = lv_canvas_create(lv_scr_act());
-    lv_canvas_set_buffer(canvas, canvas_buf, 700, 400, render_cf);
+    lv_canvas_set_buffer(canvas, canvas_buf, 180, 180, render_cf);
 
-    lv_canvas_fill_bg(canvas, lv_palette_lighten(LV_PALETTE_PURPLE, 4), opa);
+    lv_canvas_fill_bg(canvas, lv_palette_lighten(LV_PALETTE_LIGHT_BLUE, 2), LV_OPA_COVER);
 
     lv_layer_t layer;
     lv_canvas_init_layer(canvas, &layer);
 
-    static lv_style_t style;
-    lv_style_init(&style);
+    lv_area_t area;
+    char txt[64];
+    lv_snprintf(txt, sizeof(txt), "%s_to_%s", name_main, name_sub);
+    lv_draw_label_dsc_t label_dsc;
+    lv_draw_label_dsc_init(&label_dsc);
+    label_dsc.text = txt;
+
+    area.x1 = 3;
+    area.x2 = 180;
+    area.y1 = 5;
+    area.y2 = 25;
+    lv_draw_label(&layer, &label_dsc, &area);
+
 
     lv_draw_rect_dsc_t rect_dsc;
     lv_draw_rect_dsc_init(&rect_dsc);
-    rect_dsc.radius = 20;
+    rect_dsc.radius = 10;
     rect_dsc.bg_color = lv_palette_main(LV_PALETTE_RED);
     rect_dsc.bg_opa = LV_OPA_COVER;
-    rect_dsc.outline_color = lv_palette_main(LV_PALETTE_BLUE);
-    rect_dsc.outline_width = 20;
-    rect_dsc.outline_pad = -10;
-    rect_dsc.outline_opa = LV_OPA_50;
+    rect_dsc.outline_color = lv_palette_main(LV_PALETTE_INDIGO);
+    rect_dsc.outline_width = 10;
+    rect_dsc.outline_pad = -5;
+    rect_dsc.outline_opa = LV_OPA_60;
     rect_dsc.shadow_color = lv_palette_main(LV_PALETTE_ORANGE);
-    rect_dsc.shadow_width = 30;
-    rect_dsc.shadow_ofs_x = 20;
-    rect_dsc.shadow_ofs_y = 40;
+    rect_dsc.shadow_width = 10;
+    rect_dsc.shadow_ofs_x = 5;
+    rect_dsc.shadow_ofs_y = 10;
 
-    lv_area_t area;
-    area.x1 = 50;
-    area.x2 = 200;
-    area.y1 = 50;
-    area.y2 = 300;
+    area.x1 = 10;
+    area.x2 = 170;
+    area.y1 = 30;
+    area.y2 = 60;
 
     lv_draw_rect(&layer, &rect_dsc, &area);
 
-    area.x1 = 250;
-    area.x2 = 400;
+    area.y1 = 80;
+    area.y2 = 110;
 
     rect_dsc.bg_grad.dir = LV_GRAD_DIR_HOR;
     rect_dsc.bg_grad.stops_count = 2;
@@ -106,67 +76,99 @@ static void canvas_draw(const char * name, lv_color_format_t render_cf, lv_opa_t
 
     lv_draw_rect(&layer, &rect_dsc, &area);
 
-    area.x1 = 450;
-    area.x2 = 600;
-    rect_dsc.bg_grad.stops[0].opa = LV_OPA_60;
+    area.y1 = 130;
+    area.y2 = 160;
+    rect_dsc.bg_grad.stops[0].opa = LV_OPA_30;
 
     lv_draw_rect(&layer, &rect_dsc, &area);
 
     lv_canvas_finish_layer(canvas, &layer);
 
-    char fn_buf[64];
-    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_blend_%s.png", name);
-    TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
+    lv_obj_del(canvas);
+}
 
-    lv_obj_add_flag(canvas, LV_OBJ_FLAG_HIDDEN);
 
+void canvas_blend_test(lv_obj_t  * canvas_large, lv_draw_img_dsc_t * img_dsc, const char * name_main,
+                       const char * name_sub, lv_color_format_t small_render_cf, uint32_t idx)
+{
+    lv_img_dsc_t * img = (lv_img_dsc_t *)img_dsc->src;
+    img->header.cf = small_render_cf;
+    canvas_basic_render((uint8_t *)img->data, small_render_cf, name_main, name_sub);
+
+    lv_area_t area;
+    area.x1 = (idx % 2) * 380 + 10;
+    area.x2 = area.x1 + 179;
+    area.y1 = (idx / 2) * 190 + 10;
+    area.y2 = area.y1 + 179;
+
+    lv_layer_t layer;
+
+    img_dsc->opa = LV_OPA_COVER;
+    lv_canvas_init_layer(canvas_large, &layer);
+    lv_draw_img(&layer, img_dsc, &area);
+    lv_canvas_finish_layer(canvas_large, &layer);
+
+    lv_area_move(&area, 190, 0);
+
+    img_dsc->opa = LV_OPA_50;
+    lv_canvas_init_layer(canvas_large, &layer);
+    lv_draw_img(&layer, img_dsc, &area);
+    lv_canvas_finish_layer(canvas_large, &layer);
+}
+
+static void canvas_draw(const char * name, lv_color_format_t large_render_cf)
+{
+    lv_obj_clean(lv_scr_act());
+
+    static uint8_t canvas_buf[180 * 180 * 4];
+
+
+    static uint8_t canvas2_buf[770 * 390 * 4];
     lv_obj_t * canvas2 = lv_canvas_create(lv_scr_act());
+    lv_canvas_set_buffer(canvas2, canvas2_buf, 770, 390, large_render_cf);
+    lv_canvas_fill_bg(canvas2, lv_palette_lighten(LV_PALETTE_BLUE_GREY, 2), LV_OPA_COVER);
 
     lv_img_dsc_t img;
-    img.header.w = 699;
-    img.header.h = 399;
+    img.header.w = 180;
+    img.header.h = 180;
     img.header.always_zero = 0;
-    img.header.cf = render_cf;
     img.data = canvas_buf;
 
     lv_draw_img_dsc_t img_dsc;
     lv_draw_img_dsc_init(&img_dsc);
     img_dsc.src = &img;
 
-    canvas_blend_test(canvas2, &img_dsc, name, "to_rgb565", LV_COLOR_FORMAT_RGB565, LV_OPA_COVER);
-    canvas_blend_test(canvas2, &img_dsc, name, "to_rgb888", LV_COLOR_FORMAT_RGB888, LV_OPA_COVER);
-    canvas_blend_test(canvas2, &img_dsc, name, "to_xrgb8888", LV_COLOR_FORMAT_XRGB8888, LV_OPA_COVER);
-    canvas_blend_test(canvas2, &img_dsc, name, "to_argb8888", LV_COLOR_FORMAT_ARGB8888, LV_OPA_COVER);
-    canvas_blend_test(canvas2, &img_dsc, name, "to_argb8888_transp", LV_COLOR_FORMAT_ARGB8888, LV_OPA_50);
+    canvas_blend_test(canvas2, &img_dsc, "rgb565", name, LV_COLOR_FORMAT_RGB565, 0);
+    canvas_blend_test(canvas2, &img_dsc, "rgb888", name, LV_COLOR_FORMAT_RGB888, 1);
+    canvas_blend_test(canvas2, &img_dsc, "xrgb8888", name, LV_COLOR_FORMAT_XRGB8888, 2);
+    canvas_blend_test(canvas2, &img_dsc, "argb8888", name, LV_COLOR_FORMAT_ARGB8888, 3);
 
+    char fn_buf[64];
+    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_blend_to_%s.png", name);
+    TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
 }
 
 void test_xrgb8888(void)
 {
-    canvas_draw("xrgb8888", LV_COLOR_FORMAT_XRGB8888, LV_OPA_COVER);
+    canvas_draw("xrgb8888", LV_COLOR_FORMAT_XRGB8888);
 }
 
 
 void test_argb8888(void)
 {
-    canvas_draw("argb8888", LV_COLOR_FORMAT_ARGB8888, LV_OPA_COVER);
-}
-
-void test_argb8888_transp(void)
-{
-    canvas_draw("argb8888_transp", LV_COLOR_FORMAT_ARGB8888, LV_OPA_20);
+    canvas_draw("argb8888", LV_COLOR_FORMAT_ARGB8888);
 }
 
 
 void test_rgb888(void)
 {
-    canvas_draw("rgb888", LV_COLOR_FORMAT_RGB888, LV_OPA_COVER);
+    canvas_draw("rgb888", LV_COLOR_FORMAT_RGB888);
 }
 
 
 void test_rgb565(void)
 {
-    canvas_draw("rgb565", LV_COLOR_FORMAT_RGB565, LV_OPA_COVER);
+    canvas_draw("rgb565", LV_COLOR_FORMAT_RGB565);
 }
 
 #endif

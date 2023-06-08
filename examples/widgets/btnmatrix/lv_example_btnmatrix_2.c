@@ -16,7 +16,7 @@ static void event_cb(lv_event_t * e)
 
         /*Change the draw descriptor of the 2nd button*/
         if(base_dsc->id1 == 1) {
-            if(draw_task->type == LV_DRAW_TASK_TYPE_RECTANGLE) {
+            if(draw_task->type == LV_DRAW_TASK_TYPE_FILL) {
                 lv_draw_rect_dsc_t * rect_draw_dsc = draw_task->draw_dsc;
                 rect_draw_dsc->radius = 0;
                 if(pressed) rect_draw_dsc->bg_color = lv_palette_darken(LV_PALETTE_BLUE, 3);
@@ -33,7 +33,7 @@ static void event_cb(lv_event_t * e)
         }
         /*Change the draw descriptor of the 3rd button*/
         else if(base_dsc->id1 == 2) {
-            if(draw_task->type == LV_DRAW_TASK_TYPE_RECTANGLE) {
+            if(draw_task->type == LV_DRAW_TASK_TYPE_FILL) {
                 lv_draw_rect_dsc_t * rect_draw_dsc = draw_task->draw_dsc;
                 rect_draw_dsc->radius = LV_RADIUS_CIRCLE;
                 if(pressed) rect_draw_dsc->bg_color = lv_palette_darken(LV_PALETTE_RED, 3);
@@ -45,7 +45,7 @@ static void event_cb(lv_event_t * e)
                 lv_draw_label_dsc_t * label_draw_dsc = draw_task->draw_dsc;
                 label_draw_dsc->opa = 0;
             }
-            if(draw_task->type == LV_DRAW_TASK_TYPE_RECTANGLE) {
+            if(draw_task->type == LV_DRAW_TASK_TYPE_FILL) {
                 LV_IMG_DECLARE(img_star);
                 lv_img_header_t header;
                 lv_res_t res = lv_img_decoder_get_info(&img_star, &header);

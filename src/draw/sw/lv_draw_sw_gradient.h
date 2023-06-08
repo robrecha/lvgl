@@ -13,11 +13,10 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_draw_sw_dither.h"
-#if LV_USE_DRAW_SW
-
 #include "../../misc/lv_color.h"
 #include "../../misc/lv_style.h"
+
+#if LV_USE_DRAW_SW
 
 /*********************
  *      DEFINES
@@ -30,11 +29,7 @@ extern "C" {
 /**********************
  *      TYPEDEFS
  **********************/
-#if _DITHER_GRADIENT
-typedef lv_color32_t lv_grad_color_t;
-#else
 typedef lv_color_t lv_grad_color_t;
-#endif
 
 /** To avoid recomputing gradient for each draw operation,
  *  it's possible to cache the computation in this structure instance.
@@ -51,15 +46,6 @@ typedef struct _lv_gradient_cache_t {
     lv_opa_t   *  opa_map;
     lv_coord_t      alloc_size;   /**< The map allocated size in colors */
     lv_coord_t      size;         /**< The computed gradient color map size, in colors */
-#if _DITHER_GRADIENT
-    lv_color32_t  * hmap;         /**< If dithering, we need to store the current, high bitdepth gradient
-                                   * map too, points to the cache's buffer, no free needed */
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-    lv_scolor24_t * error_acc;    /**< Error diffusion dithering algorithm requires storing the last error
-                                   * drawn, points to the cache's buffer, no free needed  */
-    lv_coord_t      w;            /**< The error array width in pixels */
-#endif
-#endif
 } lv_grad_t;
 
 

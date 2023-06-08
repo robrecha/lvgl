@@ -292,7 +292,7 @@ static void draw_part_begin_event_cb(lv_event_t * e)
 {
     lv_obj_t * obj = lv_event_get_target(e);
     lv_draw_task_t * draw_task = lv_event_get_param(e);
-    if(draw_task->type != LV_DRAW_TASK_TYPE_RECTANGLE) return;
+    if(draw_task->type != LV_DRAW_TASK_TYPE_FILL) return;
 
     lv_draw_rect_dsc_t * rect_draw_dsc;
     rect_draw_dsc = draw_task->draw_dsc;

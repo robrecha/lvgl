@@ -136,7 +136,7 @@ static void draw_part_event_cb(lv_event_t * e)
                 lv_draw_label_dsc_t * label_draw_dsc = draw_task->draw_dsc;
                 label_draw_dsc->align = LV_TEXT_ALIGN_CENTER;
             }
-            if(draw_task->type == LV_DRAW_TASK_TYPE_RECTANGLE) {
+            if(draw_task->type == LV_DRAW_TASK_TYPE_FILL) {
                 lv_draw_rect_dsc_t * rect_draw_dsc = draw_task->draw_dsc;
                 rect_draw_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_BLUE), rect_draw_dsc->bg_color, LV_OPA_20);
                 rect_draw_dsc->bg_opa = LV_OPA_COVER;
@@ -152,7 +152,7 @@ static void draw_part_event_cb(lv_event_t * e)
 
         /*Make every 2nd row grayish*/
         if((row != 0 && row % 2) == 0) {
-            if(draw_task->type == LV_DRAW_TASK_TYPE_RECTANGLE) {
+            if(draw_task->type == LV_DRAW_TASK_TYPE_FILL) {
                 lv_draw_rect_dsc_t * rect_draw_dsc = draw_task->draw_dsc;
                 rect_draw_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_GREY), rect_draw_dsc->bg_color, LV_OPA_10);
                 rect_draw_dsc->bg_opa = LV_OPA_COVER;

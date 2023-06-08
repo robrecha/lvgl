@@ -16,7 +16,7 @@
 #include "../lv_draw.h"
 
 static void get_rounded_area(int16_t angle, lv_coord_t radius, uint8_t thickness, lv_area_t * res_area);
-void lv_draw_sw_rect(lv_draw_unit_t * draw_unit, const lv_draw_rect_dsc_t * dsc, const lv_area_t * coords);
+void lv_draw_sw_rect_bg(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t * dsc, const lv_area_t * coords);
 
 /*********************
  *      DEFINES
@@ -54,26 +54,28 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
     lv_coord_t width = dsc->width;
     if(width > dsc->radius) width = dsc->radius;
 
-    lv_draw_rect_dsc_t cir_dsc;
-    lv_draw_rect_dsc_init(&cir_dsc);
-    if(dsc->img_src) {
-        cir_dsc.bg_opa = LV_OPA_TRANSP;
-        cir_dsc.bg_img_src = dsc->img_src;
-        cir_dsc.bg_img_opa = dsc->opa;
-    }
-    else {
-        cir_dsc.bg_opa = LV_OPA_TRANSP;
-        cir_dsc.border_opa = dsc->opa;
-        cir_dsc.border_color = dsc->color;
-        cir_dsc.border_width = dsc->width;
-    }
-
     lv_area_t area_out = *coords;
 
     /*Draw a full ring*/
     if(dsc->start_angle + 360 == dsc->end_angle || dsc->start_angle == dsc->end_angle + 360) {
-        cir_dsc.radius = LV_RADIUS_CIRCLE;
-        lv_draw_sw_rect(draw_unit, &cir_dsc, &area_out);
+        if(dsc->img_src) {
+            lv_draw_bg_img_dsc_t cir_dsc;
+            cir_dsc.recolor_opa = LV_OPA_TRANSP;
+            cir_dsc.tiled = 0;
+            cir_dsc.src = dsc->img_src;
+            cir_dsc.opa = dsc->opa;
+            cir_dsc.radius = LV_RADIUS_CIRCLE;
+            lv_draw_sw_bg_img(draw_unit, &cir_dsc, &area_out);
+        }
+        else {
+            lv_draw_border_dsc_t cir_dsc;
+            cir_dsc.opa = dsc->opa;
+            cir_dsc.color = dsc->color;
+            cir_dsc.width = dsc->width;
+            cir_dsc.radius = LV_RADIUS_CIRCLE;
+            lv_draw_sw_border(draw_unit, &cir_dsc, &area_out);
+        }
+
         return;
     }
 
@@ -145,20 +147,20 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
     lv_free(mask_buf);
 
     if(dsc->rounded) {
-        lv_draw_rect_dsc_t end_circle_dsc;
-        lv_draw_rect_dsc_init(&end_circle_dsc);
-        end_circle_dsc.bg_color = dsc->color;
+        lv_draw_fill_dsc_t end_circle_dsc;
+        end_circle_dsc.color = dsc->color;
         end_circle_dsc.radius = LV_RADIUS_CIRCLE;
-
+        end_circle_dsc.opa = dsc->opa;
+        end_circle_dsc.grad.stops_count = 0;
 
         lv_area_t round_area;
         get_rounded_area(start_angle, dsc->radius, width, &round_area);
         lv_area_move(&round_area, dsc->center.x, dsc->center.y);
-        lv_draw_sw_rect(draw_unit, &end_circle_dsc, &round_area);
+        lv_draw_sw_fill(draw_unit, &end_circle_dsc, &round_area);
 
         get_rounded_area(end_angle, dsc->radius, width, &round_area);
         lv_area_move(&round_area, dsc->center.x, dsc->center.y);
-        lv_draw_sw_rect(draw_unit, &end_circle_dsc, &round_area);
+        lv_draw_sw_fill(draw_unit, &end_circle_dsc, &round_area);
     }
 #else
     LV_LOG_WARN("Can't draw arc with LV_USE_DRAW_MASKS == 0");

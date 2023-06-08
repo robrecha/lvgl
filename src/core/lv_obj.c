@@ -588,12 +588,12 @@ static void lv_obj_draw(lv_event_t * e)
         lv_layer_t * layer = lv_event_get_layer(e);
         lv_draw_rect_dsc_t draw_dsc;
         lv_draw_rect_dsc_init(&draw_dsc);
-        /*If the border is drawn later disable loading its properties*/
-        if(lv_obj_get_style_border_post(obj, LV_PART_MAIN)) {
-            draw_dsc.border_post = 1;
-        }
 
         lv_obj_init_draw_rect_dsc(obj, LV_PART_MAIN, &draw_dsc);
+        /*If the border is drawn later disable loading its properties*/
+        if(lv_obj_get_style_border_post(obj, LV_PART_MAIN)) {
+            draw_dsc.border_opa = LV_OPA_TRANSP;
+        }
         lv_coord_t w = lv_obj_get_style_transform_width(obj, LV_PART_MAIN);
         lv_coord_t h = lv_obj_get_style_transform_height(obj, LV_PART_MAIN);
         lv_area_t coords;

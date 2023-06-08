@@ -1281,7 +1281,7 @@ static void slider_event_cb(lv_event_t * e)
     }
     else if(code == LV_EVENT_DRAW_TASK_ADDED) {
         lv_draw_task_t * draw_task = lv_event_get_param(e);
-        if(draw_task == NULL || draw_task->type != LV_DRAW_TASK_TYPE_RECTANGLE) return;
+        if(draw_task == NULL || draw_task->type != LV_DRAW_TASK_TYPE_FILL) return;
         lv_draw_rect_dsc_t * draw_rect_dsc = draw_task->draw_dsc;
 
         if(draw_rect_dsc->base.part == LV_PART_KNOB && lv_obj_has_state(obj, LV_STATE_PRESSED)) {

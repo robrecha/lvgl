@@ -222,9 +222,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
             uint8_t res[3];
             for(y = 0; y < h; y++) {
                 for(src_x = 0, dest_x = 0; src_x < w; dest_x += dest_px_size, src_x++) {
-                    res[0] = (src_buf_c16[src_x].red * 2106) >> 8; /*To make it rounded*/
+                    res[2] = (src_buf_c16[src_x].red * 2106) >> 8; /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
-                    res[2] = (src_buf_c16[src_x].blue * 2106) >> 8;
+                    res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
                     lv_color_24_24_mix(res, &dest_buf[dest_x], opa);
                 }
                 dest_buf += dest_stride;
@@ -235,9 +235,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
             uint8_t res[3];
             for(y = 0; y < h; y++) {
                 for(src_x = 0, dest_x = 0; src_x < w; dest_x += dest_px_size, src_x++) {
-                    res[0] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
+                    res[2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
-                    res[2] = (src_buf_c16[src_x].blue * 2106) >> 8;
+                    res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
                     lv_color_24_24_mix(res, &dest_buf[dest_x], mask_buf[src_x]);
                 }
                 dest_buf += dest_stride;
@@ -248,9 +248,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
             uint8_t res[3];
             for(y = 0; y < h; y++) {
                 for(src_x = 0, dest_x = 0; src_x < w; dest_x += dest_px_size, src_x++) {
-                    res[0] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
+                    res[2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
-                    res[2] = (src_buf_c16[src_x].blue * 2106) >> 8;
+                    res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
                     lv_color_24_24_mix(res, &dest_buf[dest_x], (opa * mask_buf[src_x]) >> 8);
                 }
                 dest_buf += dest_stride;

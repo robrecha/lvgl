@@ -314,8 +314,17 @@ static void exectue_drawing(lv_draw_sw_unit_t * u)
     /*Render the draw task*/
     lv_draw_task_t * t = u->task_act;
     switch(t->type) {
-        case LV_DRAW_TASK_TYPE_RECTANGLE:
-            lv_draw_sw_rect((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
+        case LV_DRAW_TASK_TYPE_FILL:
+            lv_draw_sw_fill((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
+            break;
+        case LV_DRAW_TASK_TYPE_BORDER:
+            lv_draw_sw_border((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
+            break;
+        case LV_DRAW_TASK_TYPE_BOX_SHADOW:
+            lv_draw_sw_box_shadow((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
+            break;
+        case LV_DRAW_TASK_TYPE_BG_IMG:
+            lv_draw_sw_bg_img((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
             break;
         case LV_DRAW_TASK_TYPE_LABEL:
             lv_draw_sw_label((lv_draw_unit_t *)u, t->draw_dsc, &t->area);
@@ -362,7 +371,7 @@ static void exectue_drawing(lv_draw_sw_unit_t * u)
         rect_dsc.bg_opa = LV_OPA_10;
         rect_dsc.border_opa = LV_OPA_80;
         rect_dsc.border_width = 1;
-        lv_draw_sw_rect((lv_draw_unit_t *)u, &rect_dsc, &draw_area);
+        lv_draw_sw_fill((lv_draw_unit_t *)u, &rect_dsc, &draw_area);
 
         lv_point_t txt_size;
         lv_txt_get_size(&txt_size, "W", LV_FONT_DEFAULT, 0, 0, 100, LV_TEXT_FLAG_NONE);
@@ -375,7 +384,7 @@ static void exectue_drawing(lv_draw_sw_unit_t * u)
 
         lv_draw_rect_dsc_init(&rect_dsc);
         rect_dsc.bg_color = lv_color_white();
-        lv_draw_sw_rect((lv_draw_unit_t *)u, &rect_dsc, &txt_area);
+        lv_draw_sw_fill((lv_draw_unit_t *)u, &rect_dsc, &txt_area);
 
         char buf[8];
         lv_snprintf(buf, sizeof(buf), "%d", idx);

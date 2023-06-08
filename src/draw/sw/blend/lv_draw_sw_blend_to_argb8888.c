@@ -196,9 +196,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
     int32_t h = dsc->dest_h;
     lv_opa_t opa = dsc->opa;
     lv_color32_t * dest_buf_c32 = dsc->dest_buf;
-    lv_coord_t dest_stride = dsc->dest_stride / 4; /*div by 4 to have it in pixel count in "lv_color32_t * dest_buf_c32" */
+    lv_coord_t dest_stride = dsc->dest_stride;
     const lv_color16_t * src_buf_c16 = (const lv_color16_t *) dsc->src_buf;
-    lv_coord_t src_stride = dsc->src_stride / 2;   /*div by 2 to have it in pixel count in "lv_color16_t * dest_buf_c32" */
+    lv_coord_t src_stride = dsc->src_stride;
     const lv_opa_t * mask_buf = dsc->mask_buf;
     lv_coord_t mask_stride = dsc->mask_stride;
 

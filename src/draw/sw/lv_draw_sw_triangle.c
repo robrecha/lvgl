@@ -14,6 +14,7 @@
 #include "../../misc/lv_area.h"
 #include "../../misc/lv_color.h"
 #include "../lv_draw_triangle.h"
+#include "lv_draw_sw_gradient.h"
 
 /*********************
  *      DEFINES

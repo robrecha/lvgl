@@ -69,15 +69,11 @@ LV_ATTRIBUTE_FAST_MEM static void draw_letter(lv_draw_unit_t * draw_unit, lv_dra
     if(draw_dsc->bitmap == NULL) {
 #if LV_USE_FONT_PLACEHOLDER
         /* Draw a placeholder rectangle*/
-        lv_draw_rect_dsc_t rect_draw_dsc;
-        lv_draw_rect_dsc_init(&rect_draw_dsc);
-        rect_draw_dsc.bg_opa = LV_OPA_MIN;
-        rect_draw_dsc.outline_opa = 0;
-        rect_draw_dsc.shadow_opa = 0;
-        rect_draw_dsc.bg_img_opa = 0;
-        rect_draw_dsc.border_color = draw_dsc->letter_color;
-        rect_draw_dsc.border_width = 1;
-        lv_draw_sw_rect(draw_unit, &rect_draw_dsc, draw_dsc->bg_coords);
+        lv_draw_border_dsc_t border_draw_dsc;
+        border_draw_dsc.opa = draw_dsc->letter_opa;
+        border_draw_dsc.color = draw_dsc->letter_color;
+        border_draw_dsc.width = 1;
+        lv_draw_sw_border(draw_unit, &border_draw_dsc, draw_dsc->bg_coords);
 #endif
         return;
     }

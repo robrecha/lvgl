@@ -51,7 +51,6 @@ typedef struct {
     lv_color_t border_color;
     lv_coord_t border_width;
     lv_opa_t border_opa;
-    uint8_t border_post : 1;        /*There is a border it will be drawn later.*/
     lv_border_side_t border_side : 5;
 
     /*Outline*/
@@ -68,6 +67,55 @@ typedef struct {
     lv_coord_t shadow_spread;
     lv_opa_t shadow_opa;
 } lv_draw_rect_dsc_t;
+
+typedef struct {
+    lv_draw_dsc_base_t base;
+
+    lv_coord_t radius;
+
+    lv_opa_t opa;
+    lv_color_t color;
+    lv_grad_dsc_t grad;
+} lv_draw_fill_dsc_t;
+
+typedef struct {
+    lv_draw_dsc_base_t base;
+
+    lv_coord_t radius;
+
+    const void * src;
+    const void * font;
+    lv_color_t recolor;
+    lv_opa_t opa;
+    lv_opa_t recolor_opa;
+    uint8_t tiled : 1;
+} lv_draw_bg_img_dsc_t;
+
+typedef struct {
+    lv_draw_dsc_base_t base;
+
+    lv_coord_t radius;
+
+    lv_color_t color;
+    lv_coord_t width;
+    lv_opa_t opa;
+    lv_border_side_t side : 5;
+
+} lv_draw_border_dsc_t;
+
+typedef struct {
+    lv_draw_dsc_base_t base;
+
+    lv_coord_t radius;
+
+    lv_color_t color;
+    lv_coord_t width;
+    lv_coord_t spread;
+    lv_coord_t ofs_x;
+    lv_coord_t ofs_y;
+    lv_opa_t opa;
+    uint8_t bg_cover    : 1;
+} lv_draw_box_shadow_dsc_t;
 
 /**********************
  * GLOBAL PROTOTYPES

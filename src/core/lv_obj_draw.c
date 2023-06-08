@@ -79,9 +79,9 @@ void lv_obj_init_draw_rect_dsc(lv_obj_t * obj, uint32_t part, lv_draw_rect_dsc_t
         }
     }
 
-    draw_dsc->border_width = lv_obj_get_style_border_width(obj, part);
-    if(draw_dsc->border_width) {
-        if(draw_dsc->border_opa != LV_OPA_TRANSP) {
+    if(draw_dsc->border_opa != LV_OPA_TRANSP) {
+        draw_dsc->border_width = lv_obj_get_style_border_width(obj, part);
+        if(draw_dsc->border_width) {
             draw_dsc->border_opa = lv_obj_get_style_border_opa(obj, part);
             if(draw_dsc->border_opa > LV_OPA_MIN) {
                 draw_dsc->border_side = lv_obj_get_style_border_side(obj, part);
@@ -90,9 +90,9 @@ void lv_obj_init_draw_rect_dsc(lv_obj_t * obj, uint32_t part, lv_draw_rect_dsc_t
         }
     }
 
-    draw_dsc->outline_width = lv_obj_get_style_outline_width(obj, part);
-    if(draw_dsc->outline_width) {
-        if(draw_dsc->outline_opa != LV_OPA_TRANSP) {
+    if(draw_dsc->outline_opa != LV_OPA_TRANSP) {
+        draw_dsc->outline_width = lv_obj_get_style_outline_width(obj, part);
+        if(draw_dsc->outline_width) {
             draw_dsc->outline_opa = lv_obj_get_style_outline_opa(obj, part);
             if(draw_dsc->outline_opa > LV_OPA_MIN) {
                 draw_dsc->outline_pad = lv_obj_get_style_outline_pad(obj, part);

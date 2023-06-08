@@ -17,13 +17,8 @@
 /*********************
  *      DEFINES
  *********************/
-#if _DITHER_GRADIENT
-    #define GRAD_CM(r,g,b) LV_COLOR_MAKE32(r,g,b)
-    #define GRAD_CONV(t, x) t.full = lv_color_to32(x)
-#else
-    #define GRAD_CM(r,g,b) lv_color_make(r,g,b)
-    #define GRAD_CONV(t, x) t = x
-#endif
+#define GRAD_CM(r,g,b) lv_color_make(r,g,b)
+#define GRAD_CONV(t, x) t = x
 
 #undef ALIGN
 #if defined(LV_ARCH_64)
@@ -78,12 +73,6 @@ static uint32_t compute_key(const lv_grad_dsc_t * g, lv_coord_t size, lv_coord_t
 static size_t get_cache_item_size(lv_grad_t * c)
 {
     size_t s = ALIGN(sizeof(*c)) + ALIGN(c->alloc_size * sizeof(lv_color_t));
-#if _DITHER_GRADIENT
-    s += ALIGN(c->size * sizeof(lv_color32_t));
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-    s += ALIGN(c->w * sizeof(lv_scolor24_t));
-#endif
-#endif
     return s;
 }
 
@@ -131,12 +120,6 @@ static void free_item(lv_grad_t * c)
         /* Then need to fix all internal pointers too */
         while((uint8_t *)c != grad_cache_end) {
             c->color_map = (lv_color_t *)(((uint8_t *)c->color_map) - size);
-#if _DITHER_GRADIENT
-            c->hmap = (lv_color32_t *)(((uint8_t *)c->hmap) - size);
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-            c->error_acc = (lv_scolor24_t *)(((uint8_t *)c->error_acc) - size);
-#endif
-#endif
             c = (lv_grad_t *)(((uint8_t *)c) + get_cache_item_size(c));
         }
         lv_memzero(old + next_items_size, size);
@@ -168,13 +151,6 @@ static lv_grad_t * allocate_item(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord
                                            no dithering is selected where it's used vertically */
 
     size_t req_size = ALIGN(sizeof(lv_grad_t)) + ALIGN(map_size * sizeof(lv_color_t)) + ALIGN(map_size * sizeof(lv_opa_t));
-#if _DITHER_GRADIENT
-    req_size += ALIGN(size * sizeof(lv_color32_t));
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-    req_size += ALIGN(w * sizeof(lv_scolor24_t));
-#endif
-#endif
-
     size_t act_size = (size_t)(grad_cache_end - LV_GC_ROOT(_lv_grad_cache_mem));
     lv_grad_t * item = NULL;
     if(req_size + act_size < grad_cache_size) {
@@ -211,26 +187,10 @@ static lv_grad_t * allocate_item(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord
         uint8_t * p = (uint8_t *)item;
         item->color_map = (lv_color_t *)(p + ALIGN(sizeof(*item)));
         item->opa_map = (lv_opa_t *)(p + ALIGN(sizeof(*item)) + ALIGN(map_size * sizeof(lv_color_t)));
-#if _DITHER_GRADIENT
-        item->hmap = (lv_color32_t *)(p + ALIGN(sizeof(*item)) + ALIGN(map_size * sizeof(lv_color_t)));
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-        item->error_acc = (lv_scolor24_t *)(p + ALIGN(sizeof(*item)) + ALIGN(size * sizeof(lv_grad_color_t)) +
-                                            ALIGN(map_size * sizeof(lv_color_t)));
-        item->w = w;
-#endif
-#endif
     }
     else {
         item->color_map = (lv_color_t *)(grad_cache_end + ALIGN(sizeof(*item)));
         item->opa_map = (lv_opa_t *)(grad_cache_end + ALIGN(sizeof(*item)) + ALIGN(map_size * sizeof(lv_color_t)));
-#if _DITHER_GRADIENT
-        item->hmap = (lv_color32_t *)(grad_cache_end + ALIGN(sizeof(*item)) + ALIGN(map_size * sizeof(lv_color_t)));
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-        item->error_acc = (lv_scolor24_t *)(grad_cache_end + ALIGN(sizeof(*item)) + ALIGN(size * sizeof(lv_grad_color_t)) +
-                                            ALIGN(map_size * sizeof(lv_color_t)));
-        item->w = w;
-#endif
-#endif
         grad_cache_end += req_size;
     }
     return item;
@@ -297,18 +257,9 @@ lv_grad_t * lv_gradient_get(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord_t h)
     }
 
     /* Step 3: Fill it with the gradient, as expected */
-#if _DITHER_GRADIENT
-    for(lv_coord_t i = 0; i < item->size; i++) {
-        item->hmap[i] = lv_gradient_color_calculate(g, item->size, i);
-    }
-#if LV_DRAW_SW_GRADIENT_DITHER_ERROR_DIFFUSION == 1
-    lv_memzero(item->error_acc, w * sizeof(lv_scolor24_t));
-#endif
-#else
     for(lv_coord_t i = 0; i < item->size; i++) {
         lv_gradient_color_calculate(g, item->size, i, &item->color_map[i], &item->opa_map[i]);
     }
-#endif
 #if LV_USE_OS
     lv_mutex_unlock(&grad_cache_mutex);
 #endif
