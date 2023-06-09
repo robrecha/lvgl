@@ -60,8 +60,7 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
     if(dsc->start_angle + 360 == dsc->end_angle || dsc->start_angle == dsc->end_angle + 360) {
         if(dsc->img_src) {
             lv_draw_bg_img_dsc_t cir_dsc;
-            cir_dsc.recolor_opa = LV_OPA_TRANSP;
-            cir_dsc.tiled = 0;
+            lv_draw_bg_img_dsc_init(&cir_dsc);
             cir_dsc.src = dsc->img_src;
             cir_dsc.opa = dsc->opa;
             cir_dsc.radius = LV_RADIUS_CIRCLE;
@@ -69,6 +68,7 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
         }
         else {
             lv_draw_border_dsc_t cir_dsc;
+            lv_draw_border_dsc_init(&cir_dsc);
             cir_dsc.opa = dsc->opa;
             cir_dsc.color = dsc->color;
             cir_dsc.width = dsc->width;

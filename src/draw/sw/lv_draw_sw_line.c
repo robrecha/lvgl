@@ -71,10 +71,10 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_line(lv_draw_unit_t * draw_unit, const lv_
 
     if(dsc->round_end || dsc->round_start) {
         lv_draw_fill_dsc_t cir_dsc;
+        lv_draw_fill_dsc_init(&cir_dsc);
         cir_dsc.color = dsc->color;
         cir_dsc.radius = LV_RADIUS_CIRCLE;
         cir_dsc.opa = dsc->opa;
-        cir_dsc.grad.dir = LV_GRAD_DIR_NONE;
 
         int32_t r = (dsc->width >> 1);
         int32_t r_corr = (dsc->width & 1) ? 0 : 1;

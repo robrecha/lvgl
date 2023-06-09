@@ -124,6 +124,14 @@ typedef struct {
 
 LV_ATTRIBUTE_FAST_MEM void lv_draw_rect_dsc_init(lv_draw_rect_dsc_t * dsc);
 
+void lv_draw_fill_dsc_init(lv_draw_fill_dsc_t * dsc);
+
+void lv_draw_border_dsc_init(lv_draw_border_dsc_t * dsc);
+
+void lv_draw_box_shadow_dsc_init(lv_draw_box_shadow_dsc_t * dsc);
+
+void lv_draw_bg_img_dsc_init(lv_draw_bg_img_dsc_t * dsc);
+
 
 /**
  * Draw a rectangle

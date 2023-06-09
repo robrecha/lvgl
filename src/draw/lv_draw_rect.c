@@ -54,12 +54,31 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_rect_dsc_init(lv_draw_rect_dsc_t * dsc)
     dsc->border_side = LV_BORDER_SIDE_FULL;
 }
 
-/**
- * Draw a rectangle
- * @param coords the coordinates of the rectangle
- * @param mask the rectangle will be drawn only in this mask
- * @param dsc pointer to an initialized `lv_draw_rect_dsc_t` variable
- */
+void lv_draw_fill_dsc_init(lv_draw_fill_dsc_t * dsc)
+{
+    lv_memzero(dsc, sizeof(*dsc));
+    dsc->opa = LV_OPA_COVER;
+}
+
+void lv_draw_border_dsc_init(lv_draw_border_dsc_t * dsc)
+{
+    lv_memzero(dsc, sizeof(*dsc));
+    dsc->opa = LV_OPA_COVER;
+}
+
+void lv_draw_box_shadow_dsc_init(lv_draw_box_shadow_dsc_t * dsc)
+{
+    lv_memzero(dsc, sizeof(*dsc));
+    dsc->opa = LV_OPA_COVER;
+}
+
+void lv_draw_bg_img_dsc_init(lv_draw_bg_img_dsc_t * dsc)
+{
+    lv_memzero(dsc, sizeof(*dsc));
+    dsc->opa = LV_OPA_COVER;
+}
+
+
 void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_area_t * coords)
 {
 
