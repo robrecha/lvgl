@@ -65,7 +65,7 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
      * [2]: right bottom*/
 
 
-    if(dsc->p[0].y < dsc->p[1].y && dsc->p[0].y < dsc->p[2].y) {
+    if(dsc->p[0].y <= dsc->p[1].y && dsc->p[0].y <= dsc->p[2].y) {
         p[1] = dsc->p[0];
         if(dsc->p[1].x < dsc->p[2].x) {
             p[0] = dsc->p[1];
@@ -76,7 +76,7 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
             p[2] = dsc->p[1];
         }
     }
-    else if(dsc->p[1].y < dsc->p[0].y && dsc->p[1].y < dsc->p[2].y) {
+    else if(dsc->p[1].y <= dsc->p[0].y && dsc->p[1].y <= dsc->p[2].y) {
         p[1] = dsc->p[1];
         if(dsc->p[0].x < dsc->p[2].x) {
             p[0] = dsc->p[0];
@@ -138,8 +138,11 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
     lv_grad_dir_t grad_dir = dsc->bg_grad.dir;
 
     lv_grad_t * grad = lv_gradient_get(&dsc->bg_grad, lv_area_get_width(&tri_area), lv_area_get_height(&tri_area));
+    lv_opa_t * grad_opa_map = NULL;
     if(grad && grad_dir == LV_GRAD_DIR_HOR) {
         blend_dsc.src_buf = grad->color_map + draw_area.x1 - tri_area.x1;
+        grad_opa_map = grad->opa_map + draw_area.x1 - tri_area.x1;
+        blend_dsc.src_color_format = LV_COLOR_FORMAT_RGB888;
     }
 
     int32_t y;
@@ -151,6 +154,25 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
         if(grad_dir == LV_GRAD_DIR_VER) {
             blend_dsc.color = grad->color_map[y - tri_area.y1];
             blend_dsc.opa = grad->opa_map[y - tri_area.y1];
+            if(dsc->bg_opa < LV_OPA_MAX) blend_dsc.opa = (blend_dsc.opa * dsc->bg_opa) >> 8;
+        }
+        else if(grad_dir == LV_GRAD_DIR_HOR) {
+            if(grad_opa_map) {
+                lv_coord_t i;
+                if(blend_dsc.mask_res == LV_DRAW_SW_MASK_RES_CHANGED) {
+                    blend_dsc.mask_buf = mask_buf;
+                    for(i = 0; i < area_w; i++) {
+                        if(grad_opa_map[i] < LV_OPA_MAX) mask_buf[i] = (mask_buf[i] * grad_opa_map[i]) >> 8;
+                    }
+                }
+                else if(blend_dsc.mask_res == LV_DRAW_SW_MASK_RES_FULL_COVER) {
+                    blend_dsc.mask_buf = grad_opa_map;
+                    blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
+                }
+                else if(blend_dsc.mask_res == LV_DRAW_SW_MASK_RES_TRANSP) {
+                    continue;
+                }
+            }
         }
         lv_draw_sw_blend(draw_unit, &blend_dsc);
     }
