@@ -321,8 +321,6 @@ void lv_obj_init_draw_arc_dsc(lv_obj_t * obj, uint32_t part, lv_draw_arc_dsc_t *
     draw_dsc->img_src = lv_obj_get_style_arc_img_src(obj, part);
 
     draw_dsc->rounded = lv_obj_get_style_arc_rounded(obj, part);
-
-    if(part != LV_PART_MAIN) draw_dsc->blend_mode = lv_obj_get_style_blend_mode(obj, part);
 }
 
 lv_coord_t lv_obj_calculate_ext_draw_size(lv_obj_t * obj, uint32_t part)

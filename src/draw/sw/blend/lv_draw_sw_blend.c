@@ -89,19 +89,21 @@ void lv_draw_sw_blend(lv_draw_unit_t * draw_unit, const lv_draw_sw_blend_dsc_t *
         }
     }
     else {
+        if(!_lv_area_intersect(&blend_area, &blend_area, blend_dsc->src_area)) return;
+
         _lv_draw_sw_blend_image_dsc_t image_dsc;
         image_dsc.dest_w = lv_area_get_width(&blend_area);
         image_dsc.dest_h = lv_area_get_height(&blend_area);
         image_dsc.dest_stride = lv_area_get_width(&layer->buf_area);
         image_dsc.opa = blend_dsc->opa;
         image_dsc.blend_mode = blend_dsc->blend_mode;
-        image_dsc.src_stride = lv_area_get_width(blend_dsc->blend_area);
+        image_dsc.src_stride = lv_area_get_width(blend_dsc->src_area);
         image_dsc.src_color_format = blend_dsc->src_color_format;
 
         const uint8_t * src_buf = blend_dsc->src_buf;
         uint32_t src_px_size = lv_color_format_get_size(blend_dsc->src_color_format);
-        src_buf += image_dsc.src_stride * (blend_area.y1 - blend_dsc->blend_area->y1) * src_px_size;
-        src_buf += (blend_area.x1 - blend_dsc->blend_area->x1) * src_px_size;
+        src_buf += image_dsc.src_stride * (blend_area.y1 - blend_dsc->src_area->y1) * src_px_size;
+        src_buf += (blend_area.x1 - blend_dsc->src_area->x1) * src_px_size;
         image_dsc.src_buf = src_buf;
 
 

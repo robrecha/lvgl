@@ -104,6 +104,7 @@ void lv_draw_sw_fill(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t * dsc,
     lv_grad_t * grad = lv_gradient_get(&dsc->grad, coords_bg_w, coords_bg_h);
     lv_opa_t * grad_opa_map = NULL;
     if(grad && grad_dir == LV_GRAD_DIR_HOR) {
+        blend_dsc.src_area = &blend_area;
         blend_dsc.src_buf = grad->color_map + clipped_coords.x1 - bg_coords.x1;
         bool transp = false;
         uint32_t s;

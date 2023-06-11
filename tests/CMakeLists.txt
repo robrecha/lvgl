@@ -144,6 +144,7 @@ add_library(test_common
         src/test_assets/font_2.c
         src/test_assets/font_3.c
         src/test_assets/test_img_caret_down.c
+        src/test_assets/test_arc_bg.c
         src/test_assets/ubuntu_font.c
         unity/unity_support.c
         unity/unity.c

@@ -36,7 +36,6 @@ typedef struct {
     uint16_t radius;
     const void * img_src;
     lv_opa_t opa;
-    lv_blend_mode_t blend_mode  : 2;
     uint8_t rounded : 1;
 } lv_draw_arc_dsc_t;
 

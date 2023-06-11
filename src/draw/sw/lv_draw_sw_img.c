@@ -162,9 +162,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
         return;
     }
 
-    const lv_area_t * clip_area_ori = draw_unit->clip_area;
-    draw_unit->clip_area = &draw_area;
-
     bool transformed = draw_dsc->angle != 0 || draw_dsc->zoom != LV_ZOOM_NONE ? true : false;
 
     lv_img_decoder_dsc_t decoder_dsc;
@@ -197,6 +194,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
     else if(!transformed && cf == LV_COLOR_FORMAT_RGB565A8 && draw_dsc->recolor_opa == LV_OPA_TRANSP) {
         lv_coord_t src_w = lv_area_get_width(coords);
         lv_coord_t src_h = lv_area_get_height(coords);
+        blend_dsc.src_area = coords;
         blend_dsc.src_buf = src_buf;
         blend_dsc.mask_buf = (lv_opa_t *)src_buf;
         blend_dsc.mask_buf += 2 * src_w * src_h;
@@ -208,6 +206,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
     }
     /*The simplest case just copy the pixels into the draw_buf. Blending will convert the colors if needed*/
     else if(!transformed && draw_dsc->recolor_opa == LV_OPA_TRANSP) {
+        blend_dsc.src_area = coords;
         blend_dsc.src_buf = src_buf;
         blend_dsc.blend_area = coords;
         blend_dsc.src_color_format = cf;
@@ -236,6 +235,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
 
         uint32_t buf_size = buf_w * buf_h;
         uint8_t * tmp_buf = lv_malloc(buf_size * px_size);
+        blend_dsc.src_area = &blend_area;
         blend_dsc.src_buf = tmp_buf;
         blend_dsc.src_color_format = cf_transformed;
         lv_coord_t y_last = blend_area.y2;
@@ -294,7 +294,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
 
         lv_free(tmp_buf);
     }
-    draw_unit->clip_area = clip_area_ori;
 
     lv_img_decoder_close(&decoder_dsc);
 }

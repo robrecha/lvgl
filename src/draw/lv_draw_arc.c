@@ -60,7 +60,6 @@ void lv_draw_arc(lv_layer_t * layer, const lv_draw_arc_dsc_t * dsc)
     lv_memcpy(t->draw_dsc, dsc, sizeof(*dsc));
     t->type = LV_DRAW_TASK_TYPE_ARC;
 
-
     lv_draw_finalize_task_creation(layer, t);
 
     LV_PROFILER_END;

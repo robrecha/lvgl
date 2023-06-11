@@ -140,6 +140,7 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
     lv_grad_t * grad = lv_gradient_get(&dsc->bg_grad, lv_area_get_width(&tri_area), lv_area_get_height(&tri_area));
     lv_opa_t * grad_opa_map = NULL;
     if(grad && grad_dir == LV_GRAD_DIR_HOR) {
+        blend_dsc.src_area = &blend_area;
         blend_dsc.src_buf = grad->color_map + draw_area.x1 - tri_area.x1;
         grad_opa_map = grad->opa_map + draw_area.x1 - tri_area.x1;
         blend_dsc.src_color_format = LV_COLOR_FORMAT_RGB888;

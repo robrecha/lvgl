@@ -34,6 +34,7 @@ typedef struct {
     const void * src_buf;     /**< Pointer to an image to blend. If set `fill_color` is ignored */
     uint32_t src_stride;
     lv_color_format_t src_color_format;
+    const lv_area_t * src_area;
     lv_opa_t opa;                   /**< The overall opacity*/
     lv_color_t color;               /**< Fill color*/
     const lv_opa_t * mask_buf;      /**< NULL if ignored, or an alpha mask to apply on `blend_area`*/
