@@ -39,7 +39,7 @@ static void create_rects(lv_style_t * style, const char * name, lv_opa_t opa)
         }
 
     }
-    lv_snprintf(buf, sizeof(buf), "draw_rectangle_%s_opa_%d.png", name, opa);
+    lv_snprintf(buf, sizeof(buf), "draw/rectangle_%s_opa_%d.png", name, opa);
     TEST_ASSERT_EQUAL_SCREENSHOT(buf);
 }
 

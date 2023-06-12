@@ -64,6 +64,7 @@ void lv_draw_border_dsc_init(lv_draw_border_dsc_t * dsc)
 {
     lv_memzero(dsc, sizeof(*dsc));
     dsc->opa = LV_OPA_COVER;
+    dsc->side = LV_BORDER_SIDE_FULL;
 }
 
 void lv_draw_box_shadow_dsc_init(lv_draw_box_shadow_dsc_t * dsc)
@@ -113,11 +114,13 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
 
     bool bg_cover = true;
     if(dsc->bg_opa < LV_OPA_COVER) bg_cover = false;
-    uint32_t s;
-    for(s = 0; s < dsc->bg_grad.stops_count; s++) {
-        if(dsc->bg_grad.stops[s].opa != LV_OPA_COVER) {
-            bg_cover = false;
-            break;
+    else if(dsc->bg_grad.dir != LV_GRAD_DIR_NONE) {
+        uint32_t s;
+        for(s = 0; s < dsc->bg_grad.stops_count; s++) {
+            if(dsc->bg_grad.stops[s].opa != LV_OPA_COVER) {
+                bg_cover = false;
+                break;
+            }
         }
     }
 

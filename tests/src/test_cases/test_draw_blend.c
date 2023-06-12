@@ -144,7 +144,7 @@ static void canvas_draw(const char * name, lv_color_format_t large_render_cf)
     canvas_blend_test(canvas2, &img_dsc, "argb8888", name, LV_COLOR_FORMAT_ARGB8888, 3);
 
     char fn_buf[64];
-    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_blend_to_%s.png", name);
+    lv_snprintf(fn_buf, sizeof(fn_buf), "draw/blend_to_%s.png", name);
     TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
 }
 

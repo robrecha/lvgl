@@ -61,19 +61,6 @@ LV_ATTRIBUTE_FAST_MEM static inline void blend_non_normal_pixel(lv_color32_t * d
  *   GLOBAL FUNCTIONS
  **********************/
 
-/**
- * Fill an area with a color.
- * Supports normal fill, fill with opacity, fill with mask, and fill with mask and opacity.
- * dest_buf and color have native color depth. (RGB565, RGB888, XRGB8888)
- * The background (dest_buf) cannot have alpha channel
- * @param dest_buf
- * @param dest_area
- * @param dest_stride
- * @param color
- * @param opa
- * @param mask
- * @param mask_stride
- */
 LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_blend_color_to_argb8888(_lv_draw_sw_blend_fill_dsc_t * dsc)
 {
     int32_t w = dsc->dest_w;

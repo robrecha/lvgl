@@ -84,14 +84,19 @@ void lv_draw_sw_layer(lv_draw_unit_t * draw_unit, const lv_draw_img_dsc_t * draw
 #endif
 
 #if LV_USE_LAYER_DEBUG
-    lv_draw_rect_dsc_t rect_dsc;
-    lv_draw_rect_dsc_init(&rect_dsc);
-    rect_dsc.bg_color = lv_color_hex(layer_to_draw->color_format == LV_COLOR_FORMAT_ARGB8888 ? 0xff0000 : 0x00ff00);
-    rect_dsc.border_color = rect_dsc.bg_color;
-    rect_dsc.bg_opa = LV_OPA_20;
-    rect_dsc.border_opa = LV_OPA_60;
-    rect_dsc.border_width = 2;
-    lv_draw_sw_rect(draw_unit, &rect_dsc, &area_rot);
+    lv_draw_fill_dsc_t fill_dsc;
+    lv_draw_fill_dsc_init(&fill_dsc);
+    fill_dsc.color = lv_color_hex(layer_to_draw->color_format == LV_COLOR_FORMAT_ARGB8888 ? 0xff0000 : 0x00ff00);
+    fill_dsc.opa = LV_OPA_20;
+    lv_draw_sw_fill(draw_unit, &fill_dsc, &area_rot);
+
+    lv_draw_border_dsc_t border_dsc;
+    lv_draw_border_dsc_init(&border_dsc);
+    border_dsc.color = fill_dsc.color;
+    border_dsc.opa = LV_OPA_60;
+    border_dsc.width = 2;
+    lv_draw_sw_border(draw_unit, &border_dsc, &area_rot);
+
 #endif
 
 #if LV_USE_PARALLEL_DRAW_DEBUG
@@ -235,16 +240,13 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
 
         uint32_t buf_size = buf_w * buf_h;
         uint8_t * tmp_buf = lv_malloc(buf_size * px_size);
-        blend_dsc.src_area = &blend_area;
         blend_dsc.src_buf = tmp_buf;
         blend_dsc.src_color_format = cf_transformed;
         lv_coord_t y_last = blend_area.y2;
         blend_area.y2 = blend_area.y1 + buf_h - 1;
 
-        lv_draw_sw_mask_res_t mask_res_def = (lv_color_format_has_alpha(cf_transformed) || draw_dsc->angle ||
-                                              draw_dsc->zoom != LV_ZOOM_NONE) ?
-                                             LV_DRAW_SW_MASK_RES_CHANGED : LV_DRAW_SW_MASK_RES_FULL_COVER;
-        blend_dsc.mask_res = mask_res_def;
+        blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
+        blend_dsc.src_area = &blend_area;
 
         if(cf_transformed == LV_COLOR_FORMAT_RGB565A8) {
             blend_dsc.mask_buf =  tmp_buf + buf_w * buf_h * 2;
@@ -289,7 +291,12 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
             /*Go to the next lines*/
             blend_area.y1 = blend_area.y2 + 1;
             blend_area.y2 = blend_area.y1 + buf_h - 1;
-            if(blend_area.y2 > y_last) blend_area.y2 = y_last;
+            if(blend_area.y2 > y_last) {
+                blend_area.y2 = y_last;
+                if(cf_transformed == LV_COLOR_FORMAT_RGB565A8) {
+                    blend_dsc.mask_buf =  tmp_buf + buf_w * lv_area_get_height(&blend_area) * 2;
+                }
+            }
         }
 
         lv_free(tmp_buf);

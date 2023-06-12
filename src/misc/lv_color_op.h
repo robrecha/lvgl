@@ -67,6 +67,13 @@ LV_ATTRIBUTE_FAST_MEM static inline lv_color_t lv_color_mix(lv_color_t c1, lv_co
  */
 static inline lv_color32_t lv_color_mix32(lv_color32_t fg, lv_color32_t bg)
 {
+    if(fg.alpha >= LV_OPA_MAX) {
+        fg.alpha = bg.alpha;
+        return fg;
+    }
+    if(fg.alpha <= LV_OPA_MIN) {
+        return bg;
+    }
     bg.red = (uint32_t)((uint32_t)fg.red * fg.alpha + (uint32_t)bg.red * (255 - fg.alpha)) >> 8;
     bg.green = (uint32_t)((uint32_t)fg.green * fg.alpha + (uint32_t)bg.green * (255 - fg.alpha)) >> 8;
     bg.blue = (uint32_t)((uint32_t)fg.blue * fg.alpha + (uint32_t)bg.blue * (255 - fg.alpha)) >> 8;

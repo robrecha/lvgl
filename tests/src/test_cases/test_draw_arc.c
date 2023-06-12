@@ -96,7 +96,7 @@ static void draw_arcs(lv_draw_arc_dsc_t * arc_dsc, const char * fn)
     lv_canvas_finish_layer(canvas, &layer);
 
     char fn_buf[64];
-    lv_snprintf(fn_buf, sizeof(fn_buf), "draw_arc_%s.png", fn);
+    lv_snprintf(fn_buf, sizeof(fn_buf), "draw/arc_%s.png", fn);
     TEST_ASSERT_EQUAL_SCREENSHOT(fn_buf);
 
     lv_obj_del(canvas);

@@ -97,7 +97,7 @@ void test_draw_triangle(void)
 
     lv_canvas_finish_layer(canvas, &layer);
 
-    TEST_ASSERT_EQUAL_SCREENSHOT("draw_triangle.png");
+    TEST_ASSERT_EQUAL_SCREENSHOT("draw/triangle.png");
 }
 
 
