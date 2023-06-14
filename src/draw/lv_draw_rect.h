@@ -89,6 +89,7 @@ typedef struct {
     lv_color_t recolor;
     lv_opa_t opa;
     lv_opa_t recolor_opa;
+    lv_color_format_t color_format; /*To make it easier for draw_unit to decide if they can draw this image */
     uint8_t tiled : 1;
 } lv_draw_bg_img_dsc_t;
 
