@@ -50,7 +50,7 @@ uint32_t lv_snapshot_buf_size_needed(lv_obj_t * obj, lv_color_format_t cf)
     LV_ASSERT_NULL(obj);
     switch(cf) {
         case LV_COLOR_FORMAT_NATIVE:
-        case LV_COLOR_FORMAT_NATIVE_ALPHA:
+        case LV_COLOR_FORMAT_NATIVE_WITH_ALPHA:
         case LV_COLOR_FORMAT_L8:
             break;
         default:
@@ -67,7 +67,7 @@ uint32_t lv_snapshot_buf_size_needed(lv_obj_t * obj, lv_color_format_t cf)
     w += ext_size * 2;
     h += ext_size * 2;
     uint8_t px_size;
-    if(cf == LV_COLOR_FORMAT_NATIVE_ALPHA) px_size = LV_COLOR_FORMAT_NATIVE_ALPHA_SIZE;
+    if(cf == LV_COLOR_FORMAT_NATIVE_WITH_ALPHA) px_size = _LV_COLOR_NATIVE_WITH_ALPHA_SIZE;
     else px_size = sizeof(lv_color_t);
 
     return w * h * px_size;
@@ -92,7 +92,7 @@ lv_res_t lv_snapshot_take_to_buf(lv_obj_t * obj, lv_color_format_t cf, lv_img_ds
 
     switch(cf) {
         case LV_COLOR_FORMAT_NATIVE:
-        case LV_COLOR_FORMAT_NATIVE_ALPHA:
+        case LV_COLOR_FORMAT_NATIVE_WITH_ALPHA:
         case LV_COLOR_FORMAT_L8:
             break;
         default:

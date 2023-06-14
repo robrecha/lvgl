@@ -103,14 +103,14 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
     if(dsc->bg_opa <= LV_OPA_MIN) has_fill = false;
     else has_fill = true;
 
+    if(dsc->bg_img_opa <= LV_OPA_MIN || dsc->bg_img_src == NULL) has_bg_img = false;
+    else has_bg_img = true;
+
     if(dsc->border_opa <= LV_OPA_MIN || dsc->border_width == 0 || dsc->border_post == true) has_border = false;
     else has_border = true;
 
     if(dsc->outline_opa <= LV_OPA_MIN || dsc->outline_width == 0) has_outline = false;
     else has_outline = true;
-
-    if(dsc->bg_img_opa <= LV_OPA_MIN || dsc->bg_img_src == NULL) has_bg_img = false;
-    else has_bg_img = true;
 
     bool bg_cover = true;
     if(dsc->bg_opa < LV_OPA_COVER) bg_cover = false;
@@ -168,6 +168,23 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
         lv_draw_finalize_task_creation(layer, t);
     }
 
+    /*Background image*/
+    if(has_bg_img) {
+        t = lv_draw_add_task(layer, coords);
+        lv_draw_bg_img_dsc_t * bg_img_dsc = lv_malloc(sizeof(lv_draw_bg_img_dsc_t));
+        t->draw_dsc = bg_img_dsc;
+        bg_img_dsc->base = dsc->base;
+        bg_img_dsc->radius = dsc->radius;
+        bg_img_dsc->src = dsc->bg_img_src;
+        bg_img_dsc->font = dsc->bg_img_symbol_font;
+        bg_img_dsc->opa = dsc->bg_img_opa;
+        bg_img_dsc->recolor = dsc->bg_img_recolor;
+        bg_img_dsc->recolor_opa = dsc->bg_img_recolor_opa;
+        bg_img_dsc->tiled = dsc->bg_img_tiled;
+        t->type = LV_DRAW_TASK_TYPE_BG_IMG;
+        lv_draw_finalize_task_creation(layer, t);
+    }
+
     /*Border*/
     if(has_border) {
         t = lv_draw_add_task(layer, coords);
@@ -197,23 +214,6 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
         outline_dsc->width = dsc->outline_width;
         outline_dsc->side = LV_BORDER_SIDE_FULL;
         t->type = LV_DRAW_TASK_TYPE_BORDER;
-        lv_draw_finalize_task_creation(layer, t);
-    }
-
-    /*Outline*/
-    if(has_bg_img) {
-        t = lv_draw_add_task(layer, coords);
-        lv_draw_bg_img_dsc_t * bg_img_dsc = lv_malloc(sizeof(lv_draw_bg_img_dsc_t));
-        t->draw_dsc = bg_img_dsc;
-        bg_img_dsc->base = dsc->base;
-        bg_img_dsc->radius = dsc->radius;
-        bg_img_dsc->src = dsc->bg_img_src;
-        bg_img_dsc->font = dsc->bg_img_symbol_font;
-        bg_img_dsc->opa = dsc->bg_img_opa;
-        bg_img_dsc->recolor = dsc->bg_img_recolor;
-        bg_img_dsc->recolor_opa = dsc->bg_img_recolor_opa;
-        bg_img_dsc->tiled = dsc->bg_img_tiled;
-        t->type = LV_DRAW_TASK_TYPE_BG_IMG;
         lv_draw_finalize_task_creation(layer, t);
     }
 
