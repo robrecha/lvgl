@@ -170,23 +170,38 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
 
     /*Background image*/
     if(has_bg_img) {
-        lv_img_header_t header;
-        lv_img_decoder_get_info(dsc->bg_img_src, &header);
 
         t = lv_draw_add_task(layer, coords);
-        lv_draw_bg_img_dsc_t * bg_img_dsc = lv_malloc(sizeof(lv_draw_bg_img_dsc_t));
-        t->draw_dsc = bg_img_dsc;
-        bg_img_dsc->base = dsc->base;
-        bg_img_dsc->radius = dsc->radius;
-        bg_img_dsc->src = dsc->bg_img_src;
-        bg_img_dsc->font = dsc->bg_img_symbol_font;
-        bg_img_dsc->opa = dsc->bg_img_opa;
-        bg_img_dsc->recolor = dsc->bg_img_recolor;
-        bg_img_dsc->recolor_opa = dsc->bg_img_recolor_opa;
-        bg_img_dsc->tiled = dsc->bg_img_tiled;
-        bg_img_dsc->color_format = header.cf;
-        t->type = LV_DRAW_TASK_TYPE_BG_IMG;
-        lv_draw_finalize_task_creation(layer, t);
+
+
+        lv_img_src_t src_type = lv_img_src_get_type(dsc->bg_img_src);
+        lv_res_t res = LV_RES_OK;
+        lv_img_header_t header;
+        if(src_type == LV_IMG_SRC_VARIABLE || src_type == LV_IMG_SRC_FILE) {
+            res  = lv_img_decoder_get_info(dsc->bg_img_src, &header);
+        }
+        else if(src_type == LV_IMG_SRC_UNKNOWN) {
+            res = LV_RES_INV;
+        }
+        else {
+            lv_memzero(&header, sizeof(header));
+        }
+
+        if(res == LV_RES_OK) {
+            lv_draw_bg_img_dsc_t * bg_img_dsc = lv_malloc(sizeof(lv_draw_bg_img_dsc_t));
+            t->draw_dsc = bg_img_dsc;
+            bg_img_dsc->base = dsc->base;
+            bg_img_dsc->radius = dsc->radius;
+            bg_img_dsc->src = dsc->bg_img_src;
+            bg_img_dsc->font = dsc->bg_img_symbol_font;
+            bg_img_dsc->opa = dsc->bg_img_opa;
+            bg_img_dsc->recolor = dsc->bg_img_recolor;
+            bg_img_dsc->recolor_opa = dsc->bg_img_recolor_opa;
+            bg_img_dsc->tiled = dsc->bg_img_tiled;
+            bg_img_dsc->img_header = header;
+            t->type = LV_DRAW_TASK_TYPE_BG_IMG;
+            lv_draw_finalize_task_creation(layer, t);
+        }
     }
 
     /*Border*/
