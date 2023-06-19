@@ -195,7 +195,7 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
     int32_t w = dsc->dest_w;
     int32_t h = dsc->dest_h;
     lv_opa_t opa = dsc->opa;
-    uint8_t * dest_buf = dsc->dest_buf;
+    uint8_t * dest_buf_u8 = dsc->dest_buf;
     lv_coord_t dest_stride = dsc->dest_stride * dest_px_size;
     const lv_color16_t * src_buf_c16 = (const lv_color16_t *) dsc->src_buf;
     lv_coord_t src_stride = dsc->src_stride;
@@ -210,11 +210,11 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
         if(mask_buf == NULL && opa >= LV_OPA_MAX) {
             for(y = 0; y < h; y++) {
                 for(src_x = 0, dest_x = 0; src_x < w; dest_x += dest_px_size, src_x++) {
-                    dest_buf[dest_x + 2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
-                    dest_buf[dest_x + 1] = (src_buf_c16[src_x].green * 1037) >> 8;
-                    dest_buf[dest_x + 0] = (src_buf_c16[src_x].blue * 2106) >> 8;
+                    dest_buf_u8[dest_x + 2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
+                    dest_buf_u8[dest_x + 1] = (src_buf_c16[src_x].green * 1037) >> 8;
+                    dest_buf_u8[dest_x + 0] = (src_buf_c16[src_x].blue * 2106) >> 8;
                 }
-                dest_buf += dest_stride;
+                dest_buf_u8 += dest_stride;
                 src_buf_c16 += src_stride;
             }
         }
@@ -225,9 +225,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
                     res[2] = (src_buf_c16[src_x].red * 2106) >> 8; /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
                     res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
-                    lv_color_24_24_mix(res, &dest_buf[dest_x], opa);
+                    lv_color_24_24_mix(res, &dest_buf_u8[dest_x], opa);
                 }
-                dest_buf += dest_stride;
+                dest_buf_u8 += dest_stride;
                 src_buf_c16 += src_stride;
             }
         }
@@ -238,10 +238,11 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
                     res[2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
                     res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
-                    lv_color_24_24_mix(res, &dest_buf[dest_x], mask_buf[src_x]);
+                    lv_color_24_24_mix(res, &dest_buf_u8[dest_x], mask_buf[src_x]);
                 }
-                dest_buf += dest_stride;
+                dest_buf_u8 += dest_stride;
                 src_buf_c16 += src_stride;
+                mask_buf += mask_stride;
             }
         }
         else {
@@ -251,10 +252,11 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
                     res[2] = (src_buf_c16[src_x].red * 2106) >> 8;  /*To make it rounded*/
                     res[1] = (src_buf_c16[src_x].green * 1037) >> 8;
                     res[0] = (src_buf_c16[src_x].blue * 2106) >> 8;
-                    lv_color_24_24_mix(res, &dest_buf[dest_x], (opa * mask_buf[src_x]) >> 8);
+                    lv_color_24_24_mix(res, &dest_buf_u8[dest_x], (opa * mask_buf[src_x]) >> 8);
                 }
-                dest_buf += dest_stride;
+                dest_buf_u8 += dest_stride;
                 src_buf_c16 += src_stride;
+                mask_buf += mask_stride;
             }
         }
     }
@@ -267,10 +269,10 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
                 src_argb.blue = (src_buf_c16[src_x].blue * 2106) >> 8;
                 if(mask_buf == NULL) src_argb.alpha = opa;
                 else src_argb.alpha = (mask_buf[src_x] * opa) >> 8;
-                blend_non_normal_pixel(&dest_buf[dest_x], src_argb, dsc->blend_mode);
+                blend_non_normal_pixel(&dest_buf_u8[dest_x], src_argb, dsc->blend_mode);
             }
             if(mask_buf) mask_buf += mask_stride;
-            dest_buf += dest_stride;
+            dest_buf_u8 += dest_stride;
             src_buf_c16 += src_stride;
         }
     }
