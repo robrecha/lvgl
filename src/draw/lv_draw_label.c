@@ -27,7 +27,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void draw_letter(lv_draw_unit_t * draw_unit, lv_draw_letter_dsc_t * dsc,  const lv_point_t * pos,
+static void draw_letter(lv_draw_unit_t * draw_unit, lv_draw_glyph_dsc_t * dsc,  const lv_point_t * pos,
                         const lv_font_t * font, uint32_t letter, lv_draw_letter_cb_t cb);
 
 /**********************
@@ -60,9 +60,9 @@ void lv_draw_label_dsc_init(lv_draw_label_dsc_t * dsc)
 }
 
 
-void lv_draw_letter_dsc_init(lv_draw_letter_dsc_t * dsc)
+void lv_draw_letter_dsc_init(lv_draw_glyph_dsc_t * dsc)
 {
-    lv_memzero(dsc, sizeof(lv_draw_letter_dsc_t));
+    lv_memzero(dsc, sizeof(lv_draw_glyph_dsc_t));
 }
 
 LV_ATTRIBUTE_FAST_MEM void lv_draw_label(lv_layer_t * layer, const lv_draw_label_dsc_t * dsc,
@@ -102,7 +102,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_letter(lv_layer_t * layer, lv_draw_label_dsc_
         return;
     }
 
-
     lv_font_glyph_dsc_t g;
     lv_font_get_glyph_dsc(dsc->font, &g, unicode_letter, 0);
 
@@ -123,7 +122,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_letter(lv_layer_t * layer, lv_draw_label_dsc_
 
     lv_draw_label(layer, dsc, &a);
 }
-
 
 void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_label_dsc_t * dsc,
                                     const lv_area_t * coords,
@@ -228,27 +226,24 @@ void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_la
     }
 
     lv_area_t bg_coords;
-    lv_draw_letter_dsc_t draw_letter_dsc;
+    lv_draw_glyph_dsc_t draw_letter_dsc;
     lv_draw_letter_dsc_init(&draw_letter_dsc);
-    draw_letter_dsc.bg_color = dsc->sel_bg_color;
-    draw_letter_dsc.bg_opa = dsc->opa;
+    draw_letter_dsc.opa = dsc->opa;
     draw_letter_dsc.bg_coords = &bg_coords;
-    draw_letter_dsc.letter_color = dsc->color;
-    draw_letter_dsc.letter_opa = dsc->opa;
-    draw_letter_dsc.decor = dsc->decor;
+    draw_letter_dsc.color = dsc->color;
 
-    if((dsc->decor & LV_TEXT_DECOR_UNDERLINE) || (dsc->decor & LV_TEXT_DECOR_STRIKETHROUGH)) {
-        draw_letter_dsc.line_opa = dsc->opa;
-        draw_letter_dsc.line_color = dsc->color;
-        draw_letter_dsc.line_width = font->underline_thickness ? font->underline_thickness : 1;
-    }
-
+    lv_draw_fill_dsc_t fill_dsc;
+    lv_draw_fill_dsc_init(&fill_dsc);
+    fill_dsc.opa = dsc->opa;
+    lv_coord_t underline_width = font->underline_thickness ? font->underline_thickness : 1;
+    lv_coord_t line_start_x;
     uint32_t i;
     int32_t letter_w;
 
     /*Write out all lines*/
     while(dsc->text[line_start] != '\0') {
         pos.x += x_ofs;
+        line_start_x = pos.x;
 
         /*Write all letter of a line*/
         i = 0;
@@ -278,17 +273,42 @@ void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_la
 
             letter_w = lv_font_get_glyph_width(font, letter, letter_next);
 
-            bg_coords.x1 = pos.x;
-            bg_coords.y1 = pos.y;
-            bg_coords.x2 = pos.x + letter_w + dsc->letter_space - 1;
-            bg_coords.y2 = pos.y + line_height - 1;
+            if(i >= line_end - line_start) {
+                if(dsc->decor & LV_TEXT_DECOR_UNDERLINE) {
+                    lv_area_t fill_area;
+                    fill_area.x1 = line_start_x;
+                    fill_area.x2 = pos.x + letter_w - 1;
+                    fill_area.y1 = pos.y + font->line_height - font->base_line - font->underline_position;
+                    fill_area.y2 = fill_area.y1 + underline_width - 1;
+
+                    fill_dsc.color = dsc->color;
+                    cb(draw_unit, NULL, &fill_dsc, &fill_area);
+                }
+                if(dsc->decor & LV_TEXT_DECOR_STRIKETHROUGH) {
+                    lv_area_t fill_area;
+                    fill_area.x1 = line_start_x;
+                    fill_area.x2 = pos.x + letter_w - 1;
+                    fill_area.y1 = pos.y + (font->line_height - font->base_line) * 2 / 3 + font->underline_thickness / 2;
+                    fill_area.y2 = fill_area.y1 + underline_width - 1;
+
+                    fill_dsc.color = dsc->color;
+                    cb(draw_unit, NULL, &fill_dsc, &fill_area);
+                }
+            }
+
             if(sel_start != 0xFFFF && sel_end != 0xFFFF && logical_char_pos >= sel_start && logical_char_pos < sel_end) {
-                draw_letter_dsc.letter_color = dsc->sel_color;
-                draw_letter_dsc.bg_opa = dsc->opa;
+                draw_letter_dsc.color = dsc->sel_color;
+
+                bg_coords.x1 = pos.x;
+                bg_coords.y1 = pos.y;
+                bg_coords.x2 = pos.x + letter_w + dsc->letter_space - 1;
+                bg_coords.y2 = pos.y + line_height - 1;
+
+                fill_dsc.color = dsc->sel_bg_color;
+                cb(draw_unit, NULL, &fill_dsc, &bg_coords);
             }
             else {
-                draw_letter_dsc.bg_opa = LV_OPA_TRANSP;
-                draw_letter_dsc.letter_color = dsc->color;
+                draw_letter_dsc.color = dsc->color;
             }
 
             draw_letter(draw_unit, &draw_letter_dsc, &pos, font, letter, cb);
@@ -336,7 +356,7 @@ void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_la
  *   STATIC FUNCTIONS
  **********************/
 
-static void draw_letter(lv_draw_unit_t * draw_unit, lv_draw_letter_dsc_t * dsc,  const lv_point_t * pos,
+static void draw_letter(lv_draw_unit_t * draw_unit, lv_draw_glyph_dsc_t * dsc,  const lv_point_t * pos,
                         const lv_font_t * font, uint32_t letter, lv_draw_letter_cb_t cb)
 {
     lv_font_glyph_dsc_t g;
@@ -385,7 +405,7 @@ static void draw_letter(lv_draw_unit_t * draw_unit, lv_draw_letter_dsc_t * dsc, 
     if(g.bpp == LV_IMGFONT_BPP) dsc->format = LV_DRAW_LETTER_BITMAP_FORMAT_IMAGE;
     else dsc->format = LV_DRAW_LETTER_BITMAP_FORMAT_A8;
 
-    cb(draw_unit, dsc);
+    cb(draw_unit, dsc, NULL, NULL);
     LV_PROFILER_END;
 }
 

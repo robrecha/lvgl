@@ -82,25 +82,15 @@ typedef struct {
     uint8_t * bitmap_buf;
     uint32_t _bitmap_buf_size;
     lv_draw_letter_bitmap_format_t format;
-
-    const lv_area_t * bg_coords;
     const lv_area_t * letter_coords;
-    lv_coord_t line1_y_ofs;
-    lv_coord_t line2_y_ofs;
-    lv_coord_t line_width;
-    lv_text_decor_t decor;
-
-    lv_color_t bg_color;
-    lv_color_t letter_color;
-    lv_color_t line_color;
-
-    lv_opa_t letter_opa;
-    lv_opa_t bg_opa;
-    lv_opa_t line_opa;
-} lv_draw_letter_dsc_t;
+    const lv_area_t * bg_coords;
+    lv_color_t color;
+    lv_opa_t opa;
+} lv_draw_glyph_dsc_t;
 
 
-typedef void(*lv_draw_letter_cb_t)(lv_draw_unit_t * draw_unit, lv_draw_letter_dsc_t * dsc);
+typedef void(*lv_draw_letter_cb_t)(lv_draw_unit_t * draw_unit, lv_draw_glyph_dsc_t * dsc, lv_draw_fill_dsc_t * fill_dsc,
+                                   const lv_area_t * fill_area);
 
 void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_label_dsc_t * dsc,
                                     const lv_area_t * coords,
@@ -112,7 +102,7 @@ void lv_draw_label_interate_letters(lv_draw_unit_t * draw_unit, const lv_draw_la
 
 LV_ATTRIBUTE_FAST_MEM void lv_draw_label_dsc_init(lv_draw_label_dsc_t * dsc);
 
-void lv_draw_letter_dsc_init(lv_draw_letter_dsc_t * dsc);
+void lv_draw_letter_dsc_init(lv_draw_glyph_dsc_t * dsc);
 
 /**
  * Write a text
