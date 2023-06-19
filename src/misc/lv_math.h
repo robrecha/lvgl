@@ -46,7 +46,7 @@ typedef struct {
  */
 LV_ATTRIBUTE_FAST_MEM int32_t lv_trigo_sin(int16_t angle);
 
-static inline int32_t lv_trigo_cos(int16_t angle)
+static inline LV_ATTRIBUTE_FAST_MEM int32_t lv_trigo_cos(int16_t angle)
 {
     return lv_trigo_sin(angle + 90);
 }
