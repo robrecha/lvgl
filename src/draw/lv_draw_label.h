@@ -89,7 +89,6 @@ typedef struct {
     lv_coord_t line2_y_ofs;
     lv_coord_t line_width;
     lv_text_decor_t decor;
-    lv_blend_mode_t blend_mode;
 
     lv_color_t bg_color;
     lv_color_t letter_color;

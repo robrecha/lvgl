@@ -1332,7 +1332,6 @@ static void chart_event_cb(lv_event_t * e)
         lv_draw_task_t * draw_task = lv_event_get_param(e);
         lv_draw_dsc_base_t * base_dsc = draw_task->draw_dsc;
 
-
         if(base_dsc->part == LV_PART_TICKS && draw_task->type == LV_DRAW_TASK_TYPE_LABEL) {
             /*Set the markers' text*/
             if(base_dsc->id1 == LV_CHART_AXIS_PRIMARY_X) {
@@ -1372,30 +1371,26 @@ static void chart_event_cb(lv_event_t * e)
             tri_dsc.p[1].y = draw_line_dsc->p2.y;
             tri_dsc.p[2].x = draw_line_dsc->p1.y < draw_line_dsc->p2.y ? draw_line_dsc->p1.x : draw_line_dsc->p2.x;
             tri_dsc.p[2].y = LV_MAX(draw_line_dsc->p1.y, draw_line_dsc->p2.y);
-            tri_dsc.bg_color = lv_color_hex3(lv_rand(0x008, 0xff0));
-            tri_dsc.bg_opa = LV_OPA_50;
             tri_dsc.bg_grad.dir = LV_GRAD_DIR_VER;
 
             lv_coord_t full_h = lv_obj_get_height(obj);
-            lv_coord_t fract_top = (LV_MIN(draw_line_dsc->p1.y, draw_line_dsc->p2.y) - obj->coords.y1) * 255 / full_h;
-            lv_coord_t fract_mid = (LV_MAX(draw_line_dsc->p1.y, draw_line_dsc->p2.y) - obj->coords.y1) * 255 / full_h;
+            lv_coord_t fract_uppter = (LV_MIN(draw_line_dsc->p1.y, draw_line_dsc->p2.y) - obj->coords.y1) * 255 / full_h;
+            lv_coord_t fract_lower = (LV_MAX(draw_line_dsc->p1.y, draw_line_dsc->p2.y) - obj->coords.y1) * 255 / full_h;
             tri_dsc.bg_grad.stops[0].color = ser->color;
-            tri_dsc.bg_grad.stops[0].opa = 255 - fract_top;
+            tri_dsc.bg_grad.stops[0].opa = 255 - fract_uppter;
             tri_dsc.bg_grad.stops[0].frac = 0;
-
             tri_dsc.bg_grad.stops[1].color = ser->color;
-            tri_dsc.bg_grad.stops[1].opa = 255 - fract_mid;
+            tri_dsc.bg_grad.stops[1].opa = 255 - fract_lower;
             tri_dsc.bg_grad.stops[1].frac = 255;
 
             lv_draw_triangle(base_dsc->layer, &tri_dsc);
-
 
             lv_draw_rect_dsc_t rect_dsc;
             lv_draw_rect_dsc_init(&rect_dsc);
             rect_dsc.bg_grad.dir = LV_GRAD_DIR_VER;
             rect_dsc.bg_grad.stops[0].color = ser->color;
             rect_dsc.bg_grad.stops[0].frac = 0;
-            rect_dsc.bg_grad.stops[0].opa = 255 - fract_mid;
+            rect_dsc.bg_grad.stops[0].opa = 255 - fract_lower;
             rect_dsc.bg_grad.stops[1].color = ser->color;
             rect_dsc.bg_grad.stops[1].frac = 255;
             rect_dsc.bg_grad.stops[1].opa = 0;
@@ -1411,10 +1406,14 @@ static void chart_event_cb(lv_event_t * e)
 
         bool add_value = false;
         if(base_dsc->part == LV_PART_INDICATOR && lv_chart_get_pressed_point(obj) == base_dsc->id2) {
-            lv_draw_rect_dsc_t * rect_dsc = draw_task->draw_dsc;
             if(lv_chart_get_type(obj) == LV_CHART_TYPE_LINE) {
-                rect_dsc->outline_color = lv_color_white();
-                rect_dsc->outline_width = 2;
+                lv_draw_rect_dsc_t outline_dsc;
+                lv_draw_rect_dsc_init(&outline_dsc);
+                outline_dsc.bg_opa = LV_OPA_TRANSP;
+                outline_dsc.outline_color = lv_color_white();
+                outline_dsc.outline_width = 2;
+                outline_dsc.radius = LV_RADIUS_CIRCLE;
+                lv_draw_rect(base_dsc->layer, &outline_dsc, &draw_task->area);
                 add_value = true;
             }
         }
@@ -1422,11 +1421,15 @@ static void chart_event_cb(lv_event_t * e)
             const lv_chart_series_t * ser = lv_chart_get_series_next(obj, NULL);
             if(base_dsc->id1 == 1) ser = lv_chart_get_series_next(obj, ser);
 
-            lv_draw_rect_dsc_t * rect_dsc = draw_task->draw_dsc;
             if(lv_chart_get_type(obj) == LV_CHART_TYPE_BAR) {
-                rect_dsc->shadow_color = ser->color;
-                rect_dsc->shadow_width = 15;
-                rect_dsc->shadow_spread = 0;
+                lv_draw_fill_dsc_t * fill_dsc = draw_task->draw_dsc;
+                lv_draw_rect_dsc_t shadow_dsc;
+                lv_draw_rect_dsc_init(&shadow_dsc);
+                shadow_dsc.radius = fill_dsc->radius;
+                shadow_dsc.bg_opa = LV_OPA_TRANSP;
+                shadow_dsc.shadow_color = ser->color;
+                shadow_dsc.shadow_width = 15;
+                lv_draw_rect(base_dsc->layer, &shadow_dsc, &draw_task->area);
                 add_value = true;
             }
         }

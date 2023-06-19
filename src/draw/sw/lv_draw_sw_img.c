@@ -245,13 +245,21 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
         lv_coord_t y_last = blend_area.y2;
         blend_area.y2 = blend_area.y1 + buf_h - 1;
 
-        blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
         blend_dsc.src_area = &blend_area;
 
         if(cf_transformed == LV_COLOR_FORMAT_RGB565A8) {
             blend_dsc.mask_buf =  tmp_buf + buf_w * buf_h * 2;
             blend_dsc.mask_area = &blend_area;
+            blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
             blend_dsc.src_color_format = LV_COLOR_FORMAT_RGB565;
+        }
+
+        if(blend_dsc.src_color_format == LV_COLOR_FORMAT_A8) {
+            blend_dsc.mask_buf = blend_dsc.src_buf;
+            blend_dsc.mask_area = &blend_area;
+            blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
+            blend_dsc.color = draw_dsc->recolor;
+            blend_dsc.src_buf = NULL;
         }
 
         lv_draw_img_sup_t sup;

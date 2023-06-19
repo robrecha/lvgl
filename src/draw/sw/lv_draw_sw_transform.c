@@ -115,6 +115,7 @@ void lv_draw_sw_transform(lv_draw_unit_t * draw_unit, const lv_area_t * dest_are
 
     uint32_t dest_px_size;
     if(src_cf == LV_COLOR_FORMAT_RGB888) dest_px_size = 4;
+    else if(src_cf == LV_COLOR_FORMAT_RGB565A8) dest_px_size = 2;
     else dest_px_size = lv_color_format_get_size(src_cf);
 
     lv_coord_t dest_w = lv_area_get_width(dest_area);
@@ -158,7 +159,7 @@ void lv_draw_sw_transform(lv_draw_unit_t * draw_unit, const lv_area_t * dest_are
                 tranform_rgb888(src_buf, src_w, src_h, src_stride, xs_ups, ys_ups, xs_step_256, ys_step_256, dest_w, dest_buf, aa, 3);
                 break;
             case LV_COLOR_FORMAT_A8:
-                transform_a8(src_buf, src_w, src_h, src_stride, xs_ups, ys_ups, xs_step_256, ys_step_256, dest_w, NULL, aa);
+                transform_a8(src_buf, src_w, src_h, src_stride, xs_ups, ys_ups, xs_step_256, ys_step_256, dest_w, dest_buf, aa);
                 break;
             case LV_COLOR_FORMAT_ARGB8888:
                 tranform_argb8888(src_buf, src_w, src_h, src_stride, xs_ups, ys_ups, xs_step_256, ys_step_256, dest_w, dest_buf, aa);
@@ -399,7 +400,6 @@ static void transform_rgb565a8(const uint8_t * src, lv_coord_t src_w, lv_coord_t
         if(xs_int < 0 || xs_int >= src_w || ys_int < 0 || ys_int >= src_h) {
             abuf[x] = 0x00;
             continue;
-
         }
 
         /*Get the direction the hor and ver neighbor
@@ -443,12 +443,13 @@ static void transform_rgb565a8(const uint8_t * src, lv_coord_t src_w, lv_coord_t
             if(src_has_a8) {
                 const lv_opa_t * src_alpha_tmp = src_alpha;
                 src_alpha_tmp += (ys_int * src_stride) + xs_int;
-                lv_opa_t a_base = src_alpha_tmp[0];
+                abuf[x] = src_alpha_tmp[0];
+
                 lv_opa_t a_hor = src_alpha_tmp[x_next];
                 lv_opa_t a_ver = src_alpha_tmp[y_next * src_stride];
 
-                if(a_ver != a_base) a_ver = ((a_ver * ys_fract) + (a_base * (0x100 - ys_fract))) >> 8;
-                if(a_hor != a_base) a_hor = ((a_hor * xs_fract) + (a_base * (0x100 - xs_fract))) >> 8;
+                if(a_ver != abuf[x]) a_ver = ((a_ver * ys_fract) + (abuf[x] * (0x100 - ys_fract))) >> 8;
+                if(a_hor != abuf[x]) a_hor = ((a_hor * xs_fract) + (abuf[x] * (0x100 - xs_fract))) >> 8;
                 abuf[x] = (a_ver + a_hor) >> 1;
 
                 if(abuf[x] == 0x00) continue;
@@ -456,6 +457,7 @@ static void transform_rgb565a8(const uint8_t * src, lv_coord_t src_w, lv_coord_t
             else {
                 abuf[x] = 0xff;
             }
+
             if(cbuf[x] != px_ver || cbuf[x] != px_hor) {
                 uint16_t v = lv_color_16_16_mix(px_ver, cbuf[x], ys_fract);
                 uint16_t h = lv_color_16_16_mix(px_hor, cbuf[x], xs_fract);

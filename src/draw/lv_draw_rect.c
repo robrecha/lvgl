@@ -227,7 +227,8 @@ void lv_draw_rect(lv_layer_t * layer, const lv_draw_rect_dsc_t * dsc, const lv_a
         lv_draw_border_dsc_t * outline_dsc = lv_malloc(sizeof(lv_draw_border_dsc_t));
         t->draw_dsc = outline_dsc;
         outline_dsc->base = dsc->base;
-        outline_dsc->radius = dsc->radius + dsc->outline_width + dsc->outline_pad;
+        outline_dsc->radius = dsc->radius == LV_RADIUS_CIRCLE ? LV_RADIUS_CIRCLE : dsc->radius + dsc->outline_width +
+                              dsc->outline_pad;
         outline_dsc->color = dsc->outline_color;
         outline_dsc->opa = dsc->outline_opa;
         outline_dsc->width = dsc->outline_width;
