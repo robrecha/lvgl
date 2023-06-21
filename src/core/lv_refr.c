@@ -767,12 +767,11 @@ static lv_res_t layer_get_area(lv_layer_t * layer, lv_obj_t * obj, lv_layer_type
     return LV_RES_OK;
 }
 
-
 static bool alpha_test_area_on_obj(lv_obj_t * obj, const lv_area_t * area)
 {
-
     /*Test for alpha by assuming there is no alpha. If it fails, fall back to rendering with alpha*/
-    if(!_lv_area_is_on(area, &obj->coords)) return false;
+    /*If the layer area is not fully on the object, it can't fully cover it*/
+    if(!_lv_area_is_on(area, &obj->coords)) return true;
 
     lv_cover_check_info_t info;
     info.res = LV_COVER_RES_COVER;

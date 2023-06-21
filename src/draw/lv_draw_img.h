@@ -31,11 +31,9 @@ extern "C" {
  **********************/
 
 typedef struct {
-    lv_color_t chroma_key_color;
     lv_color_t alpha_color;
     const lv_color32_t * palette;
     uint32_t palette_size   : 9;
-    uint32_t chroma_keyed   : 1;
 } lv_draw_img_sup_t;
 
 typedef struct _lv_draw_img_dsc_t {

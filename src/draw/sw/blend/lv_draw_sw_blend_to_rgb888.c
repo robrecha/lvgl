@@ -165,7 +165,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_blend_color_to_rgb888(_lv_draw_sw_blend_fi
 
 LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_blend_image_to_rgb888(_lv_draw_sw_blend_image_dsc_t * dsc, uint32_t dest_px_size)
 {
-
     switch(dsc->src_color_format) {
         case LV_COLOR_FORMAT_RGB565:
             rgb565_image_blend(dsc, dest_px_size);

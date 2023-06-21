@@ -32,12 +32,6 @@
 LV_ATTRIBUTE_FAST_MEM static void draw_letter_cb(lv_draw_unit_t * draw_unit, lv_draw_glyph_dsc_t * glyph_draw_dsc,
                                                  lv_draw_fill_dsc_t * fill_draw_dsc, const lv_area_t * fill_area);
 
-
-#if LV_DRAW_SW_FONT_SUBPX
-static void draw_letter_subpx(lv_layer_t * layer, const lv_draw_label_dsc_t * dsc, const lv_point_t * pos,
-                              lv_font_glyph_dsc_t * g, const uint8_t * map_p);
-#endif /*LV_DRAW_SW_FONT_SUBPX*/
-
 /**********************
  *  STATIC VARIABLES
  **********************/
@@ -91,11 +85,6 @@ LV_ATTRIBUTE_FAST_MEM static void draw_letter_cb(lv_draw_unit_t * draw_unit, lv_
             blend_dsc.mask_res = LV_DRAW_SW_MASK_RES_CHANGED;
 
             lv_draw_sw_blend(draw_unit, &blend_dsc);
-        }
-        else if(glyph_draw_dsc->format == LV_DRAW_LETTER_BITMAP_FORMAT_SUBPX) {
-#if LV_USE_FONT_SUBPX
-            LV_LOG_WARN("Sub pixel rendering is not implemented yet.");
-#endif
         }
         else if(glyph_draw_dsc->format == LV_DRAW_LETTER_BITMAP_FORMAT_IMAGE) {
 #if LV_USE_IMGFONT

@@ -145,8 +145,6 @@ void lv_draw_sw_layer(lv_draw_unit_t * draw_unit, const lv_draw_img_dsc_t * draw
 LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_draw_img_dsc_t * draw_dsc,
                                           const lv_area_t * coords)
 {
-
-
     lv_area_t transformed_area;
     lv_area_copy(&transformed_area, coords);
     if(draw_dsc->angle || draw_dsc->zoom != LV_ZOOM_NONE) {
@@ -269,9 +267,6 @@ LV_ATTRIBUTE_FAST_MEM void lv_draw_sw_img(lv_draw_unit_t * draw_unit, const lv_d
         sup.alpha_color = draw_dsc->recolor;
         sup.palette = decoder_dsc.palette;
         sup.palette_size = decoder_dsc.palette_size;
-        sup.chroma_keyed = cf_final == LV_COLOR_FORMAT_RGB565_CHROMA_KEYED ||
-                           LV_COLOR_FORMAT_RGB888_CHROMA_KEYED ? true : false;
-        sup.chroma_key_color = LV_COLOR_CHROMA_KEY;
 
         while(blend_area.y1 <= y_last) {
             /*Apply transformations if any or separate the channels*/

@@ -113,12 +113,10 @@ typedef enum {
 
     /*2 byte (+alpha) formats*/
     LV_COLOR_FORMAT_RGB565,
-    LV_COLOR_FORMAT_RGB565_CHROMA_KEYED,
     LV_COLOR_FORMAT_RGB565A8,       /**< Color array followed by Alpha array*/
 
     /*3 byte (+alpha) formats*/
     LV_COLOR_FORMAT_RGB888,
-    LV_COLOR_FORMAT_RGB888_CHROMA_KEYED,
     LV_COLOR_FORMAT_ARGB8888,
     LV_COLOR_FORMAT_XRGB8888,
 

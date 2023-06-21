@@ -284,14 +284,6 @@ static void img_argb_cb(void)
 #endif
 }
 
-static void img_ckey_cb(void)
-{
-    lv_style_reset(&style_common);
-    lv_style_set_img_opa(&style_common, scene_with_opa ? LV_OPA_50 : LV_OPA_COVER);
-    img_create(&style_common, &img_benchmark_cogwheel_chroma_keyed, false, false, false);
-
-}
-
 static void img_index_cb(void)
 {
     lv_style_reset(&style_common);
@@ -327,14 +319,6 @@ static void img_argb_recolor_cb(void)
 #else
     img_create(&style_common, &img_benchmark_cogwheel_argb, false, false, false);
 #endif
-}
-
-static void img_ckey_recolor_cb(void)
-{
-    lv_style_reset(&style_common);
-    lv_style_set_img_opa(&style_common, scene_with_opa ? LV_OPA_50 : LV_OPA_COVER);
-    lv_style_set_img_recolor_opa(&style_common, LV_OPA_50);
-    img_create(&style_common, &img_benchmark_cogwheel_chroma_keyed, false, false, false);
 }
 
 static void img_index_recolor_cb(void)
@@ -581,32 +565,30 @@ static void sub_text_cb(void)
  **********************/
 
 static scene_dsc_t scenes[] = {
-    //    {.name = "Rectangle",                    .weight = 30, .create_cb = rectangle_cb},
-    //    {.name = "Rectangle rounded",            .weight = 20, .create_cb = rectangle_rounded_cb},
-    //    {.name = "Circle",                       .weight = 10, .create_cb = rectangle_circle_cb},
-    //    {.name = "Border",                       .weight = 20, .create_cb = border_cb},
-    //    {.name = "Border rounded",               .weight = 30, .create_cb = border_rounded_cb},
-    //    {.name = "Circle border",                .weight = 10, .create_cb = border_circle_cb},
-    //    {.name = "Border top",                   .weight = 3, .create_cb = border_top_cb},
-    //    {.name = "Border left",                  .weight = 3, .create_cb = border_left_cb},
-    //    {.name = "Border top + left",            .weight = 3, .create_cb = border_top_left_cb},
-    //    {.name = "Border left + right",          .weight = 3, .create_cb = border_left_right_cb},
-    //    {.name = "Border top + bottom",          .weight = 3, .create_cb = border_top_bottom_cb},
-    //
-    //    {.name = "Shadow small",                 .weight = 3, .create_cb = shadow_small_cb},
-    //    {.name = "Shadow small offset",          .weight = 5, .create_cb = shadow_small_ofs_cb},
-    //    {.name = "Shadow large",                 .weight = 5, .create_cb = shadow_large_cb},
-    //    {.name = "Shadow large offset",          .weight = 3, .create_cb = shadow_large_ofs_cb},
-    //
-    //    {.name = "Image RGB",                    .weight = 20, .create_cb = img_rgb_cb},
-    //    {.name = "Image ARGB",                   .weight = 20, .create_cb = img_argb_cb},
-    {.name = "Image chorma keyed",           .weight = 5, .create_cb = img_ckey_cb},
+    {.name = "Rectangle",                    .weight = 30, .create_cb = rectangle_cb},
+    {.name = "Rectangle rounded",            .weight = 20, .create_cb = rectangle_rounded_cb},
+    {.name = "Circle",                       .weight = 10, .create_cb = rectangle_circle_cb},
+    {.name = "Border",                       .weight = 20, .create_cb = border_cb},
+    {.name = "Border rounded",               .weight = 30, .create_cb = border_rounded_cb},
+    {.name = "Circle border",                .weight = 10, .create_cb = border_circle_cb},
+    {.name = "Border top",                   .weight = 3, .create_cb = border_top_cb},
+    {.name = "Border left",                  .weight = 3, .create_cb = border_left_cb},
+    {.name = "Border top + left",            .weight = 3, .create_cb = border_top_left_cb},
+    {.name = "Border left + right",          .weight = 3, .create_cb = border_left_right_cb},
+    {.name = "Border top + bottom",          .weight = 3, .create_cb = border_top_bottom_cb},
+
+    {.name = "Shadow small",                 .weight = 3, .create_cb = shadow_small_cb},
+    {.name = "Shadow small offset",          .weight = 5, .create_cb = shadow_small_ofs_cb},
+    {.name = "Shadow large",                 .weight = 5, .create_cb = shadow_large_cb},
+    {.name = "Shadow large offset",          .weight = 3, .create_cb = shadow_large_ofs_cb},
+
+    {.name = "Image RGB",                    .weight = 20, .create_cb = img_rgb_cb},
+    {.name = "Image ARGB",                   .weight = 20, .create_cb = img_argb_cb},
     {.name = "Image indexed",                .weight = 5, .create_cb = img_index_cb},
     {.name = "Image alpha only",             .weight = 5, .create_cb = img_alpha_cb},
 
     {.name = "Image RGB recolor",            .weight = 5, .create_cb = img_rgb_recolor_cb},
     {.name = "Image ARGB recolor",           .weight = 20, .create_cb = img_argb_recolor_cb},
-    {.name = "Image chorma keyed recolor",   .weight = 3, .create_cb = img_ckey_recolor_cb},
     {.name = "Image indexed recolor",        .weight = 3, .create_cb = img_index_recolor_cb},
 
     {.name = "Image RGB rotate",             .weight = 3, .create_cb = img_rgb_rot_cb},

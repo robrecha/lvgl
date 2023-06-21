@@ -119,7 +119,6 @@
      * it is buffered into a "simple" layer before rendering. The widget can be buffered in smaller chunks.
      * "Transformed layers" (if `transform_angle/zoom` are set) use larger buffers
      * and can't be drawn in chunks. */
-
     #define  LV_LAYER_MAX_MEMORY_USAGE             150       /*[kB]*/
 
     /*The target buffer size for simple layer chunks.*/
