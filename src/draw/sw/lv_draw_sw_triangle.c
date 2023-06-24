@@ -10,7 +10,7 @@
 #if LV_USE_DRAW_SW
 
 #include "../../misc/lv_math.h"
-#include "../../misc/lv_mem.h"
+#include "../../stdlib/lv_mem.h"
 #include "../../misc/lv_area.h"
 #include "../../misc/lv_color.h"
 #include "../lv_draw_triangle.h"

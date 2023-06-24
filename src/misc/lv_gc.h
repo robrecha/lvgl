@@ -15,7 +15,7 @@ extern "C" {
  *********************/
 #include "../lv_conf_internal.h"
 #include <stdint.h>
-#include "lv_mem.h"
+#include "../stdlib/lv_mem.h"
 #include "lv_ll.h"
 #include "lv_timer.h"
 #include "lv_types.h"

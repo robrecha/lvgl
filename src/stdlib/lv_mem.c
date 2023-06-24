@@ -1,26 +1,15 @@
 /**
  * @file lv_mem.c
- * General and portable implementation of malloc and free.
- * The dynamic memory monitoring is also supported.
  */
 
 /*********************
  *      INCLUDES
  *********************/
 #include "lv_mem.h"
-#include "lv_tlsf.h"
-#include "lv_assert.h"
-#include "lv_log.h"
-#include <pthread.h>
-#include LV_STDLIB_INCLUDE
-#include LV_STRING_INCLUDE
-
-#if LV_USE_BUILTIN_MALLOC
-    #include "lv_malloc_builtin.h"
-#endif
-
-#if LV_USE_BUILTIN_MEMCPY
-    #include "lv_memcpy_builtin.h"
+#include "../misc/lv_assert.h"
+#include "../misc/lv_log.h"
+#if LV_USE_OS == LV_OS_PTHREAD
+    #include <pthread.h>
 #endif
 
 /*********************
@@ -40,6 +29,16 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+
+/**********************
+ *  GLOBAL PROTOTYPES
+ **********************/
+void * lv_malloc_core(size_t size);
+void * lv_realloc_core(void * p, size_t new_size);
+void lv_free_core(void * p);
+void lv_mem_monitor_core(lv_mem_monitor_t * mon_p);
+lv_res_t lv_mem_test_core(void);
+
 
 /**********************
  *  STATIC VARIABLES
@@ -72,7 +71,7 @@ void * lv_malloc(size_t size)
         return &zero_mem;
     }
 
-    void * alloc = LV_MALLOC(size);
+    void * alloc = lv_malloc_core(size);
 
     if(alloc == NULL) {
         LV_LOG_INFO("couldn't allocate memory (%lu bytes)", (unsigned long)size);
@@ -105,7 +104,7 @@ void lv_free(void * data)
     if(data == &zero_mem) return;
     if(data == NULL) return;
 
-    LV_FREE(data);
+    lv_free_core(data);
 
 }
 
@@ -127,7 +126,7 @@ void * lv_realloc(void * data_p, size_t new_size)
 
     if(data_p == &zero_mem) return lv_malloc(new_size);
 
-    void * new_p = LV_REALLOC(data_p, new_size);
+    void * new_p = lv_realloc_core(data_p, new_size);
 
     if(new_p == NULL) {
         LV_LOG_ERROR("couldn't reallocate memory");
@@ -138,31 +137,6 @@ void * lv_realloc(void * data_p, size_t new_size)
     return new_p;
 }
 
-void * lv_memcpy(void * dst, const void * src, size_t len)
-{
-    return LV_MEMCPY(dst, src, len);
-}
-
-void lv_memset(void * dst, uint8_t v, size_t len)
-{
-    LV_MEMSET(dst, v, len);
-}
-
-size_t lv_strlen(const char * str)
-{
-    return LV_STRLEN(str);
-}
-
-char * lv_strncpy(char * dst, const char * src, size_t dest_size)
-{
-    return LV_STRNCPY(dst, src, dest_size);
-}
-
-char * lv_strcpy(char * dst, const char * src)
-{
-    return LV_STRCPY(dst, src);
-}
-
 lv_res_t lv_mem_test(void)
 {
     if(zero_mem != ZERO_MEM_SENTINEL) {
@@ -170,20 +144,13 @@ lv_res_t lv_mem_test(void)
         return LV_RES_INV;
     }
 
-#if LV_USE_BUILTIN_MALLOC
-    return lv_mem_test_builtin();
-#else
-    return LV_RES_OK;
-#endif
+    return lv_mem_test_core();
 }
 
 void lv_mem_monitor(lv_mem_monitor_t * mon_p)
 {
-    /*Init the data*/
     lv_memset(mon_p, 0, sizeof(lv_mem_monitor_t));
-#if LV_USE_BUILTIN_MALLOC
-    lv_mem_monitor_builtin(mon_p);
-#endif
+    lv_mem_monitor_core(mon_p);
 }
 
 /**********************

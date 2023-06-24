@@ -23,10 +23,8 @@
    COLOR SETTINGS
  *====================*/
 
-/*Color depth: 1 (1 byte per pixel), 8 (RGB332), 16 (RGB565), 24 (RGB888), 32 (ARGB8888)*/
+/*Color depth: 1 (1 byte per pixel), 8 (A8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)*/
 #define LV_COLOR_DEPTH 16
-
-#define LV_COLOR_CHROMA_KEY lv_color_hex(0x00ff00)
 
 /*=========================
    STDLIB WRAPPER SETTINGS

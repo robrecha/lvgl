@@ -19,15 +19,12 @@ extern "C" {
 #include <stdarg.h>
 #include "lv_area.h"
 #include "../font/lv_font.h"
-#include "lv_printf.h"
+#include "../stdlib/lv_sprintf.h"
 #include "lv_types.h"
 
 /*********************
  *      DEFINES
  *********************/
-#ifndef LV_TXT_COLOR_CMD
-#define LV_TXT_COLOR_CMD "#"
-#endif
 
 #define LV_TXT_ENC_UTF8 1
 #define LV_TXT_ENC_ASCII 2

@@ -56,6 +56,22 @@ static void lv_draw_sw_buffer_clear(lv_layer_t * layer, const lv_area_t * a);
  *   GLOBAL FUNCTIONS
  **********************/
 
+void lv_draw_sw_init(void)
+{
+    uint32_t i;
+    for(i = 0; i < LV_DRAW_SW_DRAW_UNIT_CNT; i++) {
+        lv_draw_sw_unit_t * draw_sw_unit = lv_draw_create_unit(sizeof(lv_draw_sw_unit_t));
+        draw_sw_unit->base_unit.dispatch = lv_draw_sw_dispatch;
+        draw_sw_unit->idx = i;
+
+#if LV_USE_OS
+        lv_thread_sync_init(&draw_sw_unit->sync);
+        lv_thread_init(&draw_sw_unit->thread, LV_THREAD_PRIO_HIGH, render_thread_cb, 8 * 1024, draw_sw_unit);
+#endif
+    }
+}
+
+
 lv_layer_t * lv_draw_sw_layer_init(lv_disp_t * disp)
 {
     lv_layer_t * layer = lv_malloc(sizeof(lv_layer_t));
@@ -75,25 +91,6 @@ void lv_draw_sw_layer_deinit(lv_disp_t * disp, lv_layer_t * layer)
     lv_memzero(layer, sizeof(lv_layer_t));
 }
 
-void lv_draw_unit_sw_create(lv_disp_t * disp, uint32_t cnt)
-{
-    uint32_t i;
-    for(i = 0; i < cnt; i++) {
-        lv_draw_sw_unit_t * draw_sw_unit = lv_malloc(sizeof(*draw_sw_unit));
-        lv_memzero(draw_sw_unit, sizeof(lv_draw_sw_unit_t));
-        draw_sw_unit->base_unit.dispatch = lv_draw_sw_dispatch;
-        draw_sw_unit->idx = i;
-
-        draw_sw_unit->base_unit.next = disp->draw_unit_head;
-        disp->draw_unit_head = (lv_draw_unit_t *) draw_sw_unit;
-
-#if LV_USE_OS
-        lv_thread_sync_init(&draw_sw_unit->sync);
-        lv_thread_init(&draw_sw_unit->thread, LV_THREAD_PRIO_HIGH, render_thread_cb, 8 * 1024, draw_sw_unit);
-#endif
-    }
-}
-
 /**********************
  *   STATIC FUNCTIONS
  **********************/
@@ -104,16 +101,6 @@ static int32_t lv_draw_sw_dispatch(lv_draw_unit_t * draw_unit, lv_layer_t * laye
 
     /*Return immediately if it's busy with draw task*/
     if(draw_sw_unit->task_act) return 0;
-
-    /*Try to get a ready to draw layer*/
-    //    t = layer->draw_task_head;
-    //    while(t) {
-    //        if(t->type == LV_DRAW_TASK_TYPE_LAYER && t->state == LV_DRAW_TASK_STATE_QUEUED) {
-    //            LV_LOG_INFO("prioritizing layer draw");
-    //            break;
-    //        }
-    //        t = t->next;
-    //    }
 
     lv_draw_task_t * t = NULL;
     t = lv_draw_get_next_available_task(layer, NULL);

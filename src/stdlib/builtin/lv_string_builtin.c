@@ -1,16 +1,15 @@
 /**
- * @file lv_mem_builtin.c
+ * @file lv_string.c
  */
 
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_mem.h"
-#if LV_USE_BUILTIN_MEMCPY
-#include "lv_memcpy_builtin.h"
-#include "lv_assert.h"
-#include "lv_log.h"
-#include "lv_math.h"
+#include "../../lv_conf_internal.h"
+#if LV_USE_STDLIB_STRING == LV_STDLIB_BUILTIN
+#include "../../misc/lv_assert.h"
+#include "../../misc/lv_log.h"
+#include "../../misc/lv_math.h"
 
 /*********************
  *      DEFINES
@@ -52,7 +51,7 @@
  *   GLOBAL FUNCTIONS
  **********************/
 
-LV_ATTRIBUTE_FAST_MEM void * lv_memcpy_builtin(void * dst, const void * src, size_t len)
+LV_ATTRIBUTE_FAST_MEM void * lv_memcpy(void * dst, const void * src, size_t len)
 {
     uint8_t * d8 = dst;
     const uint8_t * s8 = src;
@@ -114,13 +113,7 @@ LV_ATTRIBUTE_FAST_MEM void * lv_memcpy_builtin(void * dst, const void * src, siz
     return dst;
 }
 
-/**
- * Same as `memset` but optimized for 4 byte operation.
- * @param dst pointer to the destination buffer
- * @param v value to set [0..255]
- * @param len number of byte to set
- */
-LV_ATTRIBUTE_FAST_MEM void lv_memset_builtin(void * dst, uint8_t v, size_t len)
+LV_ATTRIBUTE_FAST_MEM void lv_memset(void * dst, uint8_t v, size_t len)
 {
     uint8_t * d8 = (uint8_t *)dst;
     uintptr_t d_align = (lv_uintptr_t) d8 & ALIGN_MASK;
@@ -151,7 +144,7 @@ LV_ATTRIBUTE_FAST_MEM void lv_memset_builtin(void * dst, uint8_t v, size_t len)
 }
 
 /* See https://en.cppreference.com/w/c/string/byte/strlen for reference */
-size_t lv_strlen_builtin(const char * str)
+size_t lv_strlen(const char * str)
 {
     size_t i = 0;
     while(str[i]) i++;
@@ -159,7 +152,7 @@ size_t lv_strlen_builtin(const char * str)
     return i;
 }
 
-char * lv_strncpy_builtin(char * dst, const char * src, size_t dest_size)
+char * lv_strncpy(char * dst, const char * src, size_t dest_size)
 {
     size_t i;
     for(i = 0; i < dest_size - 1 && src[i]; i++) {
@@ -169,7 +162,7 @@ char * lv_strncpy_builtin(char * dst, const char * src, size_t dest_size)
     return dst;
 }
 
-char * lv_strcpy_builtin(char * dst, const char * src)
+char * lv_strcpy(char * dst, const char * src)
 {
     char * tmp = dst;
     while((*dst++ = *src++) != '\0');

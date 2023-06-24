@@ -1,11 +1,10 @@
-#include "../lv_conf_internal.h"
-#if LV_USE_BUILTIN_MALLOC
+#include "../../lv_conf_internal.h"
+#if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
 
 #include <limits.h>
 #include "lv_tlsf.h"
-#include "lv_mem.h"
-#include "lv_log.h"
-#include "lv_assert.h"
+#include "../../misc/lv_log.h"
+#include "../../misc/lv_assert.h"
 
 #undef  printf
 #define printf LV_LOG_ERROR

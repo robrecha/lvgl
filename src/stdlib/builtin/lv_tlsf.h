@@ -1,5 +1,5 @@
-#include "../lv_conf_internal.h"
-#if LV_USE_BUILTIN_MALLOC
+#include "../../lv_conf_internal.h"
+#if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
 
 #ifndef LV_TLSF_H
 #define LV_TLSF_H

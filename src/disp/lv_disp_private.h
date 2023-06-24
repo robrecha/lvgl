@@ -106,8 +106,6 @@ struct _lv_disp_t {
     lv_layer_t * (*layer_init)(struct _lv_disp_t * disp);
     void (*layer_deinit)(struct _lv_disp_t * disp, lv_layer_t * layer);
 
-    lv_draw_unit_t * draw_unit_head;
-
     /*---------------------
      * Screens
      *--------------------*/

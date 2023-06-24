@@ -13,7 +13,7 @@
 #include "../misc/lv_gc.h"
 #include "../misc/lv_log.h"
 #include "../misc/lv_utils.h"
-#include "../misc/lv_mem.h"
+#include "../stdlib/lv_mem.h"
 
 /*********************
  *      DEFINES

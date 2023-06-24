@@ -1,19 +1,19 @@
 /**
- * @file lv_malloc_builtin.c
+ * @file lv_malloc_core.c
  */
 
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_mem.h"
-#if LV_USE_BUILTIN_MALLOC
-#include "lv_malloc_builtin.h"
+#include "../lv_mem.h"
+#if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
+
 #include "lv_tlsf.h"
-#include "lv_assert.h"
-#include "lv_log.h"
-#include "lv_ll.h"
-#include "lv_math.h"
-#include "../osal/lv_os.h"
+#include "../../misc/lv_assert.h"
+#include "../../misc/lv_log.h"
+#include "../../misc/lv_ll.h"
+#include "../../misc/lv_math.h"
+#include "../../osal/lv_os.h"
 
 #ifdef LV_MEM_POOL_INCLUDE
     #include LV_MEM_POOL_INCLUDE
@@ -73,10 +73,7 @@ static lv_ll_t pool_ll;
  *   GLOBAL FUNCTIONS
  **********************/
 
-/**
- * Initialize the dyn_mem module (work memory and other variables)
- */
-void lv_mem_init_builtin(void)
+void lv_mem_init(void)
 {
 #if LV_MEM_ADR == 0
 #ifdef LV_MEM_POOL_ALLOC
@@ -105,16 +102,16 @@ void lv_mem_init_builtin(void)
 #endif
 }
 
-void lv_mem_deinit_builtin(void)
+void lv_mem_deinit(void)
 {
     _lv_ll_clear(&pool_ll);
     lv_tlsf_destroy(tlsf);
-    lv_mem_init_builtin();
+    lv_mem_init();
 }
 
-lv_mem_builtin_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
+lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
 {
-    lv_mem_builtin_pool_t new_pool = lv_tlsf_add_pool(tlsf, mem, bytes);
+    lv_mem_pool_t new_pool = lv_tlsf_add_pool(tlsf, mem, bytes);
     if(!new_pool) {
         LV_LOG_WARN("failed to add memory pool, address: %p, size: %zu", mem, bytes);
         return NULL;
@@ -127,7 +124,7 @@ lv_mem_builtin_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
     return new_pool;
 }
 
-void lv_mem_builtin_remove_pool(lv_mem_builtin_pool_t pool)
+void lv_mem_builtin_remove_pool(lv_mem_pool_t pool)
 {
     lv_pool_t * pool_p;
     _LV_LL_READ(&pool_ll, pool_p) {
@@ -141,7 +138,56 @@ void lv_mem_builtin_remove_pool(lv_mem_builtin_pool_t pool)
     LV_LOG_WARN("invalid pool: %p", pool);
 }
 
-void lv_mem_monitor_builtin(lv_mem_monitor_t * mon_p)
+
+void * lv_malloc_core(size_t size)
+{
+#if LV_USE_OS
+    lv_mutex_lock(&mutex);
+#endif
+    cur_used += size;
+    max_used = LV_MAX(cur_used, max_used);
+    void * p = lv_tlsf_malloc(tlsf, size);
+
+#if LV_USE_OS
+    lv_mutex_unlock(&mutex);
+#endif
+    return p;
+}
+
+void * lv_realloc_core(void * p, size_t new_size)
+{
+#if LV_USE_OS
+    lv_mutex_lock(&mutex);
+#endif
+
+    void * p_new = lv_tlsf_realloc(tlsf, p, new_size);
+
+#if LV_USE_OS
+    lv_mutex_unlock(&mutex);
+#endif
+
+    return p_new;
+}
+
+void lv_free_core(void * p)
+{
+#if LV_USE_OS
+    lv_mutex_lock(&mutex);
+#endif
+
+#if LV_MEM_ADD_JUNK
+    lv_memset(p, 0xbb, lv_tlsf_block_size(data));
+#endif
+    size_t size = lv_tlsf_free(tlsf, p);
+    if(cur_used > size) cur_used -= size;
+    else cur_used = 0;
+
+#if LV_USE_OS
+    lv_mutex_unlock(&mutex);
+#endif
+}
+
+void lv_mem_monitor_core(lv_mem_monitor_t * mon_p)
 {
     /*Init the data*/
     lv_memset(mon_p, 0, sizeof(lv_mem_monitor_t));
@@ -166,55 +212,8 @@ void lv_mem_monitor_builtin(lv_mem_monitor_t * mon_p)
     MEM_TRACE("finished");
 }
 
-void * lv_malloc_builtin(size_t size)
-{
-#if LV_USE_OS
-    lv_mutex_lock(&mutex);
-#endif
-    cur_used += size;
-    max_used = LV_MAX(cur_used, max_used);
-    void * p = lv_tlsf_malloc(tlsf, size);
 
-#if LV_USE_OS
-    lv_mutex_unlock(&mutex);
-#endif
-    return p;
-}
-
-void * lv_realloc_builtin(void * p, size_t new_size)
-{
-#if LV_USE_OS
-    lv_mutex_lock(&mutex);
-#endif
-
-    void * p_new = lv_tlsf_realloc(tlsf, p, new_size);
-
-#if LV_USE_OS
-    lv_mutex_unlock(&mutex);
-#endif
-
-    return p_new;
-}
-
-void lv_free_builtin(void * p)
-{
-#if LV_USE_OS
-    lv_mutex_lock(&mutex);
-#endif
-
-#if LV_MEM_ADD_JUNK
-    lv_memset(p, 0xbb, lv_tlsf_block_size(data));
-#endif
-    size_t size = lv_tlsf_free(tlsf, p);
-    if(cur_used > size) cur_used -= size;
-    else cur_used = 0;
-
-#if LV_USE_OS
-    lv_mutex_unlock(&mutex);
-#endif
-}
-
-lv_res_t lv_mem_test_builtin(void)
+lv_res_t lv_mem_test_core(void)
 {
 #if LV_USE_OS
     lv_mutex_lock(&mutex);

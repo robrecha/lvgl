@@ -44,6 +44,8 @@ typedef struct {
  * GLOBAL PROTOTYPES
  **********************/
 
+void lv_draw_sw_init(void);
+
 lv_layer_t * lv_draw_sw_layer_init(lv_disp_t * disp);
 
 void lv_draw_sw_layer_deinit(struct _lv_disp_t * disp, lv_layer_t * layer);

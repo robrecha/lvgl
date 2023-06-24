@@ -174,6 +174,13 @@ typedef struct {
 
 void lv_draw_init(void);
 
+/**
+ * Allocate a new draw unit with the given size and appends it to the list of draw units
+ * @param size      the size to allocate. E.g. `sizeof(my_draw_unit_t)`,
+ *                  where the first element of `my_draw_unit_t` is `lv_draw_unit_t`.
+ */
+void * lv_draw_create_unit(size_t size);
+
 void lv_draw_wait_for_finish(lv_layer_t * layer);
 
 lv_draw_task_t * lv_draw_add_task(lv_layer_t * layer, const lv_area_t * coords);

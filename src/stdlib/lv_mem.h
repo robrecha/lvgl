@@ -19,7 +19,7 @@ extern "C" {
 #include <stddef.h>
 #include <string.h>
 
-#include "lv_types.h"
+#include "../misc/lv_types.h"
 
 /*********************
  *      DEFINES
@@ -28,6 +28,8 @@ extern "C" {
 /**********************
  *      TYPEDEFS
  **********************/
+
+typedef void * lv_mem_pool_t;
 
 /**
  * Heap information structure.
@@ -46,6 +48,16 @@ typedef struct {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
+
+/**
+ * Initialize to use malloc/free/realloc etc
+ */
+void lv_mem_init(void);
+
+/**
+ * Drop all dynamically allocated memory and reset the memory pools' state
+ */
+void lv_mem_deinit(void);
 
 /**
  * Allocate a memory dynamically

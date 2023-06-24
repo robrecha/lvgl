@@ -38,6 +38,7 @@ static uint32_t used_memory_for_layers_kb = 0;
 /**********************
  *  STATIC VARIABLES
  **********************/
+static lv_draw_unit_t * draw_unit_head;
 
 /**********************
  *      MACROS
@@ -57,6 +58,17 @@ void lv_draw_init(void)
     lv_draw_sw_mask_init();
 #endif
 
+}
+
+void * lv_draw_create_unit(size_t size)
+{
+    lv_draw_unit_t * new_unit = lv_malloc(size);
+    lv_memzero(new_unit, size);
+
+    new_unit->next = draw_unit_head;
+    draw_unit_head = new_unit;
+
+    return new_unit;
 }
 
 lv_draw_task_t * lv_draw_add_task(lv_layer_t * layer, const lv_area_t * coords)
@@ -213,7 +225,7 @@ bool lv_draw_dispatch_layer(struct _lv_disp_t * disp, lv_layer_t * layer)
         if(layer_ok) {
             /*Find a draw unit which is not busy and can take at least one task*/
             /*Let all draw units to pick draw tasks*/
-            lv_draw_unit_t * u = disp->draw_unit_head;
+            lv_draw_unit_t * u = draw_unit_head;
             while(u) {
                 int32_t taken_cnt = u->dispatch(u, layer);
                 if(taken_cnt < 0) {
@@ -308,6 +320,7 @@ void lv_draw_add_used_layer_size(uint32_t kb)
     used_memory_for_layers_kb += kb;
     LV_LOG_INFO("Layer memory used: %d kB\n", used_memory_for_layers_kb);
 }
+
 
 /**********************
  *   STATIC FUNCTIONS

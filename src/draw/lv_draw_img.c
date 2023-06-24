@@ -11,7 +11,7 @@
 #include "../disp/lv_disp.h"
 #include "../misc/lv_log.h"
 #include "../core/lv_refr.h"
-#include "../misc/lv_mem.h"
+#include "../stdlib/lv_mem.h"
 #include "../misc/lv_math.h"
 
 /*********************

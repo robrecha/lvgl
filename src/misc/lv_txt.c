@@ -11,8 +11,8 @@
 #include "lv_txt_ap.h"
 #include "lv_math.h"
 #include "lv_log.h"
-#include "lv_mem.h"
 #include "lv_assert.h"
+#include "../stdlib/lv_mem.h"
 
 /*********************
  *      DEFINES

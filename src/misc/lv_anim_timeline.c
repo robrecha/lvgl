@@ -7,7 +7,7 @@
  *      INCLUDES
  *********************/
 #include "lv_anim_timeline.h"
-#include "lv_mem.h"
+#include "../stdlib/lv_mem.h"
 #include "lv_assert.h"
 
 /*********************

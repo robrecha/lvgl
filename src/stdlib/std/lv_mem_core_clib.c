@@ -1,0 +1,111 @@
+/**
+ * @file lv_malloc_core.c
+ */
+
+/*********************
+ *      INCLUDES
+ *********************/
+#include "../lv_mem.h"
+#if LV_USE_STDLIB_MALLOC == LV_STDLIB_CLIB
+#include <stdlib.h>
+
+/*********************
+ *      DEFINES
+ *********************/
+
+/**********************
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ *  STATIC PROTOTYPES
+ **********************/
+
+/**********************
+ *  STATIC VARIABLES
+ **********************/
+
+/**********************
+ *      MACROS
+ **********************/
+/**********************
+ *   GLOBAL FUNCTIONS
+ **********************/
+
+void lv_mem_init(void)
+{
+    return; /*Nothing to init*/
+}
+
+void lv_mem_deinit(void)
+{
+    return; /*Nothing to deinit*/
+
+}
+
+lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
+{
+    /*Not supported*/
+    LV_UNUSED(mem);
+    LV_UNUSED(bytes);
+    return NULL;
+}
+
+void lv_mem_builtin_remove_pool(lv_mem_pool_t pool)
+{
+    /*Not supported*/
+    LV_UNUSED(pool);
+    return;
+}
+
+
+void * lv_malloc_core(size_t size)
+{
+    return malloc(size);
+}
+
+void * lv_realloc_core(void * p, size_t new_size)
+{
+    return realloc(p, new_size);
+}
+
+void lv_free_core(void * p)
+{
+    return free(p);
+}
+
+void lv_mem_monitor_core(lv_mem_monitor_t * mon_p)
+{
+    /*Not supported*/
+    LV_UNUSED(mon_p);
+    return;
+}
+
+
+lv_res_t lv_mem_test_core(void)
+{
+    /*Not supported*/
+    return LV_RES_OK;
+}
+
+/**********************
+ *   STATIC FUNCTIONS
+ **********************/
+
+static void lv_mem_walker(void * ptr, size_t size, int used, void * user)
+{
+    LV_UNUSED(ptr);
+
+    lv_mem_monitor_t * mon_p = user;
+    mon_p->total_size += size;
+    if(used) {
+        mon_p->used_cnt++;
+    }
+    else {
+        mon_p->free_cnt++;
+        mon_p->free_size += size;
+        if(size > mon_p->free_biggest_size)
+            mon_p->free_biggest_size = size;
+    }
+}
+#endif /*LV_USE_BUILTIN_MALLOC*/

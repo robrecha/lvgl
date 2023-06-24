@@ -11,8 +11,8 @@
 
 #include <stdarg.h>
 #include <string.h>
-#include "lv_printf.h"
-#include "lv_mem.h"
+#include "../stdlib/lv_sprintf.h"
+#include "../stdlib/lv_mem.h"
 #include "../tick/lv_tick.h"
 
 #if LV_LOG_PRINTF

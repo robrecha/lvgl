@@ -14,7 +14,7 @@
 #include "../../disp/lv_disp_private.h"
 #include "../../misc/lv_log.h"
 #include "../../core/lv_refr.h"
-#include "../../misc/lv_mem.h"
+#include "../../stdlib/lv_mem.h"
 #include "../../misc/lv_math.h"
 #include LV_COLOR_EXTERN_INCLUDE
 

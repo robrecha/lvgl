@@ -12,7 +12,7 @@
 #include "lv_draw_img.h"
 #include "../misc/lv_math.h"
 #include "../misc/lv_log.h"
-#include "../misc/lv_mem.h"
+#include "../stdlib/lv_mem.h"
 
 /*********************
  *      DEFINES

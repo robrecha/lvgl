@@ -32,11 +32,14 @@
 
 /*Original repository: https://github.com/mpaland/printf*/
 
-#include "lv_printf.h"
+#include "../../lv_conf_internal.h"
+#if LV_USE_STDLIB_SPRINTF == LV_STDLIB_BUILTIN
 
-#if LV_USE_BUILTIN_SNPRINTF
-
+#include "../lv_sprintf.h"
 #include <stdbool.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include "../../misc/lv_types.h"
 
 #define PRINTF_DISABLE_SUPPORT_FLOAT    (!LV_SPRINTF_USE_FLOAT)
 
@@ -106,6 +109,11 @@
 #define FLAGS_LONG_LONG (1U <<  9U)
 #define FLAGS_PRECISION (1U << 10U)
 #define FLAGS_ADAPT_EXP (1U << 11U)
+
+typedef struct {
+    const char * fmt;
+    va_list * va;
+} lv_vaformat_t;
 
 // import float.h for DBL_MAX
 #if defined(PRINTF_SUPPORT_FLOAT)
@@ -861,8 +869,10 @@ static int _lv_vsnprintf(out_fct_type out, char * buffer, const size_t maxlen, c
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+/// GLOBAL FUNCTIONS FOR LVGL
+///////////////////////////////////////////////////////////////////////////////
 
-int lv_snprintf_builtin(char * buffer, size_t count, const char * format, ...)
+int lv_snprintf(char * buffer, size_t count, const char * format, ...)
 {
     va_list va;
     va_start(va, format);
@@ -871,7 +881,7 @@ int lv_snprintf_builtin(char * buffer, size_t count, const char * format, ...)
     return ret;
 }
 
-int lv_vsnprintf_builtin(char * buffer, size_t count, const char * format, va_list va)
+int lv_vsnprintf(char * buffer, size_t count, const char * format, va_list va)
 {
     return _lv_vsnprintf(_out_buffer, buffer, count, format, va);
 }

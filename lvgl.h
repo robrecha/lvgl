@@ -23,13 +23,15 @@ extern "C" {
  *********************/
 #include "src/lv_init.h"
 
+#include "src/stdlib/lv_mem.h"
+#include "src/stdlib/lv_string.h"
+#include "src/stdlib/lv_sprintf.h"
+
 #include "src/misc/lv_log.h"
 #include "src/misc/lv_timer.h"
 #include "src/misc/lv_math.h"
-#include "src/misc/lv_mem.h"
 #include "src/misc/lv_async.h"
 #include "src/misc/lv_anim_timeline.h"
-#include "src/misc/lv_printf.h"
 #include "src/misc/lv_profiler_builtin.h"
 
 #include "src/tick/lv_tick.h"

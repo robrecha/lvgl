@@ -23,9 +23,6 @@
 #include "misc/lv_fs.h"
 #include "misc/lv_gc.h"
 
-#if LV_USE_BUILTIN_MALLOC
-    #include "misc/lv_malloc_builtin.h"
-#endif
 /*********************
  *      DEFINES
  *********************/
@@ -71,10 +68,7 @@ void lv_init(void)
     LV_GC_INIT();
 #endif
 
-    /*Initialize the misc modules*/
-#if LV_USE_BUILTIN_MALLOC
-    lv_mem_init_builtin();
-#endif
+    lv_mem_init();
 
 #if LV_USE_PROFILER && LV_USE_PROFILER_BUILTIN
     lv_profiler_builtin_config_t profiler_config;
@@ -92,20 +86,10 @@ void lv_init(void)
 
     lv_draw_init();
 
-#if LV_USE_GPU_STM32_DMA2D
-    /*Initialize DMA2D GPU*/
-    lv_draw_stm32_dma2d_init();
+#if LV_USE_DRAW_SW
+    lv_draw_sw_init();
 #endif
 
-#if LV_USE_GPU_GD32_IPA
-    /*Initialize IPA GPU*/
-    lv_draw_gd32_ipa_init();
-#endif
-
-#if LV_USE_GPU_SWM341_DMA2D
-    /*Initialize DMA2D GPU*/
-    lv_draw_swm341_dma2d_init();
-#endif
 
 #if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
     PXP_COND_STOP(!lv_gpu_nxp_pxp_init(), "PXP init failed.");
@@ -232,9 +216,7 @@ void lv_deinit(void)
 
     lv_disp_set_default(NULL);
 
-#if LV_USE_BUILTIN_MALLOC
-    lv_mem_deinit_builtin();
-#endif
+    lv_mem_deinit();
     lv_initialized = false;
 
     LV_LOG_INFO("lv_deinit done");
