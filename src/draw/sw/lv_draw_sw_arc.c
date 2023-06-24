@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw_sw.h"
 #if LV_USE_DRAW_SW
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 
 #include "../../misc/lv_math.h"
 #include "../../misc/lv_log.h"
@@ -48,7 +48,7 @@ static void get_rounded_area(int16_t angle, lv_coord_t radius, uint8_t thickness
 
 void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, const lv_area_t * coords)
 {
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     if(dsc->opa <= LV_OPA_MIN) return;
     if(dsc->width == 0) return;
     if(dsc->start_angle == dsc->end_angle) return;
@@ -191,14 +191,14 @@ void lv_draw_sw_arc(lv_draw_unit_t * draw_unit, const lv_draw_arc_dsc_t * dsc, c
     lv_free(mask_buf);
     if(circle_mask) lv_free(circle_mask);
 #else
-    LV_LOG_WARN("Can't draw arc with LV_USE_DRAW_MASKS == 0");
+    LV_LOG_WARN("Can't draw arc with LV_DRAW_SW_COMPLEX == 0");
     LV_UNUSED(center);
     LV_UNUSED(radius);
     LV_UNUSED(start_angle);
     LV_UNUSED(end_angle);
     LV_UNUSED(layer);
     LV_UNUSED(dsc);
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 
 /**********************
@@ -260,5 +260,5 @@ static void get_rounded_area(int16_t angle, lv_coord_t radius, uint8_t thickness
     }
 }
 
-#endif /*LV_USE_DRAW_MASKS*/
-#endif /*LV_USE_DRAW_SW*/
+#endif /*LV_DRAW_SW_COMPLEX*/
+#endif /*LV_USE_DRAW_SW_ARC*/

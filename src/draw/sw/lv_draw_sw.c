@@ -58,6 +58,11 @@ static void lv_draw_sw_buffer_clear(lv_layer_t * layer, const lv_area_t * a);
 
 void lv_draw_sw_init(void)
 {
+
+#if LV_DRAW_SW_COMPLEX == 1
+    lv_draw_sw_mask_init();
+#endif
+
     uint32_t i;
     for(i = 0; i < LV_DRAW_SW_DRAW_UNIT_CNT; i++) {
         lv_draw_sw_unit_t * draw_sw_unit = lv_draw_create_unit(sizeof(lv_draw_sw_unit_t));

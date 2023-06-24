@@ -211,16 +211,6 @@ static inline lv_color_t lv_color_hex3(uint32_t c)
                          (uint8_t)((c & 0xF) | ((c & 0xF) << 4)));
 }
 
-/**
- * Just a wrapper around LV_COLOR_CHROMA_KEY because it might be more convenient to use a function in some cases
- * @return LV_COLOR_CHROMA_KEY
- */
-static inline lv_color_t lv_color_chroma_key(void)
-{
-    return LV_COLOR_CHROMA_KEY;
-}
-
-
 uint16_t lv_color_to_u16(lv_color_t color);
 uint32_t lv_color_to_u32(lv_color_t color);
 

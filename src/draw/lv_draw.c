@@ -53,11 +53,6 @@ void lv_draw_init(void)
 #if LV_USE_OS
     lv_thread_sync_init(&sync);
 #endif
-
-#if LV_USE_DRAW_MASKS
-    lv_draw_sw_mask_init();
-#endif
-
 }
 
 void * lv_draw_create_unit(size_t size)

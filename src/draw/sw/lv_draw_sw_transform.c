@@ -12,7 +12,7 @@
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_area.h"
 #include "../../core/lv_refr.h"
-#include LV_COLOR_EXTERN_INCLUDE
+#include "../../misc/lv_color.h"
 
 /*********************
  *      DEFINES

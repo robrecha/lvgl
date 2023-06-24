@@ -16,7 +16,7 @@
 #include "../../core/lv_refr.h"
 #include "../../stdlib/lv_mem.h"
 #include "../../misc/lv_math.h"
-#include LV_COLOR_EXTERN_INCLUDE
+#include "../../misc/lv_color.h"
 
 /*********************
  *      DEFINES

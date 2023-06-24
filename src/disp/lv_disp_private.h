@@ -146,15 +146,6 @@ struct _lv_disp_t {
 
     uint32_t last_render_start_time;
 
-    /** OPTIONAL: Called periodically while lvgl waits for operation to be completed.
-     * For example flushing or GPU
-     * User can execute very simple tasks here or yield the task*/
-    void (*wait_cb)(struct _lv_disp_t * disp_drv);
-
-    /** On CHROMA_KEYED images this color will be transparent.
-     * `LV_COLOR_CHROMA_KEY` by default. (lv_conf.h) */
-    lv_color_t color_chroma_key;
-
     /** The area being refreshed*/
     lv_area_t refreshed_area;
 };

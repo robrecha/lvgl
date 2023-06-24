@@ -36,9 +36,6 @@
 #if LV_USE_STDLIB_SPRINTF == LV_STDLIB_BUILTIN
 
 #include "../lv_sprintf.h"
-#include <stdbool.h>
-#include <stdarg.h>
-#include <stddef.h>
 #include "../../misc/lv_types.h"
 
 #define PRINTF_DISABLE_SUPPORT_FLOAT    (!LV_SPRINTF_USE_FLOAT)

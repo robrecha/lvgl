@@ -17,22 +17,6 @@
     #include "../draw/sw/lv_draw_sw.h"
 #endif
 
-#if LV_USE_GPU_STM32_DMA2D
-    #include "../draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
-#endif
-
-#if LV_USE_GPU_SWM341_DMA2D
-    #include "../draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
-#endif
-
-#if LV_USE_GPU_ARM2D
-    #include "../draw/arm2d/lv_gpu_arm2d.h"
-#endif
-
-#if LV_USE_GPU_NXP_PXP || LV_USE_GPU_NXP_VG_LITE
-    #include "../draw/nxp/lv_gpu_nxp.h"
-#endif
-
 #include "../themes/lv_theme.h"
 
 /*********************
@@ -85,23 +69,9 @@ lv_disp_t * lv_disp_create(lv_coord_t hor_res, lv_coord_t ver_res)
     disp->offset_y         = 0;
     disp->antialiasing     = LV_COLOR_DEPTH > 8 ? 1 : 0;
     disp->dpi              = LV_DPI_DEF;
-    disp->color_chroma_key = LV_COLOR_CHROMA_KEY;
     disp->color_format = LV_COLOR_FORMAT_NATIVE;
-    //        disp->color_format = LV_COLOR_FORMAT_RGB565;
 
-#if LV_USE_GPU_STM32_DMA2D
-    lv_disp_set_layer(disp, lv_draw_stm32_dma2d_ctx_init, lv_draw_stm32_dma2d_ctx_deinit,
-                      sizeof(lv_draw_stm32_dma2d_ctx_t));
-#elif LV_USE_GPU_SWM341_DMA2D
-    lv_disp_set_layer(disp, lv_draw_swm341_dma2d_ctx_init, lv_draw_swm341_dma2d_ctx_deinit,
-                      sizeof(lv_draw_swm341_dma2d_ctx_t));
-#elif LV_USE_GPU_NXP_PXP || LV_USE_GPU_NXP_VG_LITE
-    lv_disp_set_layer(disp, lv_draw_nxp_ctx_init, lv_draw_nxp_ctx_deinit, sizeof(lv_draw_nxp_ctx_t));
-#elif LV_USE_DRAW_SDL
-    lv_disp_set_layer(disp, lv_draw_sdl_init_ctx, lv_draw_sdl_deinit_ctx, sizeof(lv_draw_sdl_ctx_t));
-#elif LV_USE_GPU_ARM2D
-    lv_disp_set_layer(disp, lv_draw_arm2d_ctx_init, lv_draw_arm2d_ctx_deinit, sizeof(lv_draw_arm2d_ctx_t));
-#else
+#if LV_USE_DRAW_SW == 1
     disp->layer_init = lv_draw_sw_layer_init;
     disp->layer_deinit = lv_draw_sw_layer_deinit;
 
@@ -819,20 +789,6 @@ lv_timer_t * _lv_disp_get_refr_timer(lv_disp_t * disp)
 
     return disp->refr_timer;
 }
-
-
-lv_color_t lv_disp_get_chroma_key_color(lv_disp_t * disp)
-{
-
-    if(!disp) disp = lv_disp_get_default();
-    if(!disp) {
-        LV_LOG_WARN("no display registered");
-        return lv_color_hex(0x00ff00);
-    }
-
-    return disp->color_chroma_key;
-}
-
 
 void lv_disp_set_user_data(lv_disp_t * disp, void * user_data)
 {

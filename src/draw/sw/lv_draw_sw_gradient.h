@@ -31,23 +31,11 @@ extern "C" {
  **********************/
 typedef lv_color_t lv_grad_color_t;
 
-/** To avoid recomputing gradient for each draw operation,
- *  it's possible to cache the computation in this structure instance.
- *  Whenever possible, this structure is reused instead of recomputing the gradient map */
 typedef struct _lv_gradient_cache_t {
-    uint32_t        key;          /**< A discriminating key that's built from the drawing operation.
-                                   * If the key does not match, the cache item is not used */
-    uint32_t        life : 30;    /**< A life counter that's incremented on usage. Higher counter is
-                                   * less likely to be evicted from the cache */
-    uint32_t        filled : 1;   /**< Used to skip dithering in it if already done */
-    uint32_t        not_cached: 1; /**< The cache was too small so this item is not managed by the cache*/
-    lv_color_t   *  color_map;          /**< The computed gradient low bitdepth color map, points into the
-                                   * cache's buffer, no free needed */
+    lv_color_t   *  color_map;
     lv_opa_t   *  opa_map;
-    lv_coord_t      alloc_size;   /**< The map allocated size in colors */
-    lv_coord_t      size;         /**< The computed gradient color map size, in colors */
+    uint32_t size;
 } lv_grad_t;
-
 
 /**********************
  *      PROTOTYPES
@@ -62,14 +50,6 @@ typedef struct _lv_gradient_cache_t {
 LV_ATTRIBUTE_FAST_MEM void lv_gradient_color_calculate(const lv_grad_dsc_t * dsc, lv_coord_t range,
                                                        lv_coord_t frac, lv_grad_color_t * color_out, lv_opa_t * opa_out);
 
-/**
- * Set the gradient cache size
- * @param max_bytes Max cahce size
- */
-void lv_gradient_set_cache_size(size_t max_bytes);
-
-/** Free the gradient cache */
-void lv_gradient_free_cache(void);
 
 /** Get a gradient cache from the given parameters */
 lv_grad_t * lv_gradient_get(const lv_grad_dsc_t * gradient, lv_coord_t w, lv_coord_t h);

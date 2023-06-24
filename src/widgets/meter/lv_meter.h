@@ -17,11 +17,6 @@ extern "C" {
 
 #if LV_USE_METER != 0
 
-/*Testing of dependencies*/
-#if LV_USE_DRAW_MASKS == 0
-#error "lv_meter: Complex drawing is required. Enable it in lv_conf.h (LV_USE_DRAW_MASKS 1)"
-#endif
-
 /*********************
  *      DEFINES
  *********************/

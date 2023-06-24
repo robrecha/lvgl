@@ -13,7 +13,7 @@
 #include "../../../misc/lv_math.h"
 #include "../../../disp/lv_disp.h"
 #include "../../../core/lv_refr.h"
-#include LV_COLOR_EXTERN_INCLUDE
+#include "../../../misc/lv_color.h"
 
 /*********************
  *      DEFINES

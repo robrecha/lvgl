@@ -55,7 +55,6 @@ extern "C" {
 #include "src/widgets/canvas/lv_canvas.h"
 #include "src/widgets/chart/lv_chart.h"
 #include "src/widgets/checkbox/lv_checkbox.h"
-#include "src/widgets/colorwheel/lv_colorwheel.h"
 #include "src/widgets/dropdown/lv_dropdown.h"
 #include "src/widgets/img/lv_img.h"
 #include "src/widgets/imgbtn/lv_imgbtn.h"

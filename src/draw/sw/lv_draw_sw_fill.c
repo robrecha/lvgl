@@ -66,8 +66,8 @@ void lv_draw_sw_fill(lv_draw_unit_t * draw_unit, const lv_draw_fill_dsc_t * dsc,
     }
 
     /*Complex case: there is gradient, mask, or radius*/
-#if LV_USE_DRAW_MASKS == 0
-    LV_LOG_WARN("Can't draw complex rectangle because LV_USE_DRAW_MASKS = 0");
+#if LV_DRAW_SW_COMPLEX == 0
+    LV_LOG_WARN("Can't draw complex rectangle because LV_DRAW_SW_COMPLEX = 0");
 #else
     lv_opa_t opa = dsc->opa >= LV_OPA_MAX ? LV_OPA_COVER : dsc->opa;
 

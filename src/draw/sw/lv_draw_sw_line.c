@@ -129,7 +129,7 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_hor(lv_draw_unit_t * draw_unit, cons
     if(!dashed) {
         lv_draw_sw_blend(draw_unit, &blend_dsc);
     }
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     /*If there other mask apply it*/
     else {
 
@@ -173,7 +173,7 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_hor(lv_draw_unit_t * draw_unit, cons
         }
         lv_free(mask_buf);
     }
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 
 LV_ATTRIBUTE_FAST_MEM static void draw_line_ver(lv_draw_unit_t * draw_unit, const lv_draw_line_dsc_t * dsc)
@@ -205,7 +205,7 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_ver(lv_draw_unit_t * draw_unit, cons
         lv_draw_sw_blend(draw_unit, &blend_dsc);
     }
 
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     /*If there other mask apply it*/
     else {
         int32_t draw_area_w = lv_area_get_width(&blend_area);
@@ -241,13 +241,13 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_ver(lv_draw_unit_t * draw_unit, cons
         }
         lv_free(mask_buf);
     }
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 
 LV_ATTRIBUTE_FAST_MEM static void draw_line_skew(lv_draw_unit_t * draw_unit, const lv_draw_line_dsc_t * dsc)
 {
 
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     /*Keep the great y in p1*/
     lv_point_t p1;
     lv_point_t p2;
@@ -403,8 +403,8 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_skew(lv_draw_unit_t * draw_unit, con
 #else
     LV_UNUSED(draw_unit);
     LV_UNUSED(dsc);
-    LV_LOG_WARN("Can't draw skewed line with LV_USE_DRAW_MASKS == 0");
-#endif /*LV_USE_DRAW_MASKS*/
+    LV_LOG_WARN("Can't draw skewed line with LV_DRAW_SW_COMPLEX == 0");
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 
 #endif /*LV_USE_DRAW_SW*/

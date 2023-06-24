@@ -489,8 +489,6 @@ bool lv_disp_is_invalidation_enabled(lv_disp_t * disp);
  */
 lv_timer_t * _lv_disp_get_refr_timer(lv_disp_t * disp);
 
-lv_color_t lv_disp_get_chroma_key_color(lv_disp_t * disp);
-
 void lv_disp_set_user_data(lv_disp_t * disp, void * user_data);
 void lv_disp_set_driver_data(lv_disp_t * disp, void * driver_data);
 void * lv_disp_get_user_data(lv_disp_t * disp);

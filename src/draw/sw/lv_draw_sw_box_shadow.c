@@ -28,7 +28,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 LV_ATTRIBUTE_FAST_MEM static void shadow_draw_corner_buf(const lv_area_t * coords, uint16_t * sh_buf, lv_coord_t s,
                                                          lv_coord_t r);
 LV_ATTRIBUTE_FAST_MEM static void shadow_blur_corner(lv_coord_t size, lv_coord_t sw, uint16_t * sh_ups_buf);
@@ -557,7 +557,7 @@ void lv_draw_sw_box_shadow(lv_draw_unit_t * draw_unit, const lv_draw_box_shadow_
  *   STATIC FUNCTIONS
  **********************/
 
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 
 /**
  * Calculate a blurred corner

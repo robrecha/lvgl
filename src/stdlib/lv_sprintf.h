@@ -28,9 +28,18 @@
     #define LV_PRIX32 "X"
 #endif
 
+#include <stdbool.h>
+#include <stdarg.h>
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+int lv_snprintf(char * buffer, size_t count, const char * format, ...);
+
+int lv_vsnprintf(char * buffer, size_t count, const char * format, va_list va);
 
 
 #ifdef __cplusplus

@@ -23,7 +23,7 @@ extern "C" {
  *      DEFINES
  *********************/
 #define LV_MASK_ID_INV  (-1)
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 # define _LV_MASK_MAX_NUM     16
 #else
 # define _LV_MASK_MAX_NUM     1
@@ -42,7 +42,7 @@ enum {
 
 typedef uint8_t lv_draw_sw_mask_res_t;
 
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 
 enum {
     LV_DRAW_SW_MASK_TYPE_LINE,
@@ -292,7 +292,7 @@ void lv_draw_sw_mask_fade_init(lv_draw_sw_mask_fade_param_t * param, const lv_ar
  */
 void lv_draw_sw_mask_map_init(lv_draw_sw_mask_map_param_t * param, const lv_area_t * coords, const lv_opa_t * map);
 
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 
 /**********************
  *      MACROS

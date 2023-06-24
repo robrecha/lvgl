@@ -382,9 +382,8 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
 
     /*With double buffered direct mode synchronize the rendered areas to the other buffer*/
     /*We need to wait for ready here to not mess up the active screen*/
-    while(disp_refr->flushing) {
-        if(disp_refr->wait_cb) disp_refr->wait_cb(disp_refr);
-    }
+    while(disp_refr->flushing);
+
     /*The buffers are already swapped.
      *So the active buffer is the off screen buffer where LVGL will render*/
     void * buf_off_screen = disp_refr->draw_buf_act;
@@ -408,7 +407,7 @@ refr_clean_up:
     lv_memzero(disp_refr->inv_area_joined, sizeof(disp_refr->inv_area_joined));
     disp_refr->inv_p = 0;
 
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX == 1
     _lv_draw_sw_mask_cleanup();
 #endif
 
@@ -578,9 +577,7 @@ static void refr_area_part(lv_layer_t * layer)
     /* In single buffered mode wait here until the buffer is freed.
      * Else we would draw into the buffer while it's still being transferred to the display*/
     if(!lv_disp_is_double_buffered(disp_refr)) {
-        while(disp_refr->flushing) {
-            if(disp_refr->wait_cb) disp_refr->wait_cb(disp_refr);
-        }
+        while(disp_refr->flushing);
     }
     /*If the screen is transparent initialize it when the flushing is ready*/
     if(lv_color_format_has_alpha(disp_refr->color_format)) {
@@ -1053,10 +1050,7 @@ static void draw_buf_rotate(lv_area_t * area, lv_color_t * color_p)
 
             /*Flush the completed area to the display*/
             call_flush_cb(disp_refr, area, rot_buf == NULL ? color_p : rot_buf);
-            /*FIXME: Rotation forces legacy behavior where rendering and flushing are done serially*/
-            while(disp_refr->flushing) {
-                if(disp_refr->wait_cb) disp_refr->wait_cb(disp_refr);
-            }
+            while(disp_refr->flushing);
             color_p += area_w * height;
             row += height;
         }
@@ -1083,9 +1077,7 @@ static void draw_buf_flush(lv_disp_t * disp)
      * If we need to wait here it means that the content of one buffer is being sent to display
      * and other buffer already contains the new rendered image. */
     if(lv_disp_is_double_buffered(disp)) {
-        while(disp->flushing) {
-            if(disp->wait_cb) disp_refr->wait_cb(disp);
-        }
+        while(disp->flushing);
     }
 
     disp->flushing = 1;

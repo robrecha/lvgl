@@ -54,8 +54,6 @@ void lv_obj_init_draw_rect_dsc(lv_obj_t * obj, uint32_t part, lv_draw_rect_dsc_t
         }
     }
 
-#if LV_USE_DRAW_MASKS
-
     draw_dsc->radius = lv_obj_get_style_radius(obj, part);
 
     if(draw_dsc->bg_opa != LV_OPA_TRANSP) {
@@ -135,55 +133,6 @@ void lv_obj_init_draw_rect_dsc(lv_obj_t * obj, uint32_t part, lv_draw_rect_dsc_t
             }
         }
     }
-
-#else /*LV_USE_DRAW_MASKS*/
-    if(draw_dsc->bg_opa != LV_OPA_TRANSP) {
-        draw_dsc->bg_opa = lv_obj_get_style_bg_opa(obj, part);
-        if(draw_dsc->bg_opa > LV_OPA_MIN) {
-            draw_dsc->bg_color = lv_obj_get_style_bg_color_filtered(obj, part);
-        }
-    }
-
-    draw_dsc->border_width = lv_obj_get_style_border_width(obj, part);
-    if(draw_dsc->border_width) {
-        if(draw_dsc->border_opa != LV_OPA_TRANSP) {
-            draw_dsc->border_opa = lv_obj_get_style_border_opa(obj, part);
-            if(draw_dsc->border_opa > LV_OPA_MIN) {
-                draw_dsc->border_color = lv_obj_get_style_border_color_filtered(obj, part);
-                draw_dsc->border_side = lv_obj_get_style_border_side(obj, part);
-            }
-        }
-    }
-
-    draw_dsc->outline_width = lv_obj_get_style_outline_width(obj, part);
-    if(draw_dsc->outline_width) {
-        if(draw_dsc->outline_opa != LV_OPA_TRANSP) {
-            draw_dsc->outline_opa = lv_obj_get_style_outline_opa(obj, part);
-            if(draw_dsc->outline_opa > LV_OPA_MIN) {
-                draw_dsc->outline_pad = lv_obj_get_style_outline_pad(obj, part);
-                draw_dsc->outline_color = lv_obj_get_style_outline_color_filtered(obj, part);
-            }
-        }
-    }
-
-    if(draw_dsc->bg_img_opa != LV_OPA_TRANSP) {
-        draw_dsc->bg_img_src = lv_obj_get_style_bg_img_src(obj, part);
-        if(draw_dsc->bg_img_src) {
-            draw_dsc->bg_img_opa = lv_obj_get_style_bg_img_opa(obj, part);
-            if(draw_dsc->bg_img_opa > LV_OPA_MIN) {
-                if(lv_img_src_get_type(draw_dsc->bg_img_src) == LV_IMG_SRC_SYMBOL) {
-                    draw_dsc->bg_img_symbol_font = lv_obj_get_style_text_font(obj, part);
-                    draw_dsc->bg_img_recolor = lv_obj_get_style_text_color_filtered(obj, part);
-                }
-                else {
-                    draw_dsc->bg_img_recolor = lv_obj_get_style_bg_img_recolor_filtered(obj, part);
-                    draw_dsc->bg_img_recolor_opa = lv_obj_get_style_bg_img_recolor_opa(obj, part);
-                    draw_dsc->bg_img_tiled = lv_obj_get_style_bg_img_tiled(obj, part);
-                }
-            }
-        }
-    }
-#endif
 
     if(part != LV_PART_MAIN) {
         if(opa < LV_OPA_MAX) {

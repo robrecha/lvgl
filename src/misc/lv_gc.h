@@ -54,10 +54,9 @@ extern "C" {
     LV_DISPATCH_COND(f, _lv_img_cache_entry_t*, _lv_img_cache_array, LV_IMG_CACHE_DEF, 1)              \
     LV_DISPATCH_COND(f, _lv_img_cache_entry_t, _lv_img_cache_single, LV_IMG_CACHE_DEF, 0)              \
     LV_DISPATCH(f, lv_timer_t*, _lv_timer_act)                                                         \
-    LV_DISPATCH_COND(f, _lv_draw_sw_mask_radius_circle_dsc_arr_t , _lv_circle_cache, LV_USE_DRAW_MASKS, 1)  \
+    LV_DISPATCH_COND(f, _lv_draw_sw_mask_radius_circle_dsc_arr_t , _lv_circle_cache, LV_DRAW_SW_COMPLEX, 1)  \
     LV_DISPATCH(f, void * , _lv_theme_default_styles)                                                  \
     LV_DISPATCH(f, void * , _lv_theme_basic_styles)                                                    \
-    LV_DISPATCH(f, uint8_t * , _lv_grad_cache_mem)                                                     \
     LV_DISPATCH(f, uint8_t * , _lv_style_custom_prop_flag_lookup_table)                                \
     LV_DISPATCH(f, lv_ll_t, _subs_ll)
 

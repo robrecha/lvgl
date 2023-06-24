@@ -8,7 +8,7 @@
  *********************/
 #include "lv_color.h"
 #include "lv_log.h"
-#include LV_COLOR_EXTERN_INCLUDE
+#include "../misc/lv_color.h"
 
 /*********************
  *      DEFINES
@@ -95,12 +95,12 @@ uint32_t lv_color_to_u32(lv_color_t color)
 lv_color_t lv_color_lighten(lv_color_t c, lv_opa_t lvl)
 {
 
-    return LV_COLOR_MIX(lv_color_white(), c, lvl);
+    return lv_color_mix(lv_color_white(), c, lvl);
 }
 
 lv_color_t lv_color_darken(lv_color_t c, lv_opa_t lvl)
 {
-    return LV_COLOR_MIX(lv_color_black(), c, lvl);
+    return lv_color_mix(lv_color_black(), c, lvl);
 }
 
 /**

@@ -8,7 +8,7 @@
  *********************/
 #include "../lv_draw.h"
 #if LV_USE_DRAW_SW
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
 
 #include "../../misc/lv_math.h"
 #include "../../misc/lv_log.h"
@@ -92,5 +92,5 @@ void lv_draw_sw_mask_rect(lv_draw_unit_t * draw_unit, const lv_draw_mask_rect_ds
  *   STATIC FUNCTIONS
  **********************/
 
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 #endif /*LV_USE_DRAW_SW*/

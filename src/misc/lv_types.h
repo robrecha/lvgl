@@ -39,12 +39,8 @@ extern "C" {
 #define LV_OS_CUSTOM        255
 
 
-#define LV_STDLIB_BUILTIN              0
+#define LV_STDLIB_BUILTIN           0
 #define LV_STDLIB_CLIB              1
-#define LV_STDLIB_MICROPYTHON       2
-#define LV_STDLIB_FREERTOS          3
-#define LV_STDLIB_RT_THREAD         4
-#define LV_STDLIB_ZEPHYR            5
 #define LV_STDLIB_CUSTOM            255
 
 /**********************

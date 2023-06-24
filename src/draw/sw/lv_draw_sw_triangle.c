@@ -42,7 +42,7 @@
 
 void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_t * dsc)
 {
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     lv_area_t tri_area;
     tri_area.x1 = LV_MIN3(dsc->p[0].x, dsc->p[1].x, dsc->p[2].x);
     tri_area.y1 = LV_MIN3(dsc->p[0].y, dsc->p[1].y, dsc->p[2].y);
@@ -192,8 +192,8 @@ void lv_draw_sw_triangle(lv_draw_unit_t * draw_unit, const lv_draw_triangle_dsc_
     LV_UNUSED(point_cnt);
     LV_UNUSED(draw_ctx);
     LV_UNUSED(draw_dsc);
-    LV_LOG_WARN("Can't draw polygon with LV_USE_DRAW_MASKS == 0");
-#endif /*LV_USE_DRAW_MASKS*/
+    LV_LOG_WARN("Can't draw triangles with LV_DRAW_SW_COMPLEX == 0");
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 
 /**********************

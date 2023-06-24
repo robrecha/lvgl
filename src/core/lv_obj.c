@@ -21,22 +21,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#if LV_USE_GPU_STM32_DMA2D
-    #include "../draw/stm32_dma2d/lv_gpu_stm32_dma2d.h"
-#endif
-
-#if LV_USE_GPU_GD32_IPA
-    #include "../draw/gd32_ipa/lv_gpu_gd32_ipa.h"
-#endif
-
-#if LV_USE_GPU_SWM341_DMA2D
-    #include "../draw/swm341_dma2d/lv_gpu_swm341_dma2d.h"
-#endif
-
-#if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
-    #include "../draw/nxp/pxp/lv_gpu_nxp_pxp.h"
-#endif
-
 /*********************
  *      DEFINES
  *********************/
@@ -473,7 +457,6 @@ static lv_res_t scrollbar_init_draw_dsc(lv_obj_t * obj, lv_draw_rect_dsc_t * dsc
         }
     }
 
-#if LV_USE_DRAW_MASKS
     dsc->shadow_opa = lv_obj_get_style_shadow_opa(obj, LV_PART_SCROLLBAR);
     if(dsc->shadow_opa > LV_OPA_MIN) {
         dsc->shadow_width = lv_obj_get_style_shadow_width(obj, LV_PART_SCROLLBAR);
@@ -500,10 +483,6 @@ static lv_res_t scrollbar_init_draw_dsc(lv_obj_t * obj, lv_draw_rect_dsc_t * dsc
     else {
         return LV_RES_INV;
     }
-#else
-    if(dsc->bg_opa != LV_OPA_TRANSP || dsc->border_opa != LV_OPA_TRANSP) return LV_RES_OK;
-    else return LV_RES_INV;
-#endif
 }
 
 static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)

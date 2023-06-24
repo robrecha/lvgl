@@ -87,7 +87,7 @@ void lv_draw_sw_border(lv_draw_unit_t * draw_unit, const lv_draw_border_dsc_t * 
 void draw_border_complex(lv_draw_unit_t * draw_unit, const lv_area_t * outer_area, const lv_area_t * inner_area,
                          lv_coord_t rout, lv_coord_t rin, lv_color_t color, lv_opa_t opa)
 {
-#if LV_USE_DRAW_MASKS
+#if LV_DRAW_SW_COMPLEX
     /*Get clipped draw area which is the real draw area.
      *It is always the same or inside `coords`*/
     lv_area_t draw_area;
@@ -283,7 +283,7 @@ void draw_border_complex(lv_draw_unit_t * draw_unit, const lv_area_t * outer_are
     if(rout > 0) lv_draw_sw_mask_free_param(&mask_rout_param);
     lv_free(mask_buf);
 
-#endif /*LV_USE_DRAW_MASKS*/
+#endif /*LV_DRAW_SW_COMPLEX*/
 }
 static void draw_border_simple(lv_draw_unit_t * draw_unit, const lv_area_t * outer_area, const lv_area_t * inner_area,
                                lv_color_t color, lv_opa_t opa)

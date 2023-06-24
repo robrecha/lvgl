@@ -10,7 +10,8 @@
 #if LV_USE_METER != 0
 
 #include "../../misc/lv_assert.h"
-#include LV_COLOR_EXTERN_INCLUDE
+#include "../../misc/lv_color.h"
+#include "../../stdlib/lv_sprintf.h"
 
 /*********************
  *      DEFINES
@@ -377,7 +378,6 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
     lv_draw_line_dsc_t line_dsc;
     lv_draw_line_dsc_init(&line_dsc);
     lv_obj_init_draw_line_dsc(obj, LV_PART_TICKS, &line_dsc);
-    line_dsc.raw_end = 1;
 
     lv_draw_label_dsc_t label_dsc;
     lv_draw_label_dsc_init(&label_dsc);
@@ -385,6 +385,7 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
 
     lv_coord_t r_out = r_edge;
     lv_coord_t r_in_major = r_out - meter->scale.tick_major_length;
+    lv_coord_t r_in_minor = r_out - meter->scale.tick_length;
 
     uint32_t minor_cnt = meter->scale.tick_major_nth ? meter->scale.tick_major_nth - 1 : 0xFFFF;
     uint16_t i;
@@ -397,12 +398,8 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
         }
 
         int32_t value_of_line = lv_map(i, 0, meter->scale.tick_cnt - 1, meter->scale.min, meter->scale.max);
-
         lv_color_t line_color = major ? meter->scale.tick_major_color : meter->scale.tick_color;
-        lv_color_t line_color_ori = line_color;
-
-        lv_coord_t line_width_ori = major ? meter->scale.tick_major_width : meter->scale.tick_width;
-        lv_coord_t line_width = line_width_ori;
+        lv_coord_t line_width = major ? meter->scale.tick_major_width : meter->scale.tick_width;
 
         lv_meter_indicator_t * indic;
         _LV_LL_READ_BACK(&meter->indicator_ll, indic) {
@@ -421,7 +418,7 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
                     else {
                         ratio = lv_map(value_of_line, meter->scale.min, meter->scale.max, LV_OPA_TRANSP, LV_OPA_COVER);
                     }
-                    line_color = LV_COLOR_MIX(indic->type_data.scale_lines.color_end, indic->type_data.scale_lines.color_start, ratio);
+                    line_color = lv_color_mix(indic->type_data.scale_lines.color_end, indic->type_data.scale_lines.color_start, ratio);
                 }
             }
         }
@@ -435,9 +432,14 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
         /*Draw a little bit longer lines to be sure the mask will clip them correctly
          *and to get a better precision*/
         lv_point_t p_outer;
-        p_outer.x = p_center.x + r_out + LV_MAX(LV_DPI_DEF, r_out);
+        p_outer.x = p_center.x + r_out;
         p_outer.y = p_center.y;
         lv_point_transform(&p_outer, angle_upscale, 256, &p_center);
+
+        lv_point_t p_inner;
+        p_inner.x = p_center.x + (major ? r_in_major : r_in_minor);
+        p_inner.y = p_center.y;
+        lv_point_transform(&p_inner, angle_upscale, 256, &p_center);
 
         /*Draw the text*/
         if(major) {
@@ -469,12 +471,8 @@ static void draw_ticks_and_labels(lv_obj_t * obj, lv_layer_t * layer, const lv_a
         }
 
         line_dsc.p1 = p_outer;
-        line_dsc.p2 = p_center;
+        line_dsc.p2 = p_inner;
         lv_draw_line(layer, &line_dsc);
-
-        line_dsc.color = line_color_ori;
-        line_dsc.width = line_width_ori;
-
     }
 }
 
