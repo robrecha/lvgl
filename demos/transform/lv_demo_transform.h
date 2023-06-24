@@ -1,10 +1,10 @@
 /**
- * @file lv_themes.h
+ * @file lv_demo_transform.h
  *
  */
 
-#ifndef LV_THEMES_H
-#define LV_THEMES_H
+#ifndef LV_DEMO_TRANSFORM_H
+#define LV_DEMO_TRANSFORM_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,9 +13,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "default/lv_theme_default.h"
-#include "mono/lv_theme_mono.h"
-#include "basic/lv_theme_basic.h"
+#include "../lv_demos.h"
 
 /*********************
  *      DEFINES
@@ -28,13 +26,14 @@ extern "C" {
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
+void lv_demo_transform(void);
 
 /**********************
  *      MACROS
  **********************/
 
 #ifdef __cplusplus
-} /*extern "C"*/
+} /* extern "C" */
 #endif
 
-#endif /*LV_THEMES_H*/
+#endif /*LV_DEMO_TRANSFORM_H*/

@@ -13,8 +13,8 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_obj.h"
-#include "lv_theme.h"
+#include "../core/lv_obj.h"
+#include "../themes/lv_theme.h"
 
 /*********************
  *      DEFINES

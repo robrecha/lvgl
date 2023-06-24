@@ -10,7 +10,7 @@
 
 #if LV_USE_THEME_DEFAULT
 
-#include "lv_theme_default.h"
+#include "../lv_theme.h"
 #include "../../misc/lv_gc.h"
 #include LV_COLOR_EXTERN_INCLUDE
 

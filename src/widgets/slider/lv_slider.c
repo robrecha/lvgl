@@ -11,9 +11,9 @@
 
 #include "../../misc/lv_assert.h"
 #include "../../core/lv_group.h"
-#include "../../core/lv_indev.h"
-#include "../../core/lv_indev_private.h"
-#include "../../core/lv_disp.h"
+#include "../../indev/lv_indev.h"
+#include "../../indev/lv_indev_private.h"
+#include "../../disp/lv_disp.h"
 #include "../../draw/lv_draw.h"
 #include "../../misc/lv_math.h"
 #include "../img/lv_img.h"

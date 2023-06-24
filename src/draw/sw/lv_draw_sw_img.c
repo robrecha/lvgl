@@ -10,8 +10,8 @@
 #if LV_USE_DRAW_SW
 
 #include "../lv_img_cache.h"
-#include "../../core/lv_disp.h"
-#include "../../core/lv_disp_private.h"
+#include "../../disp/lv_disp.h"
+#include "../../disp/lv_disp_private.h"
 #include "../../misc/lv_log.h"
 #include "../../core/lv_refr.h"
 #include "../../misc/lv_mem.h"

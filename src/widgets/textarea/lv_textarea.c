@@ -12,7 +12,7 @@
 #include <string.h>
 #include "../../core/lv_group.h"
 #include "../../core/lv_refr.h"
-#include "../../core/lv_indev.h"
+#include "../../indev/lv_indev.h"
 #include "../../draw/lv_draw.h"
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_anim.h"

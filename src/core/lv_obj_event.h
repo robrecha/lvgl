@@ -15,7 +15,7 @@ extern "C" {
  *********************/
 #include <stdbool.h>
 #include "../misc/lv_event.h"
-#include "lv_indev.h"
+#include "../indev/lv_indev.h"
 
 /*********************
  *      DEFINES

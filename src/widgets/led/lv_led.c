@@ -10,7 +10,7 @@
 #if LV_USE_LED
 
 #include "../../misc/lv_assert.h"
-#include "../../themes/lv_themes.h"
+#include "../../themes/lv_theme.h"
 #include LV_COLOR_EXTERN_INCLUDE
 
 /*********************

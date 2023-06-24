@@ -18,7 +18,7 @@ extern "C" {
 
 #if LV_USE_GPU_ARM2D
 #include "../../misc/lv_color.h"
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 #include "../sw/lv_draw_sw.h"
 
 /*********************

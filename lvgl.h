@@ -21,6 +21,8 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
+#include "src/lv_init.h"
+
 #include "src/misc/lv_log.h"
 #include "src/misc/lv_timer.h"
 #include "src/misc/lv_math.h"
@@ -34,10 +36,9 @@ extern "C" {
 
 #include "src/core/lv_obj.h"
 #include "src/core/lv_group.h"
-#include "src/core/lv_indev.h"
+#include "src/indev/lv_indev.h"
 #include "src/core/lv_refr.h"
-#include "src/core/lv_disp.h"
-#include "src/core/lv_theme.h"
+#include "src/disp/lv_disp.h"
 
 #include "src/font/lv_font.h"
 #include "src/font/lv_font_loader.h"
@@ -102,7 +103,7 @@ extern "C" {
 
 #include "src/draw/lv_draw.h"
 
-#include "src/themes/lv_themes.h"
+#include "src/themes/lv_theme.h"
 
 #include "src/lv_api_map.h"
 

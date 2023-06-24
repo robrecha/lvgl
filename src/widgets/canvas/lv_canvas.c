@@ -12,7 +12,7 @@
 #include "../../misc/lv_math.h"
 #include "../../draw/lv_draw.h"
 #include "../../core/lv_refr.h"
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 #include "../../draw/sw/lv_draw_sw.h"
 
 /*********************

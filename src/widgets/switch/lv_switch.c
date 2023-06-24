@@ -13,8 +13,8 @@
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_math.h"
 #include "../../misc/lv_anim.h"
-#include "../../core/lv_indev.h"
-#include "../../core/lv_disp.h"
+#include "../../indev/lv_indev.h"
+#include "../../disp/lv_disp.h"
 #include "../img/lv_img.h"
 
 /*********************

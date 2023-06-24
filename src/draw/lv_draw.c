@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw.h"
 #include "sw/lv_draw_sw.h"
-#include "../core/lv_disp_private.h"
+#include "../disp/lv_disp_private.h"
 #include "../core/lv_refr.h"
 
 /*********************

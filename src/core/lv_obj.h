@@ -194,27 +194,6 @@ typedef struct _lv_obj_t {
  **********************/
 
 /**
- * Initialize LVGL library.
- * Should be called before any other LVGL related function.
- */
-void lv_init(void);
-
-#if LV_ENABLE_GC || LV_USE_BUILTIN_MALLOC
-
-/**
- * Deinit the 'lv' library
- * Currently only implemented when not using custom allocators, or GC is enabled.
- */
-void lv_deinit(void);
-
-#endif
-
-/**
- * Returns whether the 'lv' library is currently initialized
- */
-bool lv_is_initialized(void);
-
-/**
  * Create a base object (a rectangle)
  * @param parent    pointer to a parent object. If NULL then a screen will be created.
  * @return          pointer to the new object

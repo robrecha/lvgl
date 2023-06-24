@@ -9,7 +9,7 @@
 #include "lv_table.h"
 #if LV_USE_TABLE != 0
 
-#include "../../core/lv_indev.h"
+#include "../../indev/lv_indev.h"
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_txt.h"
 #include "../../misc/lv_txt_ap.h"

@@ -16,7 +16,7 @@ extern "C" {
 #include "../../misc/lv_color.h"
 
 #if LV_USE_GPU_GD32_IPA
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 #include "../sw/lv_draw_sw.h"
 
 /*********************

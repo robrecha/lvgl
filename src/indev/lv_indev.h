@@ -13,7 +13,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_group.h"
+#include "../core/lv_group.h"
 #include "../misc/lv_area.h"
 #include "../misc/lv_timer.h"
 

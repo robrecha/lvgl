@@ -9,8 +9,8 @@
 #include "lv_disp.h"
 #include "../misc/lv_math.h"
 #include "../core/lv_refr.h"
-#include "../core/lv_disp.h"
-#include "../core/lv_disp_private.h"
+#include "../disp/lv_disp.h"
+#include "../disp/lv_disp_private.h"
 #include "../misc/lv_gc.h"
 
 #if LV_USE_DRAW_SW
@@ -33,7 +33,7 @@
     #include "../draw/nxp/lv_gpu_nxp.h"
 #endif
 
-#include "../themes/lv_themes.h"
+#include "../themes/lv_theme.h"
 
 /*********************
  *      DEFINES

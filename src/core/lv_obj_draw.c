@@ -8,8 +8,8 @@
  *********************/
 #include "lv_obj_draw.h"
 #include "lv_obj.h"
-#include "lv_disp.h"
-#include "lv_indev.h"
+#include "../disp/lv_disp.h"
+#include "../indev/lv_indev.h"
 
 /*********************
  *      DEFINES

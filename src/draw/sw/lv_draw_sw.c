@@ -11,7 +11,7 @@
 
 #include "../../core/lv_refr.h"
 #include "lv_draw_sw.h"
-#include "../../core/lv_disp_private.h"
+#include "../../disp/lv_disp_private.h"
 
 /*********************
  *      DEFINES

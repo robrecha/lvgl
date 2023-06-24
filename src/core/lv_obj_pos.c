@@ -7,8 +7,8 @@
  *      INCLUDES
  *********************/
 #include "lv_obj.h"
-#include "lv_disp.h"
-#include "lv_disp_private.h"
+#include "../disp/lv_disp.h"
+#include "../disp/lv_disp_private.h"
 #include "lv_refr.h"
 #include "../misc/lv_gc.h"
 

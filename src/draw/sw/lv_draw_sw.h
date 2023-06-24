@@ -18,7 +18,7 @@ extern "C" {
 
 #include "../../misc/lv_area.h"
 #include "../../misc/lv_color.h"
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 #include "../../osal/lv_os.h"
 
 /*********************

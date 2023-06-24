@@ -7,9 +7,9 @@
  *      INCLUDES
  *********************/
 #include "lv_obj.h"
-#include "lv_theme.h"
-#include "lv_disp.h"
-#include "lv_disp_private.h"
+#include "../themes/lv_theme.h"
+#include "../disp/lv_disp.h"
+#include "../disp/lv_disp_private.h"
 
 /*********************
  *      DEFINES

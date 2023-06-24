@@ -22,7 +22,7 @@ extern "C" {
 #include "../draw/lv_img_cache.h"
 #include "../draw/sw/lv_draw_sw_mask.h"
 #include "../core/lv_obj_pos.h"
-#include "../core/lv_disp.h"
+#include "../disp/lv_disp.h"
 
 /*********************
  *      DEFINES

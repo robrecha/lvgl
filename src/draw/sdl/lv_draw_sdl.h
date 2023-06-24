@@ -21,7 +21,7 @@ extern "C" {
 #include LV_DRAW_SDL_INCLUDE_PATH
 
 #include "../lv_draw.h"
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 
 /*********************
  *      DEFINES

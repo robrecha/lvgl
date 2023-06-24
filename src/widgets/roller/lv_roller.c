@@ -12,9 +12,9 @@
 #include "../../misc/lv_assert.h"
 #include "../../draw/lv_draw.h"
 #include "../../core/lv_group.h"
-#include "../../core/lv_indev.h"
-#include "../../core/lv_indev_scroll.h"
-#include "../../core/lv_indev_private.h"
+#include "../../indev/lv_indev.h"
+#include "../../indev/lv_indev_scroll.h"
+#include "../../indev/lv_indev_private.h"
 
 /*********************
  *      DEFINES

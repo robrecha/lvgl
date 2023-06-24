@@ -17,7 +17,7 @@ extern "C" {
 
 #if LV_USE_GPU_STM32_DMA2D
 #include "../../misc/lv_color.h"
-#include "../../core/lv_disp.h"
+#include "../../disp/lv_disp.h"
 #include "../sw/lv_draw_sw.h"
 
 /*********************

@@ -8,7 +8,7 @@
  *********************/
 #include "lv_draw_img.h"
 #include "lv_img_cache.h"
-#include "../core/lv_disp.h"
+#include "../disp/lv_disp.h"
 #include "../misc/lv_log.h"
 #include "../core/lv_refr.h"
 #include "../misc/lv_mem.h"

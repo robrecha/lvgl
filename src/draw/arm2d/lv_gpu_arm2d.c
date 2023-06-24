@@ -40,7 +40,7 @@
 #if LV_USE_GPU_ARM2D
 
 #include "../../core/lv_refr.h"
-#include "../../core/lv_disp_private.h"
+#include "../../disp/lv_disp_private.h"
 
 #define __ARM_2D_IMPL__
 #include "arm_2d.h"
