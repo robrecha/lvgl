@@ -13,7 +13,7 @@
 #include <string.h>
 #include "lv_printf.h"
 #include "lv_mem.h"
-#include "../hal/lv_hal_tick.h"
+#include "../tick/lv_tick.h"
 
 #if LV_LOG_PRINTF
     #include <stdio.h>

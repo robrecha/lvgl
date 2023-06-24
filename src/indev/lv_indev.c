@@ -15,7 +15,7 @@
 #include "../core/lv_group.h"
 #include "../core/lv_refr.h"
 
-#include "../hal/lv_hal_tick.h"
+#include "../tick/lv_tick.h"
 #include "../misc/lv_timer.h"
 #include "../misc/lv_math.h"
 #include "../misc/lv_gc.h"

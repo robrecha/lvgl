@@ -1,12 +1,12 @@
 /**
- * @file lv_hal_tick.c
+ * @file lv_tick.c
  * Provide access to the system tick with 1 millisecond resolution
  */
 
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_hal_tick.h"
+#include "lv_tick.h"
 #include <stddef.h>
 
 #if LV_TICK_CUSTOM == 1

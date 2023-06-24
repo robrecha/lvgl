@@ -17,7 +17,7 @@
 #include "../misc/lv_assert.h"
 #include "../misc/lv_math.h"
 #include "../misc/lv_log.h"
-#include "../hal/lv_hal.h"
+#include "../tick/lv_tick.h"
 #include <stdint.h>
 #include <string.h>
 

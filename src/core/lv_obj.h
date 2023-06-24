@@ -22,7 +22,6 @@ extern "C" {
 #include "../misc/lv_area.h"
 #include "../misc/lv_color.h"
 #include "../misc/lv_assert.h"
-#include "../hal/lv_hal.h"
 
 /*********************
  *      DEFINES

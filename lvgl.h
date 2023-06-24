@@ -32,7 +32,7 @@ extern "C" {
 #include "src/misc/lv_printf.h"
 #include "src/misc/lv_profiler_builtin.h"
 
-#include "src/hal/lv_hal.h"
+#include "src/tick/lv_tick.h"
 
 #include "src/core/lv_obj.h"
 #include "src/core/lv_group.h"
