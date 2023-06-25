@@ -15,6 +15,7 @@
 #include "../../indev/lv_indev_private.h"
 #include "../../disp/lv_disp.h"
 #include "../../draw/lv_draw.h"
+#include "../../stdlib/lv_string.h"
 #include "../../misc/lv_math.h"
 #include "../img/lv_img.h"
 

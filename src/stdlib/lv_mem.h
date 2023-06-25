@@ -59,6 +59,10 @@ void lv_mem_init(void);
  */
 void lv_mem_deinit(void);
 
+lv_mem_pool_t lv_mem_add_pool(void * mem, size_t bytes);
+
+void lv_mem_remove_pool(lv_mem_pool_t pool);
+
 /**
  * Allocate a memory dynamically
  * @param size size of the memory to allocate in bytes
@@ -81,59 +85,36 @@ void lv_free(void * data);
  */
 void * lv_realloc(void * data_p, size_t new_size);
 
-/**
- * @brief Copies a block of memory from a source address to a destination address.
- * @param dst Pointer to the destination array where the content is to be copied.
- * @param src Pointer to the source of data to be copied.
- * @param len Number of bytes to copy.
- * @return Pointer to the destination array.
- * @note The function does not check for any overlapping of the source and destination memory blocks.
- */
-void * lv_memcpy(void * dst, const void * src, size_t len);
 
 /**
- * @brief Fills a block of memory with a specified value.
- * @param dst Pointer to the destination array to fill with the specified value.
- * @param v Value to be set. The value is passed as an int, but the function fills
- *          the block of memory using the unsigned char conversion of this value.
- * @param len Number of bytes to be set to the value.
+ * Used internally to execute a plain `malloc` operation
+ * @param size      size in bytes to `malloc`
  */
-void lv_memset(void * dst, uint8_t v, size_t len);
+void * lv_malloc_core(size_t size);
+
+
 
 /**
- * Same as `memset(dst, 0x00, len)`.
- * @param dst pointer to the destination buffer
- * @param len number of byte to set
+ * Used internally to execute a plain `free` operation
+ * @param p      memory address to free
  */
-static inline void lv_memzero(void * dst, size_t len)
-{
-    lv_memset(dst, 0x00, len);
-}
+void lv_free_core(void * p);
 
 /**
- * @brief Computes the length of the string str up to, but not including the terminating null character.
- * @param str Pointer to the null-terminated byte string to be examined.
- * @return The length of the string in bytes.
+ * Used internally to execute a plain realloc operation
+ * @param p         memory address to realloc
+ * @param new_size  size in bytes to realloc
  */
-size_t lv_strlen(const char * str);
+void * lv_realloc_core(void * p, size_t new_size);
 
 /**
- * @brief Copies up to dest_size characters from the string pointed to by src to the character array pointed to by dst.
- * @param dst Pointer to the destination array where the content is to be copied.
- * @param src Pointer to the source of data to be copied.
- * @param dest_size Maximum number of characters to be copied to dst, including the null character.
- * @return A pointer to the destination array, which is dst.
+ * Used internally to execute a plain malloc operation
+ * @param size      size in bytes to malloc
  */
-char * lv_strncpy(char * dst, const char * src, size_t dest_size);
+void lv_mem_monitor_core(lv_mem_monitor_t * mon_p);
 
-/**
- * @brief Copies the string pointed to by src, including the terminating null character,
- *        to the character array pointed to by dst.
- * @param dst Pointer to the destination array where the content is to be copied.
- * @param src Pointer to the source of data to be copied.
- * @return A pointer to the destination array, which is dst.
- */
-char * lv_strcpy(char * dst, const char * src);
+
+lv_res_t lv_mem_test_core(void);
 
 /**
  * @brief Tests the memory allocation system by allocating and freeing a block of memory.

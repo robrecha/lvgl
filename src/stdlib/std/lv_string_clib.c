@@ -7,6 +7,7 @@
  *********************/
 #include "../../lv_conf_internal.h"
 #if LV_USE_STDLIB_STRING == LV_STDLIB_CLIB
+#include "../lv_string.h"
 #include <string.h>
 
 /*********************

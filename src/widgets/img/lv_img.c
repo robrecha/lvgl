@@ -9,6 +9,8 @@
 #include "lv_img.h"
 #if LV_USE_IMG != 0
 
+#include "../../stdlib/lv_string.h"
+
 /*********************
  *      DEFINES
  *********************/

@@ -16,6 +16,7 @@
 #include "../../misc/lv_math.h"
 #include "../../stdlib/lv_sprintf.h"
 #include "../../draw/lv_draw.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

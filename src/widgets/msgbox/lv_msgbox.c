@@ -15,6 +15,7 @@
 #include "../../misc/lv_assert.h"
 #include "../../disp/lv_disp.h"
 #include "../../layouts/flex/lv_flex.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

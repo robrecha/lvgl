@@ -13,6 +13,7 @@
 #include "../misc/lv_bidi.h"
 #include "../misc/lv_assert.h"
 #include "../stdlib/lv_mem.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

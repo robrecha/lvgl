@@ -19,6 +19,7 @@
 #include "../../misc/lv_anim.h"
 #include "../../misc/lv_math.h"
 #include "../../misc/lv_txt_ap.h"
+#include "../../stdlib/lv_string.h"
 #include <string.h>
 
 /*********************

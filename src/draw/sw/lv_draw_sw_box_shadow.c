@@ -13,6 +13,7 @@
 #include "../../misc/lv_math.h"
 #include "../../core/lv_refr.h"
 #include "../../misc/lv_assert.h"
+#include "../../stdlib/lv_string.h"
 #include "../lv_draw_mask.h"
 
 /*********************

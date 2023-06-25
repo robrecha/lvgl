@@ -11,6 +11,7 @@
 
 #include "../../misc/lv_assert.h"
 #include "../../indev/lv_indev.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

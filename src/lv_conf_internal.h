@@ -83,21 +83,21 @@
     #ifdef CONFIG_LV_USE_STDLIB_MALLOC
         #define LV_USE_STDLIB_MALLOC CONFIG_LV_USE_STDLIB_MALLOC
     #else
-        #define LV_USE_STDLIB_MALLOC    LV_STDLIB_CLIB
+        #define LV_USE_STDLIB_MALLOC    LV_STDLIB_BUILTIN
     #endif
 #endif
 #ifndef LV_USE_STDLIB_STRING
     #ifdef CONFIG_LV_USE_STDLIB_STRING
         #define LV_USE_STDLIB_STRING CONFIG_LV_USE_STDLIB_STRING
     #else
-        #define LV_USE_STDLIB_STRING    LV_STDLIB_CLIB
+        #define LV_USE_STDLIB_STRING    LV_STDLIB_BUILTIN
     #endif
 #endif
 #ifndef LV_USE_STDLIB_SPRINTF
     #ifdef CONFIG_LV_USE_STDLIB_SPRINTF
         #define LV_USE_STDLIB_SPRINTF CONFIG_LV_USE_STDLIB_SPRINTF
     #else
-        #define LV_USE_STDLIB_SPRINTF   LV_STDLIB_CLIB
+        #define LV_USE_STDLIB_SPRINTF   LV_STDLIB_BUILTIN
     #endif
 #endif
 
@@ -109,6 +109,15 @@
             #define LV_MEM_SIZE CONFIG_LV_MEM_SIZE
         #else
             #define LV_MEM_SIZE (256 * 1024U)          /*[bytes]*/
+        #endif
+    #endif
+
+    /*Size of the memory expand for `lv_malloc()` in bytes*/
+    #ifndef LV_MEM_POOL_EXPAND_SIZE
+        #ifdef CONFIG_LV_MEM_POOL_EXPAND_SIZE
+            #define LV_MEM_POOL_EXPAND_SIZE CONFIG_LV_MEM_POOL_EXPAND_SIZE
+        #else
+            #define LV_MEM_POOL_EXPAND_SIZE 0
         #endif
     #endif
 
@@ -689,8 +698,8 @@
 /* Adjust color mix functions rounding. GPUs might calculate color mix (blending) differently.
  * 0: round down, 64: round up from x.75, 128: round up from half, 192: round up from x.25, 254: round up */
 #ifndef lv_color_mix_ROUND_OFS
-    #ifdef CONFIG_lv_color_mix_ROUND_OFS
-        #define lv_color_mix_ROUND_OFS CONFIG_lv_color_mix_ROUND_OFS
+    #ifdef CONFIG_LV_COLOR_MIX_ROUND_OFS
+        #define lv_color_mix_ROUND_OFS CONFIG_LV_COLOR_MIX_ROUND_OFS
     #else
         #define lv_color_mix_ROUND_OFS 0
     #endif
@@ -785,7 +794,6 @@
         #define LV_ATTRIBUTE_FAST_MEM
     #endif
 #endif
-
 
 /*Export integer constant to binding. This macro is used with constants in the form of LV_<CONST> that
  *should also appear on LVGL binding API such as Micropython.*/
@@ -965,13 +973,6 @@
 #endif
 
 /*Demonstrate special features*/
-#ifndef LV_FONT_MONTSERRAT_12_SUBPX
-    #ifdef CONFIG_LV_FONT_MONTSERRAT_12_SUBPX
-        #define LV_FONT_MONTSERRAT_12_SUBPX CONFIG_LV_FONT_MONTSERRAT_12_SUBPX
-    #else
-        #define LV_FONT_MONTSERRAT_12_SUBPX      0
-    #endif
-#endif
 #ifndef LV_FONT_MONTSERRAT_28_COMPRESSED
     #ifdef CONFIG_LV_FONT_MONTSERRAT_28_COMPRESSED
         #define LV_FONT_MONTSERRAT_28_COMPRESSED CONFIG_LV_FONT_MONTSERRAT_28_COMPRESSED
@@ -1117,15 +1118,6 @@
         #define LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN CONFIG_LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN
     #else
         #define LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN 3
-    #endif
-#endif
-
-/*The control character to use for signalling text recoloring.*/
-#ifndef LV_TXT_COLOR_CMD
-    #ifdef CONFIG_LV_TXT_COLOR_CMD
-        #define LV_TXT_COLOR_CMD CONFIG_LV_TXT_COLOR_CMD
-    #else
-        #define LV_TXT_COLOR_CMD "#"
     #endif
 #endif
 
@@ -1330,18 +1322,6 @@
         #endif
     #else
         #define LV_USE_CHECKBOX   1
-    #endif
-#endif
-
-#ifndef LV_USE_COLORWHEEL
-    #ifdef _LV_KCONFIG_PRESENT
-        #ifdef CONFIG_LV_USE_COLORWHEEL
-            #define LV_USE_COLORWHEEL CONFIG_LV_USE_COLORWHEEL
-        #else
-            #define LV_USE_COLORWHEEL 0
-        #endif
-    #else
-        #define LV_USE_COLORWHEEL 1
     #endif
 #endif
 

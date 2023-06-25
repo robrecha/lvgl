@@ -11,6 +11,8 @@
 
 #if LV_USE_IMGBTN != 0
 
+#include "../../stdlib/lv_string.h"
+
 /*********************
  *      DEFINES
  *********************/

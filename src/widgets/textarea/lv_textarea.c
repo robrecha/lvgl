@@ -18,6 +18,7 @@
 #include "../../misc/lv_anim.h"
 #include "../../misc/lv_txt.h"
 #include "../../misc/lv_math.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

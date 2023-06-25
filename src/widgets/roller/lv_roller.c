@@ -15,6 +15,7 @@
 #include "../../indev/lv_indev.h"
 #include "../../indev/lv_indev_scroll.h"
 #include "../../indev/lv_indev_private.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

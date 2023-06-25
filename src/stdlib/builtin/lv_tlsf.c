@@ -3,6 +3,7 @@
 
 #include <limits.h>
 #include "lv_tlsf.h"
+#include "../../stdlib/lv_string.h"
 #include "../../misc/lv_log.h"
 #include "../../misc/lv_assert.h"
 

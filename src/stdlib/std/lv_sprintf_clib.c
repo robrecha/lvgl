@@ -12,6 +12,7 @@
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_CLIB
 #include <stdio.h>
 #include <stdarg.h>
+#include "../lv_sprintf.h"
 
 /*********************
  *      DEFINES

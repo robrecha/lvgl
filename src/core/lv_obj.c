@@ -18,6 +18,7 @@
 #include "../misc/lv_math.h"
 #include "../misc/lv_log.h"
 #include "../tick/lv_tick.h"
+#include "../stdlib/lv_string.h"
 #include <stdint.h>
 #include <string.h>
 

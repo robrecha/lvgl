@@ -10,6 +10,7 @@
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_log.h"
 #include "../../misc/lv_math.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

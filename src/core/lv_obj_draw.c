@@ -10,6 +10,7 @@
 #include "lv_obj.h"
 #include "../disp/lv_disp.h"
 #include "../indev/lv_indev.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

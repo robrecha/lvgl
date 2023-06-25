@@ -12,12 +12,13 @@
 #include "../disp/lv_disp.h"
 #include "../disp/lv_disp_private.h"
 #include "../misc/lv_gc.h"
+#include "../stdlib/lv_string.h"
+#include "../themes/lv_theme.h"
 
 #if LV_USE_DRAW_SW
     #include "../draw/sw/lv_draw_sw.h"
 #endif
 
-#include "../themes/lv_theme.h"
 
 /*********************
  *      DEFINES

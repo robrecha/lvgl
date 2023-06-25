@@ -16,6 +16,7 @@
 #include "../../misc/lv_style.h"
 #include "../../font/lv_font.h"
 #include "../../core/lv_refr.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

@@ -9,6 +9,7 @@
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
 
 #include "lv_tlsf.h"
+#include "../lv_string.h"
 #include "../../misc/lv_assert.h"
 #include "../../misc/lv_log.h"
 #include "../../misc/lv_ll.h"
@@ -109,7 +110,7 @@ void lv_mem_deinit(void)
     lv_mem_init();
 }
 
-lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
+lv_mem_pool_t lv_mem_add_pool(void * mem, size_t bytes)
 {
     lv_mem_pool_t new_pool = lv_tlsf_add_pool(tlsf, mem, bytes);
     if(!new_pool) {
@@ -124,7 +125,7 @@ lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
     return new_pool;
 }
 
-void lv_mem_builtin_remove_pool(lv_mem_pool_t pool)
+void lv_mem_remove_pool(lv_mem_pool_t pool)
 {
     lv_pool_t * pool_p;
     _LV_LL_READ(&pool_ll, pool_p) {

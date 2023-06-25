@@ -22,6 +22,9 @@
 #include "misc/lv_async.h"
 #include "misc/lv_fs.h"
 #include "misc/lv_gc.h"
+#if LV_USE_DRAW_SW
+    #include "draw/sw/lv_draw_sw.h"
+#endif
 
 /*********************
  *      DEFINES
@@ -88,11 +91,6 @@ void lv_init(void)
 
 #if LV_USE_DRAW_SW
     lv_draw_sw_init();
-#endif
-
-
-#if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
-    PXP_COND_STOP(!lv_gpu_nxp_pxp_init(), "PXP init failed.");
 #endif
 
     _lv_obj_style_init();
@@ -208,7 +206,7 @@ void lv_init(void)
     LV_LOG_TRACE("finished");
 }
 
-#if LV_ENABLE_GC || LV_USE_BUILTIN_MALLOC
+#if LV_ENABLE_GC || LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
 
 void lv_deinit(void)
 {

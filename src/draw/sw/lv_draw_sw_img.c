@@ -17,6 +17,7 @@
 #include "../../stdlib/lv_mem.h"
 #include "../../misc/lv_math.h"
 #include "../../misc/lv_color.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

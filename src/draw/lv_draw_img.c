@@ -10,9 +10,10 @@
 #include "lv_img_cache.h"
 #include "../disp/lv_disp.h"
 #include "../misc/lv_log.h"
+#include "../misc/lv_math.h"
 #include "../core/lv_refr.h"
 #include "../stdlib/lv_mem.h"
-#include "../misc/lv_math.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

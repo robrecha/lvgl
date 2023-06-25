@@ -10,6 +10,7 @@
 #include "lv_draw_rect.h"
 #include "../misc/lv_assert.h"
 #include "../core/lv_obj_event.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

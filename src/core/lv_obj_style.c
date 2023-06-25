@@ -11,6 +11,7 @@
 #include "../disp/lv_disp_private.h"
 #include "../misc/lv_gc.h"
 #include "../misc/lv_color.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

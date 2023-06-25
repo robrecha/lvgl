@@ -1,9 +1,6 @@
 #if LV_BUILD_TEST
 #include "lv_test_init.h"
 #include "lv_test_indev.h"
-#include "lv_test_malloc.h"
-#include "../../src/misc/lv_malloc_builtin.h"
-#include "../../src/draw/sw/lv_draw_sw.h"
 #include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +22,6 @@ void lv_test_init(void)
 {
     lv_init();
     hal_init();
-    lv_test_malloc_init();
 }
 
 void lv_test_deinit(void)
@@ -36,7 +32,6 @@ void lv_test_deinit(void)
 static void hal_init(void)
 {
     lv_disp_t * disp = lv_disp_create(HOR_RES, VER_RES);
-    lv_draw_unit_sw_create(disp, 1);
     lv_disp_set_draw_buffers(disp, test_fb, NULL, HOR_RES * VER_RES, LV_DISP_RENDER_MODE_DIRECT);
     lv_disp_set_flush_cb(disp, dummy_flush_cb);
 

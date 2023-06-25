@@ -7,6 +7,7 @@
  *********************/
 #include "../lv_mem.h"
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_CLIB
+#include "../../stdlib/lv_mem.h"
 #include <stdlib.h>
 
 /*********************
@@ -43,7 +44,7 @@ void lv_mem_deinit(void)
 
 }
 
-lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
+lv_mem_pool_t lv_mem_add_pool(void * mem, size_t bytes)
 {
     /*Not supported*/
     LV_UNUSED(mem);
@@ -51,7 +52,7 @@ lv_mem_pool_t lv_mem_builtin_add_pool(void * mem, size_t bytes)
     return NULL;
 }
 
-void lv_mem_builtin_remove_pool(lv_mem_pool_t pool)
+void lv_mem_remove_pool(lv_mem_pool_t pool)
 {
     /*Not supported*/
     LV_UNUSED(pool);
@@ -71,7 +72,7 @@ void * lv_realloc_core(void * p, size_t new_size)
 
 void lv_free_core(void * p)
 {
-    return free(p);
+    free(p);
 }
 
 void lv_mem_monitor_core(lv_mem_monitor_t * mon_p)
@@ -92,20 +93,4 @@ lv_res_t lv_mem_test_core(void)
  *   STATIC FUNCTIONS
  **********************/
 
-static void lv_mem_walker(void * ptr, size_t size, int used, void * user)
-{
-    LV_UNUSED(ptr);
-
-    lv_mem_monitor_t * mon_p = user;
-    mon_p->total_size += size;
-    if(used) {
-        mon_p->used_cnt++;
-    }
-    else {
-        mon_p->free_cnt++;
-        mon_p->free_size += size;
-        if(size > mon_p->free_biggest_size)
-            mon_p->free_biggest_size = size;
-    }
-}
 #endif /*LV_USE_BUILTIN_MALLOC*/

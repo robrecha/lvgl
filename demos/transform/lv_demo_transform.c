@@ -37,7 +37,7 @@ static lv_style_t style_card;
 static lv_style_t style_avatar;
 static lv_style_t style_btn;
 static lv_obj_t * card_to_transform;
-LV_IMG_DECLARE(img_transform_avatar_15);
+LV_IMG_DECLARE(img_transform_avatar_15)
 
 /**********************
  *      MACROS
@@ -129,7 +129,7 @@ static lv_obj_t * card_create(void)
     lv_obj_set_grid_cell(btn, LV_GRID_ALIGN_START, 2, 1, LV_GRID_ALIGN_CENTER, 3, 1);
     lv_obj_add_style(btn, &style_btn, 0);
 
-    LV_IMG_DECLARE(img_multilang_like);
+    LV_IMG_DECLARE(img_multilang_like)
     lv_obj_t * btn_img = lv_img_create(btn);
     lv_img_set_src(btn_img, &img_multilang_like);
     lv_obj_align(btn_img, LV_ALIGN_LEFT_MID, 30, 0);

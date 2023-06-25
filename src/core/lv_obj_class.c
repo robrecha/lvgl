@@ -10,6 +10,7 @@
 #include "../themes/lv_theme.h"
 #include "../disp/lv_disp.h"
 #include "../disp/lv_disp_private.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

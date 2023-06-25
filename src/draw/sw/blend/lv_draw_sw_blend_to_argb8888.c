@@ -14,6 +14,7 @@
 #include "../../../disp/lv_disp.h"
 #include "../../../core/lv_refr.h"
 #include "../../../misc/lv_color.h"
+#include "../../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

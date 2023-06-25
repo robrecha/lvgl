@@ -18,6 +18,7 @@
 #include "../../misc/lv_bidi.h"
 #include "../../misc/lv_txt_ap.h"
 #include "../../stdlib/lv_sprintf.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

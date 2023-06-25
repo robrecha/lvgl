@@ -27,10 +27,6 @@
     #define ALIGN(X)    (((X) + 3) & ~3)
 #endif
 
-#if LV_DRAW_SW_GRADIENT_CACHE_DEF_SIZE != 0 && LV_DRAW_SW_GRADIENT_CACHE_DEF_SIZE < 256
-    #error "LV_DRAW_SW_GRADIENT_CACHE_DEF_SIZE is too small"
-#endif
-
 /**********************
  *  STATIC PROTOTYPES
  **********************/
@@ -48,18 +44,16 @@ static lv_grad_t * allocate_item(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord
 static lv_grad_t * allocate_item(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord_t h)
 {
     lv_coord_t size = g->dir == LV_GRAD_DIR_HOR ? w : h;
-    lv_coord_t map_size = LV_MAX(w, h); /* The map is being used horizontally (width) unless
-                                           no dithering is selected where it's used vertically */
 
-    size_t req_size = ALIGN(sizeof(lv_grad_t)) + ALIGN(map_size * sizeof(lv_color_t)) + ALIGN(map_size * sizeof(lv_opa_t));
+    size_t req_size = ALIGN(sizeof(lv_grad_t)) + ALIGN(size * sizeof(lv_color_t)) + ALIGN(size * sizeof(lv_opa_t));
     lv_grad_t * item  = lv_malloc(req_size);
     LV_ASSERT_MALLOC(item);
     if(item == NULL) return NULL;
 
     uint8_t * p = (uint8_t *)item;
     item->color_map = (lv_color_t *)(p + ALIGN(sizeof(*item)));
-    item->opa_map = (lv_opa_t *)(p + ALIGN(sizeof(*item)) + ALIGN(map_size * sizeof(lv_color_t)));
-    item->size = map_size;
+    item->opa_map = (lv_opa_t *)(p + ALIGN(sizeof(*item)) + ALIGN(size * sizeof(lv_color_t)));
+    item->size = size;
     return item;
 }
 
@@ -74,7 +68,6 @@ lv_grad_t * lv_gradient_get(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord_t h)
     if(g->dir == LV_GRAD_DIR_NONE) return NULL;
 
     /* Step 1: Search cache for the given key */
-    lv_coord_t size = g->dir == LV_GRAD_DIR_HOR ? w : h;
     lv_grad_t * item = allocate_item(g, w, h);
     if(item == NULL) {
         LV_LOG_WARN("Faild to allcoate item for teh gradient");
@@ -82,7 +75,8 @@ lv_grad_t * lv_gradient_get(const lv_grad_dsc_t * g, lv_coord_t w, lv_coord_t h)
     }
 
     /* Step 3: Fill it with the gradient, as expected */
-    for(lv_coord_t i = 0; i < item->size; i++) {
+    uint32_t i;
+    for(i = 0; i < item->size; i++) {
         lv_gradient_color_calculate(g, item->size, i, &item->color_map[i], &item->opa_map[i]);
     }
     return item;

@@ -13,6 +13,7 @@
 #include "../../stdlib/lv_mem.h"
 #include "../../misc/lv_area.h"
 #include "../../misc/lv_color.h"
+#include "../../stdlib/lv_string.h"
 #include "../lv_draw_triangle.h"
 #include "lv_draw_sw_gradient.h"
 

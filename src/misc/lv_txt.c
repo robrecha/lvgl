@@ -13,6 +13,7 @@
 #include "lv_log.h"
 #include "lv_assert.h"
 #include "../stdlib/lv_mem.h"
+#include "../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES

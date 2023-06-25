@@ -50,34 +50,26 @@ extern lv_font_t font_multilang_large;
  **********************/
 #define CARD_INFO_SET(_image, _name, _description) {.image = _image, .name = _name, .description = _description}
 
-LV_IMG_DECLARE(img_multilang_avatar_1);
-LV_IMG_DECLARE(img_multilang_avatar_2);
-LV_IMG_DECLARE(img_multilang_avatar_3);
-LV_IMG_DECLARE(img_multilang_avatar_4);
-LV_IMG_DECLARE(img_multilang_avatar_5);
-LV_IMG_DECLARE(img_multilang_avatar_6);
-LV_IMG_DECLARE(img_multilang_avatar_7);
-LV_IMG_DECLARE(img_multilang_avatar_8);
-LV_IMG_DECLARE(img_multilang_avatar_9);
-LV_IMG_DECLARE(img_multilang_avatar_10);
-LV_IMG_DECLARE(img_multilang_avatar_11);
-LV_IMG_DECLARE(img_multilang_avatar_12);
-LV_IMG_DECLARE(img_multilang_avatar_13);
-LV_IMG_DECLARE(img_multilang_avatar_14);
-LV_IMG_DECLARE(img_multilang_avatar_15);
-LV_IMG_DECLARE(img_multilang_avatar_16);
-LV_IMG_DECLARE(img_multilang_avatar_17);
-LV_IMG_DECLARE(img_multilang_avatar_18);
-LV_IMG_DECLARE(img_multilang_avatar_19);
-LV_IMG_DECLARE(img_multilang_avatar_20);
-LV_IMG_DECLARE(img_multilang_avatar_21);
-LV_IMG_DECLARE(img_multilang_avatar_22);
-LV_IMG_DECLARE(img_multilang_avatar_23);
-LV_IMG_DECLARE(img_multilang_avatar_24);
-LV_IMG_DECLARE(img_multilang_avatar_25);
-LV_IMG_DECLARE(img_multilang_avatar_26);
-LV_IMG_DECLARE(img_multilang_avatar_27);
-LV_IMG_DECLARE(img_multilang_avatar_28);
+LV_IMG_DECLARE(img_multilang_avatar_1)
+LV_IMG_DECLARE(img_multilang_avatar_2)
+LV_IMG_DECLARE(img_multilang_avatar_3)
+LV_IMG_DECLARE(img_multilang_avatar_4)
+LV_IMG_DECLARE(img_multilang_avatar_5)
+LV_IMG_DECLARE(img_multilang_avatar_6)
+LV_IMG_DECLARE(img_multilang_avatar_7)
+LV_IMG_DECLARE(img_multilang_avatar_8)
+LV_IMG_DECLARE(img_multilang_avatar_9)
+LV_IMG_DECLARE(img_multilang_avatar_10)
+LV_IMG_DECLARE(img_multilang_avatar_11)
+LV_IMG_DECLARE(img_multilang_avatar_12)
+LV_IMG_DECLARE(img_multilang_avatar_13)
+LV_IMG_DECLARE(img_multilang_avatar_14)
+LV_IMG_DECLARE(img_multilang_avatar_15)
+LV_IMG_DECLARE(img_multilang_avatar_16)
+LV_IMG_DECLARE(img_multilang_avatar_17)
+LV_IMG_DECLARE(img_multilang_avatar_18)
+LV_IMG_DECLARE(img_multilang_avatar_22)
+LV_IMG_DECLARE(img_multilang_avatar_25)
 
 static card_info_t card_info[] = {
     CARD_INFO_SET(&img_multilang_avatar_5, "Zhang Wei", "对编程和技术充满热情。 开源倡导者🚀"),
@@ -100,14 +92,6 @@ static card_info_t card_info[] = {
     CARD_INFO_SET(&img_multilang_avatar_16, "Elin Lindqvist", "Språkinlärare och kulturentusiast "),
     CARD_INFO_SET(&img_multilang_avatar_17, "William Carter", "DIY enthusiast and home improvement guru "),
     CARD_INFO_SET(&img_multilang_avatar_22, "Ava Williams", "Artist and creative visionary 🎨"),
-    //    CARD_INFO_SET(&img_multilang_avatar_19, "Olivia Davis", "Minimalist with a passion for organization "),
-    //    CARD_INFO_SET(&img_multilang_avatar_20, "Isabella Evans", "Yoga practitioner and spiritual seeker 🧘‍♀️"),
-    //    CARD_INFO_SET(&img_multilang_avatar_21, "Diogo Pereira Costa", "Entusiasta de tecnologia e amante de gadgets. "),
-    //    CARD_INFO_SET(&img_multilang_avatar_23, "Rachel Thompson", "Book club member and avid reader "),
-    //    CARD_INFO_SET(&img_multilang_avatar_24, "Tyler Jackson", "Sports coach and mentor "),
-    //    CARD_INFO_SET(&img_multilang_avatar_26, "Sarah Jackson", "Fitness trainer and wellness coach "),
-    //    CARD_INFO_SET(&img_multilang_avatar_27, "Sophia Brown", "Travel blogger and adventurer "),
-    //    CARD_INFO_SET(&img_multilang_avatar_28, "Samantha Rodriguez", "Music lover, constantly discovering new artists"),
     CARD_INFO_SET(NULL, NULL, NULL),
 };
 
@@ -119,6 +103,10 @@ static const void * get_imgfont_path(const lv_font_t * font,
                                      uint32_t unicode, uint32_t unicode_next,
                                      lv_coord_t * offset_y, void * user_data)
 {
+    LV_UNUSED(user_data);
+    LV_UNUSED(unicode_next);
+    LV_UNUSED(font);
+
     LV_IMG_DECLARE(img_emoji_artist_palette);
     LV_IMG_DECLARE(img_emoji_books);
     LV_IMG_DECLARE(img_emoji_camera_with_flash);
@@ -248,6 +236,7 @@ void lv_demo_multilang(void)
 
 static void inactive_timer_cb(lv_timer_t * t)
 {
+    LV_UNUSED(t);
 
     static bool scrolled = false;
     lv_obj_t * cont = lv_obj_get_child(lv_scr_act(), 0);
@@ -266,7 +255,6 @@ static void inactive_timer_cb(lv_timer_t * t)
         lv_obj_add_flag(lv_layer_top(), LV_OBJ_FLAG_CLICKABLE);
         scrolled = true;
     }
-
 }
 
 static void shrink_anim_cb(void * var, int32_t v)
