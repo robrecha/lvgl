@@ -10,7 +10,7 @@
 #define VER_RES 480
 
 static void hal_init(void);
-static void dummy_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t * color_p);
+static void dummy_flush_cb(lv_disp_t * disp, const lv_area_t * area, uint8_t * color_p);
 
 lv_indev_t * lv_test_mouse_indev;
 lv_indev_t * lv_test_keypad_indev;
@@ -48,7 +48,7 @@ static void hal_init(void)
     lv_indev_set_read_cb(lv_test_encoder_indev,  lv_test_encoder_read_cb);
 }
 
-static void dummy_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t * color_p)
+static void dummy_flush_cb(lv_disp_t * disp, const lv_area_t * area, uint8_t * color_p)
 {
     LV_UNUSED(area);
     LV_UNUSED(color_p);

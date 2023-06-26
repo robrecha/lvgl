@@ -67,7 +67,7 @@ typedef struct {
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t * color_p);
+static void flush_cb(lv_disp_t * disp, const lv_area_t * area, uint8_t * color_p);
 
 /**********************
  *  STATIC VARIABLES

@@ -468,11 +468,12 @@ void lv_canvas_fill_bg(lv_obj_t * obj, lv_color_t color, lv_opa_t opa)
 
 void lv_canvas_init_layer(lv_obj_t * canvas, lv_layer_t * layer)
 {
+    LV_ASSERT_NULL(canvas);
+    LV_ASSERT_NULL(layer);
 
     lv_img_dsc_t * dsc = lv_canvas_get_img(canvas);
     lv_area_t canvas_area = {0, 0, dsc->header.w - 1,  dsc->header.h - 1};
     lv_memzero(layer, sizeof(*layer));
-    LV_ASSERT_MALLOC(layer);
 
     layer->color_format = dsc->header.cf;
     layer->buf_area = canvas_area;

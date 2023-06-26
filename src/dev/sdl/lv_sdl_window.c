@@ -307,7 +307,8 @@ static void texture_resize(lv_disp_t * disp)
     if(dsc->texture) SDL_DestroyTexture(dsc->texture);
 
 #if LV_COLOR_DEPTH == 32
-    SDL_PixelFormatEnum px_format = SDL_PIXELFORMAT_XRGB8888;
+    SDL_PixelFormatEnum px_format =
+        SDL_PIXELFORMAT_RGB888; /*same as SDL_PIXELFORMAT_RGB888, but it's not supported in older versions*/
 #elif LV_COLOR_DEPTH == 24
     SDL_PixelFormatEnum px_format = SDL_PIXELFORMAT_BGR24;
 #elif LV_COLOR_DEPTH == 16

@@ -58,19 +58,20 @@
 #define LV_USE_FS_POSIX     1
 #define LV_FS_POSIX_LETTER  'B'
 
-#define LV_USE_PNG      1
-#define LV_USE_BMP      1
-#define LV_USE_SJPG     1
-#define LV_USE_GIF      1
-#define LV_USE_QRCODE   1
-#define LV_USE_BARCODE  1
-#define LV_USE_FRAGMENT 1
-#define LV_USE_IMGFONT  1
-#define LV_USE_IME_PINYIN   1
-#define LV_USE_MSG          1
+#define LV_USE_PNG          1
+#define LV_USE_BMP          1
+#define LV_USE_SJPG         1
+#define LV_USE_GIF          1
+#define LV_USE_QRCODE       1
+#define LV_USE_BARCODE      1
+#define LV_USE_FRAGMENT     1
+#define LV_USE_IMGFONT      1
+#define LV_USE_IME_PINYIN       1
+#define LV_USE_MSG              1
 #define LV_USE_FILE_EXPLORER    1
-#define LV_USE_TINY_TTF 1
-#define LV_USE_SYSMON   1
+#define LV_USE_TINY_TTF         1
+#define LV_USE_SYSMON           1
+#define LV_USE_SNAPSHOT         1
 
 #define LV_BUILD_EXAMPLES       1
 #define LV_USE_DEMO_WIDGETS     1

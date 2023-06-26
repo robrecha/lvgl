@@ -159,17 +159,19 @@ bool lv_draw_dispatch_layer(struct _lv_disp_t * disp, lv_layer_t * layer)
                 }
 
                 /*Remove the layer from  the display's*/
-                lv_layer_t * l2 = disp->layer_head;
-                while(l2) {
-                    if(l2->next == layer_drawn) {
-                        l2->next = layer_drawn->next;
-                        break;
+                if(disp) {
+                    lv_layer_t * l2 = disp->layer_head;
+                    while(l2) {
+                        if(l2->next == layer_drawn) {
+                            l2->next = layer_drawn->next;
+                            break;
+                        }
+                        l2 = l2->next;
                     }
-                    l2 = l2->next;
-                }
 
-                disp->layer_deinit(disp, layer_drawn);
-                lv_free(layer_drawn);
+                    disp->layer_deinit(disp, layer_drawn);
+                    lv_free(layer_drawn);
+                }
             }
             if(t->type == LV_DRAW_TASK_TYPE_LABEL) {
                 lv_draw_label_dsc_t * draw_label_dsc = t->draw_dsc;

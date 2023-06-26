@@ -447,7 +447,7 @@ LV_ATTRIBUTE_FAST_MEM static void argb8888_image_blend(_lv_draw_sw_blend_image_d
 
 LV_ATTRIBUTE_FAST_MEM static inline void blend_non_normal_pixel(uint8_t * dest, lv_color32_t src, lv_blend_mode_t mode)
 {
-    uint8_t res[3];
+    uint8_t res[3] = {0, 0, 0};
     switch(mode) {
         case LV_BLEND_MODE_ADDITIVE:
             res[0] = LV_MIN(dest[0] + src.red, 255);

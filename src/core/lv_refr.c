@@ -38,7 +38,7 @@ static void refr_obj_and_children(lv_layer_t * layer, lv_obj_t * top_obj);
 static void refr_obj(lv_layer_t * layer, lv_obj_t * obj);
 static uint32_t get_max_row(lv_disp_t * disp, lv_coord_t area_w, lv_coord_t area_h);
 static void draw_buf_flush(lv_disp_t * disp);
-static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t * color_p);
+static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, uint8_t * px_map);
 
 /**********************
  *  STATIC VARIABLES
@@ -884,178 +884,6 @@ static uint32_t get_max_row(lv_disp_t * disp, lv_coord_t area_w, lv_coord_t area
     return max_row;
 }
 
-static void draw_buf_rotate_180(lv_disp_t * disp, lv_area_t * area, lv_color_t * color_p)
-{
-    lv_coord_t area_w = lv_area_get_width(area);
-    lv_coord_t area_h = lv_area_get_height(area);
-    uint32_t total = area_w * area_h;
-    /*Swap the beginning and end values*/
-    lv_color_t tmp;
-    uint32_t i = total - 1, j = 0;
-    while(i > j) {
-        tmp = color_p[i];
-        color_p[i] = color_p[j];
-        color_p[j] = tmp;
-        i--;
-        j++;
-    }
-    lv_coord_t tmp_coord;
-    tmp_coord = area->y2;
-    area->y2 = disp->ver_res - area->y1 - 1;
-    area->y1 = disp->ver_res - tmp_coord - 1;
-    tmp_coord = area->x2;
-    area->x2 = disp->hor_res - area->x1 - 1;
-    area->x1 = disp->hor_res - tmp_coord - 1;
-}
-
-static LV_ATTRIBUTE_FAST_MEM void draw_buf_rotate_90(bool invert_i, lv_coord_t area_w, lv_coord_t area_h,
-                                                     lv_color_t * orig_color_p, lv_color_t * rot_buf)
-{
-
-    uint32_t invert = (area_w * area_h) - 1;
-    uint32_t initial_i = ((area_w - 1) * area_h);
-    for(lv_coord_t y = 0; y < area_h; y++) {
-        uint32_t i = initial_i + y;
-        if(invert_i)
-            i = invert - i;
-        for(lv_coord_t x = 0; x < area_w; x++) {
-            rot_buf[i] = *(orig_color_p++);
-            if(invert_i)
-                i += area_h;
-            else
-                i -= area_h;
-        }
-    }
-}
-
-/**
- * Helper function for draw_buf_rotate_90_sqr. Given a list of four numbers, rotate the entire list to the left.
- */
-static inline void draw_buf_rotate4(lv_color_t * a, lv_color_t * b, lv_color_t * c, lv_color_t * d)
-{
-    lv_color_t tmp;
-    tmp = *a;
-    *a = *b;
-    *b = *c;
-    *c = *d;
-    *d = tmp;
-}
-
-/**
- * Rotate a square image 90/270 degrees in place.
- * @note inspired by https://stackoverflow.com/a/43694906
- */
-static void draw_buf_rotate_90_sqr(bool is_270, lv_coord_t w, lv_color_t * color_p)
-{
-    for(lv_coord_t i = 0; i < w / 2; i++) {
-        for(lv_coord_t j = 0; j < (w + 1) / 2; j++) {
-            lv_coord_t inv_i = (w - 1) - i;
-            lv_coord_t inv_j = (w - 1) - j;
-            if(is_270) {
-                draw_buf_rotate4(
-                    &color_p[i * w + j],
-                    &color_p[inv_j * w + i],
-                    &color_p[inv_i * w + inv_j],
-                    &color_p[j * w + inv_i]
-                );
-            }
-            else {
-                draw_buf_rotate4(
-                    &color_p[i * w + j],
-                    &color_p[j * w + inv_i],
-                    &color_p[inv_i * w + inv_j],
-                    &color_p[inv_j * w + i]
-                );
-            }
-
-        }
-    }
-}
-
-/**
- * Rotate the draw_buf to the display's native orientation.
- */
-static void draw_buf_rotate(lv_area_t * area, lv_color_t * color_p)
-{
-    if(disp_refr->render_mode == LV_DISP_RENDER_MODE_FULL && disp_refr->sw_rotate) {
-        LV_LOG_ERROR("cannot rotate a full refreshed display!");
-        return;
-    }
-    if(disp_refr->rotation == LV_DISP_ROTATION_180) {
-        draw_buf_rotate_180(disp_refr, area, color_p);
-        call_flush_cb(disp_refr, area, color_p);
-    }
-    else if(disp_refr->rotation == LV_DISP_ROTATION_90 || disp_refr->rotation == LV_DISP_ROTATION_270) {
-        /*Allocate a temporary buffer to store rotated image*/
-        lv_color_t * rot_buf = NULL;
-        lv_coord_t area_w = lv_area_get_width(area);
-        lv_coord_t area_h = lv_area_get_height(area);
-        /*Determine the maximum number of rows that can be rotated at a time*/
-        lv_coord_t max_row = LV_MIN((lv_coord_t)((LV_DISP_ROT_MAX_BUF / sizeof(lv_color_t)) / area_w), area_h);
-        lv_coord_t init_y_off;
-        init_y_off = area->y1;
-        if(disp_refr->rotation == LV_DISP_ROTATION_90) {
-            area->y2 = disp_refr->ver_res - area->x1 - 1;
-            area->y1 = area->y2 - area_w + 1;
-        }
-        else {
-            area->y1 = area->x1;
-            area->y2 = area->y1 + area_w - 1;
-        }
-
-        /*Rotate the screen in chunks, flushing after each one*/
-        lv_coord_t row = 0;
-        while(row < area_h) {
-            lv_coord_t height = LV_MIN(max_row, area_h - row);
-            disp_refr->flushing = 1;
-            if((row == 0) && (area_h >= area_w)) {
-                /*Rotate the initial area as a square*/
-                height = area_w;
-                draw_buf_rotate_90_sqr(disp_refr->rotation == LV_DISP_ROTATION_270, area_w, color_p);
-                if(disp_refr->rotation == LV_DISP_ROTATION_90) {
-                    area->x1 = init_y_off;
-                    area->x2 = init_y_off + area_w - 1;
-                }
-                else {
-                    area->x2 = disp_refr->hor_res - 1 - init_y_off;
-                    area->x1 = area->x2 - area_w + 1;
-                }
-            }
-            else {
-                /*Rotate other areas using a maximum buffer size*/
-                if(rot_buf == NULL) rot_buf = lv_malloc(LV_DISP_ROT_MAX_BUF);
-                draw_buf_rotate_90(disp_refr->rotation == LV_DISP_ROTATION_270, area_w, height, color_p, rot_buf);
-
-                if(disp_refr->rotation == LV_DISP_ROTATION_90) {
-                    area->x1 = init_y_off + row;
-                    area->x2 = init_y_off + row + height - 1;
-                }
-                else {
-                    area->x2 = disp_refr->hor_res - 1 - init_y_off - row;
-                    area->x1 = area->x2 - height + 1;
-                }
-            }
-
-            /* The original part (chunk of the current area) were split into more parts here.
-             * Set the original last_part flag on the last part of rotation. */
-            if(row + height >= area_h && disp_refr->last_area && disp_refr->last_part) {
-                disp_refr->flushing_last = 1;
-            }
-            else {
-                disp_refr->flushing_last = 0;
-            }
-
-            /*Flush the completed area to the display*/
-            call_flush_cb(disp_refr, area, rot_buf == NULL ? color_p : rot_buf);
-            while(disp_refr->flushing);
-            color_p += area_w * height;
-            row += height;
-        }
-        /*Free the allocated buffer at the end if necessary*/
-        if(rot_buf != NULL) lv_free(rot_buf);
-    }
-}
-
 /**
  * Flush the content of the draw buffer
  */
@@ -1087,7 +915,8 @@ static void draw_buf_flush(lv_disp_t * disp)
     if(disp->flush_cb) {
         /*Rotate the buffer to the display's native orientation if necessary*/
         if(disp->rotation != LV_DISP_ROTATION_0 && disp->sw_rotate) {
-            draw_buf_rotate(&layer->buf_area, layer->buf);
+            LV_LOG_WARN("SW rotation is not supported now");
+            call_flush_cb(disp, &disp->refreshed_area, layer->buf);
         }
         else {
             call_flush_cb(disp, &disp->refreshed_area, layer->buf);
@@ -1104,12 +933,12 @@ static void draw_buf_flush(lv_disp_t * disp)
     }
 }
 
-static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t * color_p)
+static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, uint8_t * px_map)
 {
     LV_PROFILER_BEGIN;
     REFR_TRACE("Calling flush_cb on (%d;%d)(%d;%d) area with %p image pointer",
                (int)area->x1, (int)area->y1, (int)area->x2, (int)area->y2,
-               (void *)color_p);
+               (void *)px_map);
 
     lv_area_t offset_area = {
         .x1 = area->x1 + disp->offset_x,
@@ -1121,7 +950,7 @@ static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t *
     if(disp->layer_head->buffer_convert) disp->layer_head->buffer_convert(disp->layer_head);
 
     lv_disp_send_event(disp, LV_EVENT_FLUSH_START, &offset_area);
-    disp->flush_cb(disp, &offset_area, color_p);
+    disp->flush_cb(disp, &offset_area, px_map);
     lv_disp_send_event(disp, LV_EVENT_FLUSH_FINISH, &offset_area);
 
     LV_PROFILER_END;
