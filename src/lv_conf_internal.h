@@ -308,14 +308,12 @@
 /*=================
  * OPERATING SYSTEM
  *=================*/
-/*Select an operating system to use*/
-#ifndef LV_USE_OS
-    #ifdef CONFIG_LV_USE_OS
-        #define LV_USE_OS CONFIG_LV_USE_OS
-    #else
-        #define LV_USE_OS   LV_OS_PTHREAD
-    #endif
-#endif
+/*Select an operating system to use. Possible options:
+ * - LV_OS_NONE
+ * - LV_OS_PTHREAD
+ * - LV_OS_FREERTOS
+ * - LV_OS_CMSIS_RTOS2
+ * - LV_OS_CUSTOM */
 #if LV_USE_OS == LV_OS_CUSTOM
     #ifndef LV_OS_CUSTOM_INCLUDE
         #ifdef CONFIG_LV_OS_CUSTOM_INCLUDE
