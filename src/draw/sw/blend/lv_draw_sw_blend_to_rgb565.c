@@ -305,6 +305,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb565_image_blend(_lv_draw_sw_blend_image_dsc
                         res += (dest_buf_c16[x].green * src_buf_c16[x].green) >> 6;
                         res += (dest_buf_c16[x].blue * src_buf_c16[x].blue) >> 5;
                         break;
+                    default:
+                        LV_LOG_WARN("Not supported blend mode: %d", dsc->blend_mode);
+                        return;
                 }
             }
 
@@ -402,6 +405,9 @@ LV_ATTRIBUTE_FAST_MEM static void rgb888_image_blend(_lv_draw_sw_blend_image_dsc
                         res += (dest_buf_c16[dest_x].green * (src_buf_u8[src_x + 1] >> 2)) >> 6;
                         res += (dest_buf_c16[dest_x].blue * (src_buf_u8[src_x + 2] >> 3)) >> 5;
                         break;
+                    default:
+                        LV_LOG_WARN("Not supported blend mode: %d", dsc->blend_mode);
+                        return;
                 }
 
                 if(mask_buf == NULL) {
@@ -499,6 +505,9 @@ LV_ATTRIBUTE_FAST_MEM static void argb8888_image_blend(_lv_draw_sw_blend_image_d
                         res += (dest_buf_c16[dest_x].green * (src_buf_u8[src_x + 1] >> 2)) >> 6;
                         res += (dest_buf_c16[dest_x].blue * (src_buf_u8[src_x + 2] >> 3)) >> 5;
                         break;
+                    default:
+                        LV_LOG_WARN("Not supported blend mode: %d", dsc->blend_mode);
+                        return;
                 }
 
                 if(mask_buf == NULL && opa >= LV_OPA_MAX) {
