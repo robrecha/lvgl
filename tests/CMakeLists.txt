@@ -108,6 +108,7 @@ set(COMPILE_OPTIONS
     -Wuninitialized
     -Wunreachable-code
     -Werror=float-conversion
+    -Werror=strict-aliasing
     ${BUILD_OPTIONS}
 )
 
