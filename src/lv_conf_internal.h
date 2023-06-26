@@ -2488,6 +2488,15 @@
     #endif
 #endif
 
+/*Widget transformation demo*/
+#ifndef LV_USE_DEMO_TRANSFORM
+    #ifdef CONFIG_LV_USE_DEMO_TRANSFORM
+        #define LV_USE_DEMO_TRANSFORM CONFIG_LV_USE_DEMO_TRANSFORM
+    #else
+        #define LV_USE_DEMO_TRANSFORM       0
+    #endif
+#endif
+
 
 
 /*----------------------------------

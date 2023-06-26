@@ -62,7 +62,11 @@ static const uint8_t opa4_table[16] = {0,  17, 34,  51,
                                        136, 153, 170, 187,
                                        204, 221, 238, 255
                                       };
+
+#if LV_USE_FONT_COMPRESSED
 static const uint8_t opa3_table[8] = {0, 36, 73, 109, 146, 182, 218, 255};
+#endif
+
 static const uint8_t opa2_table[4] = {0, 85, 170, 255};
 
 

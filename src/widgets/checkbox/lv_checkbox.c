@@ -13,6 +13,7 @@
 #include "../../misc/lv_txt_ap.h"
 #include "../../core/lv_group.h"
 #include "../../draw/lv_draw.h"
+#include "../../stdlib/lv_string.h"
 
 /*********************
  *      DEFINES
