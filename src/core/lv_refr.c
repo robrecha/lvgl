@@ -317,9 +317,6 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
     LV_PROFILER_BEGIN;
     REFR_TRACE("begin");
 
-    uint32_t start = lv_tick_get();
-
-
     if(tmr) {
         disp_refr = tmr->user_data;
 #if LV_USE_PERF_MONITOR == 0 && LV_USE_MEM_MONITOR == 0
@@ -350,8 +347,6 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
     }
 
     lv_disp_send_event(disp_refr, LV_EVENT_REFR_START, NULL);
-
-    disp_refr->last_render_start_time = start;
 
     /*Refresh the screen's layout if required*/
     lv_obj_update_layout(disp_refr->act_scr);
@@ -407,11 +402,13 @@ refr_clean_up:
     lv_memzero(disp_refr->inv_area_joined, sizeof(disp_refr->inv_area_joined));
     disp_refr->inv_p = 0;
 
+
+refr_finish:
+
 #if LV_DRAW_SW_COMPLEX == 1
     _lv_draw_sw_mask_cleanup();
 #endif
 
-refr_finish:
     lv_disp_send_event(disp_refr, LV_EVENT_REFR_FINISH, NULL);
 
     REFR_TRACE("finished");
@@ -1123,6 +1120,9 @@ static void call_flush_cb(lv_disp_t * disp, const lv_area_t * area, lv_color_t *
 
     if(disp->layer_head->buffer_convert) disp->layer_head->buffer_convert(disp->layer_head);
 
+    lv_disp_send_event(disp, LV_EVENT_FLUSH_START, &offset_area);
     disp->flush_cb(disp, &offset_area, color_p);
+    lv_disp_send_event(disp, LV_EVENT_FLUSH_FINISH, &offset_area);
+
     LV_PROFILER_END;
 }

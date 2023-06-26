@@ -144,8 +144,6 @@ struct _lv_disp_t {
     /*Miscellaneous data*/
     uint32_t last_activity_time;        /**< Last time when there was activity on this display*/
 
-    uint32_t last_render_start_time;
-
     /** The area being refreshed*/
     lv_area_t refreshed_area;
 };
