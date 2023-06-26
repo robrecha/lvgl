@@ -335,8 +335,8 @@ LV_ATTRIBUTE_FAST_MEM static void draw_line_skew(lv_draw_unit_t * draw_unit, con
                                          LV_DRAW_SW_MASK_LINE_SIDE_BOTTOM);
         lv_draw_sw_mask_line_points_init(&mask_bottom_param, p2.x, p2.y, p2.x - ydiff, p2.y + xdiff,
                                          LV_DRAW_SW_MASK_LINE_SIDE_TOP);
-        masks[3] = &mask_top_param;
-        masks[4] = &mask_bottom_param;
+        masks[2] = &mask_top_param;
+        masks[3] = &mask_bottom_param;
     }
 
     /*The real draw area is around the line.

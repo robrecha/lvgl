@@ -132,6 +132,8 @@
  * - LV_OS_FREERTOS
  * - LV_OS_CMSIS_RTOS2
  * - LV_OS_CUSTOM */
+#define LV_USE_OS   LV_OS_NONE
+
 #if LV_USE_OS == LV_OS_CUSTOM
     #define LV_OS_CUSTOM_INCLUDE <stdint.h>
 #endif

@@ -314,6 +314,14 @@
  * - LV_OS_FREERTOS
  * - LV_OS_CMSIS_RTOS2
  * - LV_OS_CUSTOM */
+#ifndef LV_USE_OS
+    #ifdef CONFIG_LV_USE_OS
+        #define LV_USE_OS CONFIG_LV_USE_OS
+    #else
+        #define LV_USE_OS   LV_OS_NONE
+    #endif
+#endif
+
 #if LV_USE_OS == LV_OS_CUSTOM
     #ifndef LV_OS_CUSTOM_INCLUDE
         #ifdef CONFIG_LV_OS_CUSTOM_INCLUDE

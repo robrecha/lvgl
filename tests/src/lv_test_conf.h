@@ -17,9 +17,11 @@ extern "C" {
  ***********************/
 
 #ifdef LVGL_CI_USING_SYS_HEAP
-#define LV_USE_STDLIB_MALLOC    LV_STDLIB_CLIB
-#define LV_USE_STDLIB_STRING    LV_STDLIB_CLIB
-#define LV_USE_STDLIB_SPRINTF   LV_STDLIB_CLIB
+#define LV_USE_STDLIB_MALLOC        LV_STDLIB_CLIB
+#define LV_USE_STDLIB_STRING        LV_STDLIB_CLIB
+#define LV_USE_STDLIB_SPRINTF       LV_STDLIB_CLIB
+#define LV_USE_OS                   LV_OS_PTHREAD
+#define LV_DRAW_SW_DRAW_UNIT_CNT    4
 #endif
 
 #ifdef LVGL_CI_USING_DEF_HEAP

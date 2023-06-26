@@ -146,11 +146,8 @@ static int32_t lv_draw_sw_dispatch(lv_draw_unit_t * draw_unit, lv_layer_t * laye
     draw_sw_unit->base_unit.clip_area = &t->clip_area;
     draw_sw_unit->task_act = t;
 
-    if(t->type == LV_DRAW_TASK_TYPE_LAYER) {
-        printf("start\n");
-    }
     exectue_drawing(draw_sw_unit);
-    if(t->type == LV_DRAW_TASK_TYPE_LAYER) printf("ready\n");
+
     draw_sw_unit->task_act->state = LV_DRAW_TASK_STATE_READY;
     draw_sw_unit->task_act = NULL;
 
